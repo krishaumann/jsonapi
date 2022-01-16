@@ -1,0 +1,8 @@
+﻿FieldName,RunNr,Increment Counter,Expected Value,Actual Value,Result,
+code,2021122302244701,1,0,Pass,
+message,2021122302244701,1,success,Pass,
+Id,2021122302244701,1,11145,Pass,
+Name,2021122302244701,1,jkhaumann,Pass,
+Email,2021122302244701,1,jkhaumann@gmail.com,Pass,
+Token,2021122302244701,1,ac7e3eb5-6328-480c-be7f-63e14a2a08c8,Pass,
+

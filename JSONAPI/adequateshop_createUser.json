@@ -1,0 +1,5 @@
+{
+  "name": "[TEXT(7)][NUMBER(2)]",
+  "email": "[TEXT(10)]@gmail.com",
+  "location": "[RANGE(Countries)]"
+}
