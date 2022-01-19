@@ -87,7 +87,7 @@
             public string URL { get; set; }
             public string XPath { get; set; }
             public string Operation { get; set; }
-
+            public int Sequence { get; set; }
             public List<FieldExpectedResult> FieldExpectedResultList { get; set; }
 
             public Test()
@@ -97,6 +97,10 @@
                 Input = "";
                 HeaderInput = "";
                 FieldExpectedResultList = new List<FieldExpectedResult>();
+                URL = "";
+                XPath = "";
+                Operation = "";
+                Sequence = 0;
             }
 
             public Test(string testName)
@@ -106,6 +110,10 @@
                 HeaderInput = "";
                 UserName = Users.currentUser;
                 FieldExpectedResultList = new List<FieldExpectedResult>();
+                URL = "";
+                XPath = "";
+                Operation = "";
+                Sequence = 0;
             }
 
             public Test(string testName, string headerInput, string input)
@@ -115,6 +123,10 @@
                 HeaderInput = headerInput;
                 UserName = Users.currentUser;
                 FieldExpectedResultList = new List<FieldExpectedResult>();
+                URL = "";
+                XPath = "";
+                Operation = "";
+                Sequence = 0;
             }
 
 
@@ -126,6 +138,10 @@
                 HeaderInput = "";
                 UserName = Users.currentUser;
                 FieldExpectedResultList = expectedResultList;
+                URL = "";
+                XPath = "";
+                Operation = "";
+                Sequence = 0;
             }
         }
 
@@ -246,7 +262,7 @@
             }
         }
 
-        public static void AddUITestAttributes(string testName, string url, string xpath, string operation)
+        public static void AddGUITestAttributes(int sequence, string testName, string url, string xpath, string operation)
         {
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
@@ -258,12 +274,12 @@
 
             try
             {
-                var arrayUpdate = Builders<Test>.Update.Set("URL", url).Set("XPath", xpath).Set("Operation", operation);
+                var arrayUpdate = Builders<Test>.Update.Set("URL", url).Set("XPath", xpath).Set("Operation", operation).Set("Sequence", sequence);
                 testCollection.UpdateOne(testNameFilter, arrayUpdate);
             }
             catch (Exception e)
             {
-                Utilities.WriteLogItem("AddUITestAttributes(string testName, string input, string url, string xpath, string operation) failed; " + e.ToString(), TraceEventType.Error);
+                Utilities.WriteLogItem("AddGUITestAttributes(string testName, string input, string url, string xpath, string operation) failed; " + e.ToString(), TraceEventType.Error);
             }
         }
 

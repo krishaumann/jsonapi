@@ -13,6 +13,11 @@ namespace JSONAPI.Configure
 {
     public partial class frmScriptEditor : Form
     {
+        public string oldTestName = "";
+        public string oldInput = "";
+        public string oldURL = "";
+        public string oldXPath = "";
+        public string oldOperation = "";
         public int selectedRow = 0;
 
         public frmScriptEditor()
@@ -45,6 +50,17 @@ namespace JSONAPI.Configure
         private void cmbOperationDesc_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void dgGUISteps_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            this.oldTestName = (string)dgGUISteps[0, e.RowIndex].Value;
+            this.oldInput = (string)dgGUISteps[1, e.RowIndex].Value;
+            this.oldURL = (string)dgGUISteps[2, e.RowIndex].Value;
+            this.oldXPath = (string)dgGUISteps[3, e.RowIndex].Value;
+            this.oldOperation = (string)dgGUISteps[4, e.RowIndex].Value;
+
+            btnAddStep.Text = "Update";
         }
 
         private void cmbObjectMapItem_TextChanged(object sender, EventArgs e)
@@ -93,19 +109,26 @@ namespace JSONAPI.Configure
 
         private void btnAddStep_Click(object sender, EventArgs e)
         {
-            string inputString = "";
-            if (txtInputValue.Enabled) inputString = txtInputValue.Text;
-            else inputString = cmbInputData.Text;
-            Utilities.TestSuite.NewTestWithDetail(txtStepName.Text, "", inputString);
-            Utilities.TestSuite.AddUITestAttributes(txtStepName.Text, cmbURL.Text, cmbObjectMapItem.Text, cmbOperationDesc.Text);
-            string expectedResult = cmbAttribute.Text + "," + cmbVerificationType.Text + "," + txtExpectedValue.Text;
-            List<Utilities.TestSuite.FieldExpectedResult> expectedResultList = new List<Utilities.TestSuite.FieldExpectedResult>();
-            Utilities.TestSuite.FieldExpectedResult expectedField = new Utilities.TestSuite.FieldExpectedResult(txtElementName.Text, expectedResult);
-            expectedResultList.Add(expectedField);
-            Utilities.TestSuite.NewExpectedResult(txtStepName.Text, expectedResultList);
-            bsGUISteps.DataSource = Utilities.TestSuite.GetGUITests();
-            dgGUISteps.DataSource = bsGUISteps;
-            dgGUISteps.Refresh();
+            if (btnAddStep.Text.ToLower() == "add")
+            {
+                string inputString = "";
+                if (txtInputValue.Enabled) inputString = txtInputValue.Text;
+                else inputString = cmbInputData.Text;
+                Utilities.TestSuite.NewTestWithDetail(txtStepName.Text, "", inputString);
+                Utilities.TestSuite.AddGUITestAttributes((int)numSequence.Value, txtStepName.Text, cmbURL.Text, cmbObjectMapItem.Text, cmbOperationDesc.Text);
+                string expectedResult = cmbAttribute.Text + "," + cmbVerificationType.Text + "," + txtExpectedValue.Text;
+                List<Utilities.TestSuite.FieldExpectedResult> expectedResultList = new List<Utilities.TestSuite.FieldExpectedResult>();
+                Utilities.TestSuite.FieldExpectedResult expectedField = new Utilities.TestSuite.FieldExpectedResult(txtElementName.Text, expectedResult);
+                expectedResultList.Add(expectedField);
+                Utilities.TestSuite.NewExpectedResult(txtStepName.Text, expectedResultList);
+                bsGUISteps.DataSource = Utilities.TestSuite.GetGUITests();
+                dgGUISteps.DataSource = bsGUISteps;
+                dgGUISteps.Refresh();
+            }
+            else
+            {
+
+            }
             btnAddStep.Text = "Add";
 
             txtStepName.Text = "";

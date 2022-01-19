@@ -203,7 +203,7 @@
                     tempValue = JsonConvert.DeserializeObject<GUIObjectList>(tempString);
                     if (tempValue.URL.ToLower() == url)
                     {
-                        returnValue.Add(tempValue.XPath)  
+                        returnValue.Add(tempValue.XPath);  
                     }
                 });
             }
@@ -232,7 +232,7 @@
                 {
                     string tempString = doc.AsBsonValue.ToJson();
                     tempValue = JsonConvert.DeserializeObject<GUIObjectList>(tempString);
-                    returnValue.Add(tempValue.XPath)
+                    returnValue.Add(tempValue.XPath);
                 });
             }
             catch (Exception e)
@@ -261,7 +261,7 @@
                     string tempString = doc.AsBsonValue.ToJson();
                     tempValue = JsonConvert.DeserializeObject<GUIObjectList>(tempString);
                     if (!returnValue.Contains(tempValue.URL))
-                        returnValue.Add(tempValue.URL)
+                        returnValue.Add(tempValue.URL);
                 });
             }
             catch (Exception e)
