@@ -30,19 +30,19 @@ namespace JSONAPI.Options
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bsVariables = new System.Windows.Forms.BindingSource(this.components);
             this.ctxVariableGridOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsMenuDeleteVariable = new System.Windows.Forms.ToolStripMenuItem();
@@ -273,15 +273,15 @@ namespace JSONAPI.Options
             this.dgTestSuiteList.Location = new System.Drawing.Point(0, 0);
             this.dgTestSuiteList.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.dgTestSuiteList.Name = "dgTestSuiteList";
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle20.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgTestSuiteList.RowHeadersDefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgTestSuiteList.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgTestSuiteList.RowHeadersVisible = false;
             this.dgTestSuiteList.RowHeadersWidth = 70;
             this.dgTestSuiteList.RowTemplate.Height = 25;
@@ -292,11 +292,11 @@ namespace JSONAPI.Options
             // colSelected
             // 
             this.colSelected.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle14.NullValue = false;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colSelected.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.NullValue = false;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colSelected.DefaultCellStyle = dataGridViewCellStyle1;
             this.colSelected.HeaderText = "Select";
             this.colSelected.MinimumWidth = 80;
             this.colSelected.Name = "colSelected";
@@ -307,9 +307,9 @@ namespace JSONAPI.Options
             // 
             this.colTestSuiteName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colTestSuiteName.DataPropertyName = "testSuiteName";
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colTestSuiteName.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colTestSuiteName.DefaultCellStyle = dataGridViewCellStyle2;
             this.colTestSuiteName.HeaderText = "Test Suite Name";
             this.colTestSuiteName.MinimumWidth = 100;
             this.colTestSuiteName.Name = "colTestSuiteName";
@@ -319,9 +319,9 @@ namespace JSONAPI.Options
             // 
             this.colLastExecuted.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colLastExecuted.DataPropertyName = "lastExecuted";
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colLastExecuted.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colLastExecuted.DefaultCellStyle = dataGridViewCellStyle3;
             this.colLastExecuted.HeaderText = "Last Executed";
             this.colLastExecuted.MinimumWidth = 50;
             this.colLastExecuted.Name = "colLastExecuted";
@@ -331,8 +331,8 @@ namespace JSONAPI.Options
             // 
             this.colStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colStatus.DataPropertyName = "testStatus";
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.White;
-            this.colStatus.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            this.colStatus.DefaultCellStyle = dataGridViewCellStyle4;
             this.colStatus.HeaderText = "Status";
             this.colStatus.MinimumWidth = 50;
             this.colStatus.Name = "colStatus";
@@ -341,10 +341,10 @@ namespace JSONAPI.Options
             // colTestList
             // 
             this.colTestList.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.CornflowerBlue;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colTestList.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.CornflowerBlue;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colTestList.DefaultCellStyle = dataGridViewCellStyle5;
             this.colTestList.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.colTestList.HeaderText = "Tests..";
             this.colTestList.MinimumWidth = 70;
@@ -357,10 +357,10 @@ namespace JSONAPI.Options
             // 
             // colHistory
             // 
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle19.BackColor = System.Drawing.Color.CornflowerBlue;
-            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.colHistory.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.CornflowerBlue;
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.colHistory.DefaultCellStyle = dataGridViewCellStyle6;
             this.colHistory.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.colHistory.HeaderText = "History..";
             this.colHistory.MinimumWidth = 70;
@@ -846,6 +846,7 @@ namespace JSONAPI.Options
             this.chkUseVariables.TabIndex = 11;
             this.chkUseVariables.Text = "Use Option Variables";
             this.chkUseVariables.UseVisualStyleBackColor = true;
+            this.chkUseVariables.CheckedChanged += new System.EventHandler(this.UseVariables_Selected);
             // 
             // splitContainer3
             // 
@@ -1076,9 +1077,9 @@ namespace JSONAPI.Options
             // 
             this.colVariableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colVariableName.DataPropertyName = "variableName";
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colVariableName.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colVariableName.DefaultCellStyle = dataGridViewCellStyle8;
             this.colVariableName.HeaderText = "Variable Name";
             this.colVariableName.MinimumWidth = 6;
             this.colVariableName.Name = "colVariableName";
@@ -1087,9 +1088,9 @@ namespace JSONAPI.Options
             // 
             this.colSearchForElement.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colSearchForElement.DataPropertyName = "searchForElement";
-            dataGridViewCellStyle21.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colSearchForElement.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colSearchForElement.DefaultCellStyle = dataGridViewCellStyle9;
             this.colSearchForElement.HeaderText = "Search For Element";
             this.colSearchForElement.MinimumWidth = 6;
             this.colSearchForElement.Name = "colSearchForElement";
@@ -1098,9 +1099,9 @@ namespace JSONAPI.Options
             // 
             this.colSavedValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colSavedValue.DataPropertyName = "savedValue";
-            dataGridViewCellStyle22.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colSavedValue.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colSavedValue.DefaultCellStyle = dataGridViewCellStyle10;
             this.colSavedValue.HeaderText = "Saved Value";
             this.colSavedValue.MinimumWidth = 6;
             this.colSavedValue.Name = "colSavedValue";
@@ -1109,9 +1110,9 @@ namespace JSONAPI.Options
             // 
             this.colReplaceWhere.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colReplaceWhere.DataPropertyName = "replaceWhere";
-            dataGridViewCellStyle23.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colReplaceWhere.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colReplaceWhere.DefaultCellStyle = dataGridViewCellStyle11;
             this.colReplaceWhere.HeaderText = "Replace Where";
             this.colReplaceWhere.MinimumWidth = 6;
             this.colReplaceWhere.Name = "colReplaceWhere";
@@ -1120,9 +1121,9 @@ namespace JSONAPI.Options
             // 
             this.colPartialSave.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colPartialSave.DataPropertyName = "partialSave";
-            dataGridViewCellStyle24.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colPartialSave.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colPartialSave.DefaultCellStyle = dataGridViewCellStyle12;
             this.colPartialSave.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
             this.colPartialSave.HeaderText = "Save Partial";
             this.colPartialSave.Items.AddRange(new object[] {
@@ -1138,9 +1139,9 @@ namespace JSONAPI.Options
             // 
             this.colNumChars.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colNumChars.DataPropertyName = "numChars";
-            dataGridViewCellStyle25.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colNumChars.DefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colNumChars.DefaultCellStyle = dataGridViewCellStyle13;
             this.colNumChars.HeaderText = "Number of Chars";
             this.colNumChars.MinimumWidth = 6;
             this.colNumChars.Name = "colNumChars";

@@ -25,8 +25,7 @@
 
     public static class Variables
     {
-        private static string connectionString = "mongodb+srv://admin:admin@jsonapi.f7zgt.mongodb.net/myFirstDatabase?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000";
-
+        private static string connectionString = System.Environment.GetEnvironmentVariable("mongoDBConnectionString", EnvironmentVariableTarget.User);
         public class VariableList
         {
             public string VariableName { get; set; }
@@ -53,7 +52,7 @@
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
-            var docSearchForElement = database.GetCollection<BsonDocument>("colVariableName");
+            var docSearchForElement = database.GetCollection<BsonDocument>("colVariables");
             var doc = new BsonDocument
             {
                 {"VariableName", variableName},
@@ -73,7 +72,7 @@
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
-            var docSearchForElement = database.GetCollection<BsonDocument>("colVariableName");
+            var docSearchForElement = database.GetCollection<BsonDocument>("colVariables");
 
             try
             {
@@ -91,7 +90,7 @@
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
-            var docSearchForElement = database.GetCollection<BsonDocument>("colVariableName");
+            var docSearchForElement = database.GetCollection<BsonDocument>("colVariables");
 
             try
             {
@@ -143,7 +142,7 @@
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
-            var docSearchForElement = database.GetCollection<BsonDocument>("colVariableName");
+            var docSearchForElement = database.GetCollection<BsonDocument>("colVariables");
 
             try
             {
@@ -164,7 +163,7 @@
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
-            var testListCollection = database.GetCollection<VariableList>("colVariableName");
+            var testListCollection = database.GetCollection<VariableList>("colVariables");
 
             var variableFilter = Builders<VariableList>.Filter.Eq(u => u.VariableName, variableName);
             // projection stage
@@ -190,7 +189,7 @@
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
-            var docSearchForElement = database.GetCollection<BsonDocument>("colVariableName");
+            var docSearchForElement = database.GetCollection<BsonDocument>("colVariables");
                 try
                 {
                     var filter = Builders<BsonDocument>.Filter.Eq("UserName", Users.currentUser);
@@ -217,7 +216,7 @@
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
-            var testListCollection = database.GetCollection<VariableList>("colVariableName");
+            var testListCollection = database.GetCollection<VariableList>("colVariables");
             var variableFilter = Builders<VariableList>.Filter.Eq(u => u.VariableName, variableName) & Builders<VariableList>.Filter.Eq("UserName", Users.currentUser);
             // projection stage
             var simpleProjection = Builders<VariableList>.Projection

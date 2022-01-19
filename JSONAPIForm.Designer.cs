@@ -50,6 +50,8 @@ namespace JSONAPI
             this.colType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colResponseHeaderAttrKey = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colResponseHeaderAttrValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbResponseHdr = new System.Windows.Forms.TabPage();
             this.txtHttpResponseHeader = new System.Windows.Forms.RichTextBox();
             this.tbResponseDet = new System.Windows.Forms.TabPage();
@@ -74,28 +76,27 @@ namespace JSONAPI
             this.txtHttpInput = new System.Windows.Forms.RichTextBox();
             this.btnSaveDetail = new JSONAPI.Controls.JSONAPIButton();
             this.btnOptions = new JSONAPI.Controls.JSONAPIButton();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxMenuAddGUITest = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tbResponse.SuspendLayout();
             this.tbAttributes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgHttpHeader)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.tbResponseHdr.SuspendLayout();
             this.tbResponseDet.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.ctxOptions.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 6;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.08511F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.08511F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 21.32931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.68882F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.848943F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 201F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.06485F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.06485F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.35836F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.75312F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.37656F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.38225F));
             this.tableLayoutPanel1.Controls.Add(this.btnAddExpectedResult, 5, 4);
             this.tableLayoutPanel1.Controls.Add(this.btnHttpHeader, 5, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnCopySelected, 4, 4);
@@ -120,7 +121,7 @@ namespace JSONAPI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(2054, 781);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1280, 768);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
             // btnAddExpectedResult
@@ -129,10 +130,10 @@ namespace JSONAPI
             this.btnAddExpectedResult.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnAddExpectedResult.Enabled = false;
             this.btnAddExpectedResult.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAddExpectedResult.Location = new System.Drawing.Point(1852, 742);
+            this.btnAddExpectedResult.Location = new System.Drawing.Point(1070, 730);
             this.btnAddExpectedResult.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddExpectedResult.Name = "btnAddExpectedResult";
-            this.btnAddExpectedResult.Size = new System.Drawing.Size(200, 37);
+            this.btnAddExpectedResult.Size = new System.Drawing.Size(208, 36);
             this.btnAddExpectedResult.TabIndex = 6;
             this.btnAddExpectedResult.Text = "Add as Expected Result";
             this.btnAddExpectedResult.UseVisualStyleBackColor = false;
@@ -142,10 +143,10 @@ namespace JSONAPI
             this.btnHttpHeader.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnHttpHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnHttpHeader.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnHttpHeader.Location = new System.Drawing.Point(1852, 42);
+            this.btnHttpHeader.Location = new System.Drawing.Point(1070, 42);
             this.btnHttpHeader.Margin = new System.Windows.Forms.Padding(2);
             this.btnHttpHeader.Name = "btnHttpHeader";
-            this.btnHttpHeader.Size = new System.Drawing.Size(200, 45);
+            this.btnHttpHeader.Size = new System.Drawing.Size(208, 45);
             this.btnHttpHeader.TabIndex = 2;
             this.btnHttpHeader.Text = "HTTP Header..";
             this.btnHttpHeader.UseVisualStyleBackColor = false;
@@ -154,10 +155,10 @@ namespace JSONAPI
             // 
             this.btnCopySelected.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnCopySelected.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnCopySelected.Location = new System.Drawing.Point(1670, 742);
+            this.btnCopySelected.Location = new System.Drawing.Point(925, 730);
             this.btnCopySelected.Margin = new System.Windows.Forms.Padding(2);
             this.btnCopySelected.Name = "btnCopySelected";
-            this.btnCopySelected.Size = new System.Drawing.Size(169, 37);
+            this.btnCopySelected.Size = new System.Drawing.Size(141, 36);
             this.btnCopySelected.TabIndex = 1;
             this.btnCopySelected.Text = "Copy Selected";
             this.btnCopySelected.UseVisualStyleBackColor = false;
@@ -167,10 +168,10 @@ namespace JSONAPI
             this.httpResponseTime.AutoSize = true;
             this.httpResponseTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.httpResponseTime.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.httpResponseTime.Location = new System.Drawing.Point(1852, 367);
+            this.httpResponseTime.Location = new System.Drawing.Point(1070, 361);
             this.httpResponseTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.httpResponseTime.Name = "httpResponseTime";
-            this.httpResponseTime.Size = new System.Drawing.Size(200, 46);
+            this.httpResponseTime.Size = new System.Drawing.Size(208, 46);
             this.httpResponseTime.TabIndex = 5;
             // 
             // tbResponse
@@ -182,11 +183,11 @@ namespace JSONAPI
             this.tbResponse.Cursor = System.Windows.Forms.Cursors.Default;
             this.tbResponse.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbResponse.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tbResponse.Location = new System.Drawing.Point(670, 415);
+            this.tbResponse.Location = new System.Drawing.Point(438, 409);
             this.tbResponse.Margin = new System.Windows.Forms.Padding(2);
             this.tbResponse.Name = "tbResponse";
             this.tbResponse.SelectedIndex = 0;
-            this.tbResponse.Size = new System.Drawing.Size(1382, 323);
+            this.tbResponse.Size = new System.Drawing.Size(840, 317);
             this.tbResponse.TabIndex = 1;
             // 
             // tbAttributes
@@ -196,7 +197,7 @@ namespace JSONAPI
             this.tbAttributes.Margin = new System.Windows.Forms.Padding(2);
             this.tbAttributes.Name = "tbAttributes";
             this.tbAttributes.Padding = new System.Windows.Forms.Padding(2);
-            this.tbAttributes.Size = new System.Drawing.Size(1374, 294);
+            this.tbAttributes.Size = new System.Drawing.Size(832, 288);
             this.tbAttributes.TabIndex = 0;
             this.tbAttributes.Text = "Attributes";
             this.tbAttributes.UseVisualStyleBackColor = true;
@@ -228,7 +229,7 @@ namespace JSONAPI
             this.dgHttpHeader.RowHeadersVisible = false;
             this.dgHttpHeader.RowHeadersWidth = 51;
             this.dgHttpHeader.RowTemplate.Height = 25;
-            this.dgHttpHeader.Size = new System.Drawing.Size(1370, 290);
+            this.dgHttpHeader.Size = new System.Drawing.Size(828, 284);
             this.dgHttpHeader.TabIndex = 1;
             // 
             // colSelect
@@ -282,6 +283,19 @@ namespace JSONAPI
             this.colResponseHeaderAttrValue.Name = "colResponseHeaderAttrValue";
             this.colResponseHeaderAttrValue.ReadOnly = true;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(109, 26);
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
             // tbResponseHdr
             // 
             this.tbResponseHdr.Controls.Add(this.txtHttpResponseHeader);
@@ -289,7 +303,7 @@ namespace JSONAPI
             this.tbResponseHdr.Margin = new System.Windows.Forms.Padding(2);
             this.tbResponseHdr.Name = "tbResponseHdr";
             this.tbResponseHdr.Padding = new System.Windows.Forms.Padding(2);
-            this.tbResponseHdr.Size = new System.Drawing.Size(1372, 293);
+            this.tbResponseHdr.Size = new System.Drawing.Size(832, 288);
             this.tbResponseHdr.TabIndex = 1;
             this.tbResponseHdr.Text = "Response Header";
             this.tbResponseHdr.UseVisualStyleBackColor = true;
@@ -300,7 +314,7 @@ namespace JSONAPI
             this.txtHttpResponseHeader.Location = new System.Drawing.Point(2, 2);
             this.txtHttpResponseHeader.Margin = new System.Windows.Forms.Padding(2);
             this.txtHttpResponseHeader.Name = "txtHttpResponseHeader";
-            this.txtHttpResponseHeader.Size = new System.Drawing.Size(1368, 289);
+            this.txtHttpResponseHeader.Size = new System.Drawing.Size(828, 284);
             this.txtHttpResponseHeader.TabIndex = 0;
             this.txtHttpResponseHeader.Text = "";
             // 
@@ -311,7 +325,7 @@ namespace JSONAPI
             this.tbResponseDet.Margin = new System.Windows.Forms.Padding(2);
             this.tbResponseDet.Name = "tbResponseDet";
             this.tbResponseDet.Padding = new System.Windows.Forms.Padding(2);
-            this.tbResponseDet.Size = new System.Drawing.Size(1372, 293);
+            this.tbResponseDet.Size = new System.Drawing.Size(832, 288);
             this.tbResponseDet.TabIndex = 2;
             this.tbResponseDet.Text = "Response Detail";
             this.tbResponseDet.UseVisualStyleBackColor = true;
@@ -322,7 +336,7 @@ namespace JSONAPI
             this.txtHttpResponseBody.Location = new System.Drawing.Point(2, 2);
             this.txtHttpResponseBody.Margin = new System.Windows.Forms.Padding(2);
             this.txtHttpResponseBody.Name = "txtHttpResponseBody";
-            this.txtHttpResponseBody.Size = new System.Drawing.Size(1368, 289);
+            this.txtHttpResponseBody.Size = new System.Drawing.Size(828, 284);
             this.txtHttpResponseBody.TabIndex = 0;
             this.txtHttpResponseBody.Text = "";
             // 
@@ -331,10 +345,10 @@ namespace JSONAPI
             this.btnInputFields.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnInputFields.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnInputFields.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnInputFields.Location = new System.Drawing.Point(1670, 2);
+            this.btnInputFields.Location = new System.Drawing.Point(925, 2);
             this.btnInputFields.Margin = new System.Windows.Forms.Padding(2);
             this.btnInputFields.Name = "btnInputFields";
-            this.btnInputFields.Size = new System.Drawing.Size(178, 36);
+            this.btnInputFields.Size = new System.Drawing.Size(141, 36);
             this.btnInputFields.TabIndex = 4;
             this.btnInputFields.Text = "Input Fields..";
             this.btnInputFields.UseVisualStyleBackColor = false;
@@ -345,10 +359,10 @@ namespace JSONAPI
             this.httpResponseCode.Cursor = System.Windows.Forms.Cursors.Default;
             this.httpResponseCode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.httpResponseCode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.httpResponseCode.Location = new System.Drawing.Point(1065, 367);
+            this.httpResponseCode.Location = new System.Drawing.Point(634, 361);
             this.httpResponseCode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.httpResponseCode.Name = "httpResponseCode";
-            this.httpResponseCode.Size = new System.Drawing.Size(601, 46);
+            this.httpResponseCode.Size = new System.Drawing.Size(287, 46);
             this.httpResponseCode.TabIndex = 3;
             // 
             // label2
@@ -357,10 +371,10 @@ namespace JSONAPI
             this.label2.Cursor = System.Windows.Forms.Cursors.Default;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("Yu Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(1670, 367);
+            this.label2.Location = new System.Drawing.Point(925, 361);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(178, 46);
+            this.label2.Size = new System.Drawing.Size(141, 46);
             this.label2.TabIndex = 4;
             this.label2.Text = "Response Time:";
             // 
@@ -369,10 +383,10 @@ namespace JSONAPI
             this.btnSend.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnSend.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSend.Font = new System.Drawing.Font("Yu Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSend.Location = new System.Drawing.Point(1852, 2);
+            this.btnSend.Location = new System.Drawing.Point(1070, 2);
             this.btnSend.Margin = new System.Windows.Forms.Padding(2);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(200, 36);
+            this.btnSend.Size = new System.Drawing.Size(208, 36);
             this.btnSend.TabIndex = 0;
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = false;
@@ -383,10 +397,10 @@ namespace JSONAPI
             this.label1.Cursor = System.Windows.Forms.Cursors.Default;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("Yu Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(670, 367);
+            this.label1.Location = new System.Drawing.Point(438, 361);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(391, 46);
+            this.label1.Size = new System.Drawing.Size(192, 46);
             this.label1.TabIndex = 2;
             this.label1.Text = "Response Code:";
             // 
@@ -407,6 +421,7 @@ namespace JSONAPI
             this.userProfileToolStripMenuItem.Name = "userProfileToolStripMenuItem";
             this.userProfileToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.userProfileToolStripMenuItem.Text = "User Profile";
+            this.userProfileToolStripMenuItem.Click += new System.EventHandler(this.userProfileToolStripMenuItem_Click);
             // 
             // tvDirectory
             // 
@@ -420,7 +435,7 @@ namespace JSONAPI
             this.tvDirectory.Name = "tvDirectory";
             this.tableLayoutPanel1.SetRowSpan(this.tvDirectory, 4);
             this.tvDirectory.SelectedImageKey = "folder";
-            this.tvDirectory.Size = new System.Drawing.Size(664, 737);
+            this.tvDirectory.Size = new System.Drawing.Size(432, 724);
             this.tvDirectory.TabIndex = 0;
             // 
             // ctxOptions
@@ -432,7 +447,7 @@ namespace JSONAPI
             this.ctxMenuDelete,
             this.ctxRefresh});
             this.ctxOptions.Name = "ctxOptions";
-            this.ctxOptions.Size = new System.Drawing.Size(158, 92);
+            this.ctxOptions.Size = new System.Drawing.Size(181, 114);
             // 
             // ctxMenuNew
             // 
@@ -440,61 +455,62 @@ namespace JSONAPI
             this.ctxMenuAddFolder,
             this.ctxMenuAddJSONFile,
             this.ctxMenuAddXMLFile,
-            this.ctxMenuAddJSFile});
+            this.ctxMenuAddJSFile,
+            this.ctxMenuAddGUITest});
             this.ctxMenuNew.Name = "ctxMenuNew";
-            this.ctxMenuNew.Size = new System.Drawing.Size(157, 22);
+            this.ctxMenuNew.Size = new System.Drawing.Size(180, 22);
             this.ctxMenuNew.Text = "New";
             // 
             // ctxMenuAddFolder
             // 
             this.ctxMenuAddFolder.Name = "ctxMenuAddFolder";
-            this.ctxMenuAddFolder.Size = new System.Drawing.Size(123, 22);
+            this.ctxMenuAddFolder.Size = new System.Drawing.Size(180, 22);
             this.ctxMenuAddFolder.Text = "Folder";
             // 
             // ctxMenuAddJSONFile
             // 
             this.ctxMenuAddJSONFile.Name = "ctxMenuAddJSONFile";
-            this.ctxMenuAddJSONFile.Size = new System.Drawing.Size(123, 22);
+            this.ctxMenuAddJSONFile.Size = new System.Drawing.Size(180, 22);
             this.ctxMenuAddJSONFile.Text = "JSON File";
             // 
             // ctxMenuAddXMLFile
             // 
             this.ctxMenuAddXMLFile.Name = "ctxMenuAddXMLFile";
-            this.ctxMenuAddXMLFile.Size = new System.Drawing.Size(123, 22);
+            this.ctxMenuAddXMLFile.Size = new System.Drawing.Size(180, 22);
             this.ctxMenuAddXMLFile.Text = "XML File";
             // 
             // ctxMenuAddJSFile
             // 
             this.ctxMenuAddJSFile.Name = "ctxMenuAddJSFile";
-            this.ctxMenuAddJSFile.Size = new System.Drawing.Size(123, 22);
+            this.ctxMenuAddJSFile.Size = new System.Drawing.Size(180, 22);
             this.ctxMenuAddJSFile.Text = "JS File";
             // 
             // ctxChangeFolder
             // 
             this.ctxChangeFolder.Name = "ctxChangeFolder";
-            this.ctxChangeFolder.Size = new System.Drawing.Size(157, 22);
+            this.ctxChangeFolder.Size = new System.Drawing.Size(180, 22);
             this.ctxChangeFolder.Text = "Change Folder..";
             // 
             // ctxMenuDelete
             // 
             this.ctxMenuDelete.Name = "ctxMenuDelete";
-            this.ctxMenuDelete.Size = new System.Drawing.Size(157, 22);
+            this.ctxMenuDelete.Size = new System.Drawing.Size(180, 22);
             this.ctxMenuDelete.Text = "Delete";
             // 
             // ctxRefresh
             // 
             this.ctxRefresh.Name = "ctxRefresh";
-            this.ctxRefresh.Size = new System.Drawing.Size(157, 22);
+            this.ctxRefresh.Size = new System.Drawing.Size(180, 22);
             this.ctxRefresh.Text = "Refresh";
             // 
             // txtHttpInput
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.txtHttpInput, 3);
             this.txtHttpInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtHttpInput.Location = new System.Drawing.Point(670, 42);
+            this.txtHttpInput.Location = new System.Drawing.Point(438, 42);
             this.txtHttpInput.Margin = new System.Windows.Forms.Padding(2);
             this.txtHttpInput.Name = "txtHttpInput";
-            this.txtHttpInput.Size = new System.Drawing.Size(1178, 323);
+            this.txtHttpInput.Size = new System.Drawing.Size(628, 317);
             this.txtHttpInput.TabIndex = 0;
             this.txtHttpInput.Text = "";
             // 
@@ -503,7 +519,7 @@ namespace JSONAPI
             this.btnSaveDetail.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnSaveDetail.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnSaveDetail.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSaveDetail.Location = new System.Drawing.Point(1517, 2);
+            this.btnSaveDetail.Location = new System.Drawing.Point(772, 2);
             this.btnSaveDetail.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveDetail.Name = "btnSaveDetail";
             this.btnSaveDetail.Size = new System.Drawing.Size(149, 36);
@@ -516,7 +532,7 @@ namespace JSONAPI
             this.btnOptions.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnOptions.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnOptions.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnOptions.Location = new System.Drawing.Point(478, 2);
+            this.btnOptions.Location = new System.Drawing.Point(246, 2);
             this.btnOptions.Margin = new System.Windows.Forms.Padding(2);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(188, 36);
@@ -524,24 +540,18 @@ namespace JSONAPI
             this.btnOptions.Text = "Options..";
             this.btnOptions.UseVisualStyleBackColor = false;
             // 
-            // contextMenuStrip1
+            // ctxMenuAddGUITest
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(109, 26);
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
-            this.exportToolStripMenuItem.Text = "Export";
+            this.ctxMenuAddGUITest.Name = "ctxMenuAddGUITest";
+            this.ctxMenuAddGUITest.Size = new System.Drawing.Size(180, 22);
+            this.ctxMenuAddGUITest.Text = "GUI Test";
+            this.ctxMenuAddGUITest.Click += new System.EventHandler(this.ctxMenuAddGUITest_Click);
             // 
             // JSONAPIForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2062, 786);
+            this.ClientSize = new System.Drawing.Size(1284, 761);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "JSONAPIForm";
@@ -551,12 +561,12 @@ namespace JSONAPI
             this.tbResponse.ResumeLayout(false);
             this.tbAttributes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgHttpHeader)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tbResponseHdr.ResumeLayout(false);
             this.tbResponseDet.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ctxOptions.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -601,5 +611,6 @@ namespace JSONAPI
         private ToolStripMenuItem ctxRefresh;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem exportToolStripMenuItem;
+        private ToolStripMenuItem ctxMenuAddGUITest;
     }
 }

@@ -27,7 +27,7 @@
 
     public static class Users
     {
-        private static string connectionString = "mongodb+srv://admin:admin@jsonapi.f7zgt.mongodb.net/myFirstDatabase?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000";
+        private static string connectionString = System.Environment.GetEnvironmentVariable("mongoDBConnectionString", EnvironmentVariableTarget.User);
         public static string currentUser = System.Environment.GetEnvironmentVariable("jsonapiuserName", EnvironmentVariableTarget.User);
         public class User
         {

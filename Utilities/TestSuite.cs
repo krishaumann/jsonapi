@@ -26,7 +26,7 @@
 
     public static class TestSuite
     {
-        private static string connectionString = "mongodb+srv://admin:admin@jsonapi.f7zgt.mongodb.net/myFirstDatabase?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000";
+        private static string connectionString = System.Environment.GetEnvironmentVariable("mongoDBConnectionString", EnvironmentVariableTarget.User);
         public class TestRunList
         {
             public string TestSuiteName { get; set; }
@@ -83,6 +83,11 @@
             public string UserName { get; set; }
             public string Input { get; set; }
             public string HeaderInput { get; set; }
+
+            public string URL { get; set; }
+            public string XPath { get; set; }
+            public string Operation { get; set; }
+
             public List<FieldExpectedResult> FieldExpectedResultList { get; set; }
 
             public Test()
@@ -111,6 +116,8 @@
                 UserName = Users.currentUser;
                 FieldExpectedResultList = new List<FieldExpectedResult>();
             }
+
+
 
             public Test(string testName, List<FieldExpectedResult> expectedResultList)
             {
@@ -236,6 +243,27 @@
             catch (Exception e)
             {
                 Utilities.WriteLogItem("AddInput(string testName, string input) failed; " + e.ToString(), TraceEventType.Error);
+            }
+        }
+
+        public static void AddUITestAttributes(string testName, string url, string xpath, string operation)
+        {
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testCollection = database.GetCollection<Test>("colTests");
+
+            // projection stage
+            var testNameFilter = Builders<Test>.Filter.Eq(u => u.TestName, testName) & Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser);
+
+            try
+            {
+                var arrayUpdate = Builders<Test>.Update.Set("URL", url).Set("XPath", xpath).Set("Operation", operation);
+                testCollection.UpdateOne(testNameFilter, arrayUpdate);
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("AddUITestAttributes(string testName, string input, string url, string xpath, string operation) failed; " + e.ToString(), TraceEventType.Error);
             }
         }
 
@@ -373,6 +401,38 @@
             catch (Exception e)
             {
                 Utilities.WriteLogItem("GetTests failed; " + e.ToString(), TraceEventType.Error);
+            }
+            return returnList;
+        }
+
+        public static List<Test> GetGUITests()
+        {
+            List<Test> returnList = new List<Test>();
+            Test arrayOfStrings;
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testListCollection = database.GetCollection<Test>("colTests");
+            var userNameFilter = Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser);
+
+            // projection stage
+            var simpleProjection = Builders<Test>.Projection
+                //.Include(t => t.TestSuiteList)
+                .Exclude("_id");
+            try
+            {
+                var docs = testListCollection.Find(userNameFilter).Project(simpleProjection).ToList();
+                //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
+                docs.ForEach(doc =>
+                {
+                    string tempString = doc.AsBsonValue.ToJson();
+                    arrayOfStrings = JsonConvert.DeserializeObject<Test>(tempString);
+                    if (arrayOfStrings.XPath.Length > 0) returnList.Add(arrayOfStrings);
+                });
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("GetGUITests failed; " + e.ToString(), TraceEventType.Error);
             }
             return returnList;
         }

@@ -1085,5 +1085,12 @@ namespace JSONAPI
             }
         }
 
+        private void ctxMenuAddGUITest_Click(object sender, EventArgs e)
+        {
+            Configure.frmScriptEditor newScriptForm = new Configure.frmScriptEditor();
+            newScriptForm.TopMost = true;
+            newScriptForm.WindowState = FormWindowState.Maximized;
+            newScriptForm.Show();
+        }
     }
 }

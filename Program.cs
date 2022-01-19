@@ -18,6 +18,8 @@ namespace JSONAPI
         {
             try
             {
+                string connectionString = "mongodb+srv://admin:admin@clustermain.xavij.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+                System.Environment.SetEnvironmentVariable("mongoDBConnectionString", connectionString, EnvironmentVariableTarget.User);
                 string[] args = Environment.GetCommandLineArgs();
                 if (args.Length > 1)
                 {
