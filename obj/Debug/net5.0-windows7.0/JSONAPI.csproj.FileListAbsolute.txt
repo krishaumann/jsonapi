@@ -105,3 +105,5 @@ C:\Users\jkhau\source\repos\jsonapi\obj\Debug\net5.0-windows7.0\ref\JSONAPI.dll
 C:\Users\jkhau\source\repos\jsonapi\obj\Debug\net5.0-windows7.0\JSONAPI.pdb
 C:\Users\jkhau\source\repos\jsonapi\obj\Debug\net5.0-windows7.0\JSONAPI.genruntimeconfig.cache
 C:\Users\jkhau\source\repos\jsonapi\obj\Debug\net5.0-windows7.0\JSONAPI.csproj.AssemblyReference.cache
+C:\Users\jkhau\source\repos\jsonapi\bin\Debug\net5.0-windows7.0\nunit.framework.dll
+C:\Users\jkhau\source\repos\jsonapi\bin\Debug\net5.0-windows7.0\WebDriver.dll

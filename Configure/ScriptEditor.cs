@@ -54,7 +54,7 @@ namespace JSONAPI.Configure
             AddEventHandlers();
             dgGUISteps.Rows[0].Selected = true;
 
-            txtStepName.Text = dgGUISteps.Rows[0].Cells["colTestName"].Value.ToString();
+            txtStepName.Text = testName;
             numSequence.Value = (int)dgGUISteps.Rows[0].Cells["colSequence"].Value;
             txtElementName.Text = dgGUISteps.Rows[0].Cells["colTestName"].Value.ToString();
             cmbURL.Text = dgGUISteps.Rows[0].Cells["colURL"].Value.ToString();
@@ -220,7 +220,6 @@ namespace JSONAPI.Configure
             }
             btnAddStep.Text = "Add";
 
-            txtStepName.Text = "";
             cmbURL.Text = "";
             cmbObjectMapItem.Text = "";
             cmbOperationDesc.Text = "";

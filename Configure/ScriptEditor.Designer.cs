@@ -109,8 +109,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.numSequence);
             this.groupBox1.Controls.Add(this.txtStepName);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.tabControl1);
@@ -126,7 +124,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 30);
+            this.label1.Location = new System.Drawing.Point(9, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 15);
             this.label1.TabIndex = 22;
@@ -135,7 +133,7 @@
             // numSequence
             // 
             this.numSequence.Cursor = System.Windows.Forms.Cursors.Default;
-            this.numSequence.Location = new System.Drawing.Point(83, 30);
+            this.numSequence.Location = new System.Drawing.Point(106, 13);
             this.numSequence.Name = "numSequence";
             this.numSequence.Size = new System.Drawing.Size(39, 23);
             this.numSequence.TabIndex = 21;
@@ -143,19 +141,19 @@
             // txtStepName
             // 
             this.txtStepName.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtStepName.Location = new System.Drawing.Point(231, 30);
+            this.txtStepName.Location = new System.Drawing.Point(93, 30);
             this.txtStepName.Name = "txtStepName";
-            this.txtStepName.Size = new System.Drawing.Size(521, 23);
+            this.txtStepName.Size = new System.Drawing.Size(659, 23);
             this.txtStepName.TabIndex = 20;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(146, 30);
+            this.label12.Location = new System.Drawing.Point(12, 30);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(65, 15);
+            this.label12.Size = new System.Drawing.Size(62, 15);
             this.label12.TabIndex = 19;
-            this.label12.Text = "Step Name";
+            this.label12.Text = "Test Name";
             // 
             // tabControl1
             // 
@@ -169,6 +167,8 @@
             // 
             // tbStepDesc
             // 
+            this.tbStepDesc.Controls.Add(this.numSequence);
+            this.tbStepDesc.Controls.Add(this.label1);
             this.tbStepDesc.Controls.Add(this.cmbInputRV);
             this.tbStepDesc.Controls.Add(this.cmbURL);
             this.tbStepDesc.Controls.Add(this.label7);
@@ -208,7 +208,7 @@
             // 
             this.cmbURL.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.cmbURL.FormattingEnabled = true;
-            this.cmbURL.Location = new System.Drawing.Point(107, 16);
+            this.cmbURL.Location = new System.Drawing.Point(106, 50);
             this.cmbURL.Name = "cmbURL";
             this.cmbURL.Size = new System.Drawing.Size(636, 23);
             this.cmbURL.TabIndex = 18;
@@ -217,7 +217,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 16);
+            this.label7.Location = new System.Drawing.Point(7, 50);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(28, 15);
             this.label7.TabIndex = 17;
@@ -228,7 +228,7 @@
             this.btnOpenObjectMap.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnOpenObjectMap.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnOpenObjectMap.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnOpenObjectMap.Location = new System.Drawing.Point(610, 89);
+            this.btnOpenObjectMap.Location = new System.Drawing.Point(611, 127);
             this.btnOpenObjectMap.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnOpenObjectMap.Name = "btnOpenObjectMap";
             this.btnOpenObjectMap.Size = new System.Drawing.Size(132, 32);
@@ -241,7 +241,7 @@
             // 
             this.cmbObjectMapItem.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmbObjectMapItem.FormattingEnabled = true;
-            this.cmbObjectMapItem.Location = new System.Drawing.Point(107, 60);
+            this.cmbObjectMapItem.Location = new System.Drawing.Point(106, 89);
             this.cmbObjectMapItem.Name = "cmbObjectMapItem";
             this.cmbObjectMapItem.Size = new System.Drawing.Size(635, 23);
             this.cmbObjectMapItem.TabIndex = 15;
@@ -250,7 +250,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 60);
+            this.label2.Location = new System.Drawing.Point(7, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 15);
             this.label2.TabIndex = 2;

@@ -129,6 +129,19 @@
                 Sequence = 0;
             }
 
+            public Test(string testName, string headerInput, string input, int sequence)
+            {
+                TestName = testName;
+                Input = input;
+                HeaderInput = headerInput;
+                UserName = Users.currentUser;
+                FieldExpectedResultList = new List<FieldExpectedResult>();
+                URL = "";
+                XPath = "";
+                Operation = "";
+                Sequence = sequence;
+            }
+
 
 
             public Test(string testName, List<FieldExpectedResult> expectedResultList)
@@ -213,6 +226,35 @@
                 if (!IsValidTestName(testName))
                 {
                     Test test = new Test(testName, headerInput, input);
+                    docNewTest.InsertOne(test);
+                }
+                else
+                {
+                    if (headerInput.Length > 0) AddHeaderInput(testName, headerInput);
+                    if (input.Length > 0) AddInput(testName, input);
+                }
+            }
+            catch (Exception e)
+            {
+                Logs.NewLogItem("NewTestWithDetai error:" + e.Message, TraceEventType.Error);
+                returnValue = false;
+            }
+            return returnValue;
+        }
+
+        public static bool NewTestWithDetail(string testName, string headerInput, string input, int sequence)
+        {
+            bool returnValue = true;
+            try
+            {
+                var settings = MongoClientSettings.FromConnectionString(connectionString);
+                var client = new MongoClient(settings);
+                var database = client.GetDatabase("JSONAPI");
+                var docNewTest = database.GetCollection<Test>("colTests");
+
+                if (!IsValidTestName(testName, sequence))
+                {
+                    Test test = new Test(testName, headerInput, input, sequence);
                     docNewTest.InsertOne(test);
                 }
                 else
@@ -411,7 +453,8 @@
                 {
                     string tempString = doc.AsBsonValue.ToJson();
                     arrayOfStrings = JsonConvert.DeserializeObject<Test>(tempString);
-                    returnList.Add(arrayOfStrings);
+                    int index = returnList.FindIndex(item => item.TestName == arrayOfStrings.TestName);
+                    if (index == -1) returnList.Add(arrayOfStrings);
                 });
             }
             catch (Exception e)
@@ -452,6 +495,13 @@
             }
             return returnList;
         }
+        public class SortBySequence : IComparer<Test>
+        {
+            public int Compare(Test x, Test y)
+            {
+                return x.Sequence.CompareTo(y.Sequence);
+            }
+        }
 
         public static List<Test> GetGUITests(string testName)
         {
@@ -477,6 +527,8 @@
                     arrayOfStrings = JsonConvert.DeserializeObject<Test>(tempString);
                     if (arrayOfStrings.XPath.Length > 0) returnList.Add(arrayOfStrings);
                 });
+                SortBySequence sortBySequence = new SortBySequence();
+                returnList.Sort(sortBySequence);
             }
             catch (Exception e)
             {
@@ -782,7 +834,29 @@
             }
             catch (Exception e)
             {
-                Utilities.WriteLogItem("IsValidTestName() failed; " + e.ToString(), TraceEventType.Error);
+                Utilities.WriteLogItem("IsValidTestName(testName) failed; " + e.ToString(), TraceEventType.Error);
+            }
+            return returnValue;
+        }
+
+        public static bool IsValidTestName(string testName, int sequence)
+        {
+            bool returnValue = false;
+
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var docSearchForElement = database.GetCollection<Test>("colTests");
+
+            try
+            {
+                var filter = Builders<Test>.Filter.Eq(u => u.TestName, testName) & Builders<Test>.Filter.Eq(u => u.Sequence, sequence);
+                var docs = docSearchForElement.Find(filter).CountDocuments();
+                if (docs == 1) returnValue = true;
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("IsValidTestName(testName, sequence) failed; " + e.ToString(), TraceEventType.Error);
             }
             return returnValue;
         }

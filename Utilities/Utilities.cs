@@ -1847,6 +1847,7 @@
                         if (returnValue)
                         {
                             driver.Navigate().GoToUrl(url);
+                            
                             IWebElement element = driver.FindElement(By.XPath(xpath));
                             switch (operation)
                             {
@@ -1859,7 +1860,8 @@
                                 case "Validate":
                                     if (comparitor.Length < 3)
                                     {
-                                        actualValue = element.GetAttribute(attribute);
+                                        if (attribute.ToLower() != "none") actualValue = element.GetAttribute(attribute);
+                                        else actualValue = element.GetAttribute("value");
                                         returnValue = Compare(comparitor, actualValue, expectedValue);
                                     }
                                     else
