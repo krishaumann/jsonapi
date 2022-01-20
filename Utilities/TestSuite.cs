@@ -262,7 +262,7 @@
             }
         }
 
-        public static void AddGUITestAttributes(int sequence, string testName, string url, string xpath, string operation)
+        public static void AddGUITestAttributes(int sequence, string testName, string oldTestName, string url, string xpath, string operation, string inputData)
         {
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
@@ -270,11 +270,11 @@
             var testCollection = database.GetCollection<Test>("colTests");
 
             // projection stage
-            var testNameFilter = Builders<Test>.Filter.Eq(u => u.TestName, testName) & Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser);
+            var testNameFilter = Builders<Test>.Filter.Eq(u => u.TestName, oldTestName) & Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser);
 
             try
             {
-                var arrayUpdate = Builders<Test>.Update.Set("URL", url).Set("XPath", xpath).Set("Operation", operation).Set("Sequence", sequence);
+                var arrayUpdate = Builders<Test>.Update.Set("URL", url).Set("XPath", xpath).Set("Operation", operation).Set("Sequence", sequence).Set("InputData", inputData).Set("TestName", testName);
                 testCollection.UpdateOne(testNameFilter, arrayUpdate);
             }
             catch (Exception e)
@@ -449,6 +449,38 @@
             catch (Exception e)
             {
                 Utilities.WriteLogItem("GetGUITests failed; " + e.ToString(), TraceEventType.Error);
+            }
+            return returnList;
+        }
+
+        public static List<Test> GetGUITests(string testName)
+        {
+            List<Test> returnList = new List<Test>();
+            Test arrayOfStrings;
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testListCollection = database.GetCollection<Test>("colTests");
+            var testFilter = Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser) & Builders<Test>.Filter.Eq(u => u.TestName, testName);
+
+            // projection stage
+            var simpleProjection = Builders<Test>.Projection
+                //.Include(t => t.TestSuiteList)
+                .Exclude("_id");
+            try
+            {
+                var docs = testListCollection.Find(testFilter).Project(simpleProjection).ToList();
+                //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
+                docs.ForEach(doc =>
+                {
+                    string tempString = doc.AsBsonValue.ToJson();
+                    arrayOfStrings = JsonConvert.DeserializeObject<Test>(tempString);
+                    if (arrayOfStrings.XPath.Length > 0) returnList.Add(arrayOfStrings);
+                });
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("GetGUITests(testName) failed; " + e.ToString(), TraceEventType.Error);
             }
             return returnList;
         }

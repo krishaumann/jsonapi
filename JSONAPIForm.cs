@@ -37,6 +37,7 @@ namespace JSONAPI
             myImageList.Images.Add("json", Properties.Resources.JSONIcon);
             myImageList.Images.Add("xml", Properties.Resources.XMLIcon);
             myImageList.Images.Add("js", Properties.Resources.JSIcon);
+            myImageList.Images.Add("guitest", Properties.Resources.guitest);
             tvDirectory.ImageList = myImageList;
             try
             {
@@ -214,6 +215,15 @@ namespace JSONAPI
                     tds.SelectedImageKey = "folder";
                 }
             }
+            List<Utilities.TestSuite.Test> GUITestList = Utilities.TestSuite.GetGUITests();
+            foreach (Utilities.TestSuite.Test test in GUITestList)
+            {
+                TreeNode tds = td.Nodes.Add(test.TestName);
+                tds.Tag = test.URL;
+                tds.StateImageIndex = 1;
+                tds.ImageKey = "guitest";
+                tds.SelectedImageKey = "guitest";
+            }
         }
 
         public void LoadSubDirectories(string dir, TreeNode td)
@@ -311,6 +321,13 @@ namespace JSONAPI
                 btnSend.Enabled = false;
                 btnSaveDetail.Enabled = false;
                 btnInputFields.Enabled = false;
+                if (Utilities.TestSuite.TestExist(tvDirectory.SelectedNode.Text))
+                {
+                    Configure.frmScriptEditor newScriptForm = new Configure.frmScriptEditor(tvDirectory.SelectedNode.Text);
+                    newScriptForm.TopMost = true;
+                    newScriptForm.WindowState = FormWindowState.Maximized;
+                    newScriptForm.Show();
+                }
             }
         }
 

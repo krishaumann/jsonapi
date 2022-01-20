@@ -28,9 +28,11 @@
     <PackageReference Include="MongoDB.Driver" Version="2.13.2" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="NPOI" Version="2.5.5" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
     <PackageReference Include="Scintilla.NET" Version="5.1.5.4" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
     <PackageReference Include="WindowsAPICodePack" Version="1.1.2" />

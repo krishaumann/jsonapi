@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>JSONAPI</id>
+    <version>1.0.0</version>
+    <authors>JSONAPI</authors>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework="net5.0-windows7.0">
+        <dependency id="DataGridViewAutoFilter" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="DocumentFormat.OpenXml" version="2.14.0" exclude="Build,Analyzers" />
+        <dependency id="Grpc.Core" version="2.41.1" exclude="Build,Analyzers" />
+        <dependency id="HtmlAgilityPack" version="1.11.40" exclude="Build,Analyzers" />
+        <dependency id="IdentityModel.OidcClient" version="4.0.0" exclude="Build,Analyzers" />
+        <dependency id="Jint" version="2.11.58" exclude="Build,Analyzers" />
+        <dependency id="Json.Net" version="1.0.33" exclude="Build,Analyzers" />
+        <dependency id="Krypton.Components.Suite" version="4.5.9" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Management.Storage" version="23.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Net.Http.Server" version="1.1.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Office.Interop.Excel" version="15.0.4795.1000" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" version="1.14.0" exclude="Build,Analyzers" />
+        <dependency id="MongoDB.Driver" version="2.13.2" exclude="Build,Analyzers" />
+        <dependency id="NPOI" version="2.5.5" exclude="Build,Analyzers" />
+        <dependency id="Octokit" version="0.50.0" exclude="Build,Analyzers" />
+        <dependency id="OpenXmlPowerTools" version="4.5.3.2" exclude="Build,Analyzers" />
+        <dependency id="Scintilla.NET" version="5.1.5.4" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.10.0" exclude="Build,Analyzers" />
+        <dependency id="System.IdentityModel.Tokens.Jwt" version="6.14.1" exclude="Build,Analyzers" />
+        <dependency id="WindowsAPICodePack" version="1.1.2" exclude="Build,Analyzers" />
+        <dependency id="chilkat-x64" version="9.5.0.89" exclude="Build,Analyzers" />
+        <dependency id="mongocsharpdriver" version="2.13.2" exclude="Build,Analyzers" />
+        <dependency id="morelinq" version="3.3.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net5.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="C:\Users\jkhau\source\repos\jsonapi\bin\Debug\net5.0-windows7.0\JSONAPI.runtimeconfig.json" target="lib\net5.0-windows7.0\JSONAPI.runtimeconfig.json" />
+    <file src="C:\Users\jkhau\source\repos\jsonapi\bin\Debug\net5.0-windows7.0\JSONAPI.dll" target="lib\net5.0-windows7.0\JSONAPI.dll" />
+  </files>
+</package>

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSONAPI", "JSONAPI.csproj", "{DD462B88-98E2-4DEB-AC44-46FCD012133A}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "JSONAPI_Setup", "..\JSONAPI_Setup\JSONAPI_Setup.vdproj", "{63D10293-93F0-4F1D-9280-1087B536EED3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,18 +13,14 @@ Global
 		Release|Default = Release|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Debug|Default.ActiveCfg = Debug|Any CPU
 		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Debug|Default.Build.0 = Debug|Any CPU
 		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Release|Default.ActiveCfg = Release|Any CPU
 		{DD462B88-98E2-4DEB-AC44-46FCD012133A}.Release|Default.Build.0 = Release|Any CPU
-		{63D10293-93F0-4F1D-9280-1087B536EED3}.Debug|Any CPU.ActiveCfg = Release
-		{63D10293-93F0-4F1D-9280-1087B536EED3}.Debug|Default.ActiveCfg = Release
-		{63D10293-93F0-4F1D-9280-1087B536EED3}.Release|Any CPU.ActiveCfg = Release
-		{63D10293-93F0-4F1D-9280-1087B536EED3}.Release|Default.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

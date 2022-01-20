@@ -32,10 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmScriptEditor));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numSequence = new System.Windows.Forms.NumericUpDown();
             this.txtStepName = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbStepDesc = new System.Windows.Forms.TabPage();
+            this.cmbInputRV = new System.Windows.Forms.ComboBox();
             this.cmbURL = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.btnOpenObjectMap = new JSONAPI.Controls.JSONAPIButton();
@@ -59,6 +62,7 @@
             this.btnCancel = new JSONAPI.Controls.JSONAPIButton();
             this.btnAddStep = new JSONAPI.Controls.JSONAPIButton();
             this.dgGUISteps = new System.Windows.Forms.DataGridView();
+            this.colSequence = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTestName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colUserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colInput = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,20 +74,18 @@
             this.ctxObjectMapGridOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bsGUISteps = new System.Windows.Forms.BindingSource(this.components);
-            this.numSequence = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tbStepDesc.SuspendLayout();
             this.tbExpectedResult.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGUISteps)).BeginInit();
             this.ctxObjectMapGridOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsGUISteps)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -121,6 +123,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Navigation Steps";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 30);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 15);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Sequence";
+            // 
+            // numSequence
+            // 
+            this.numSequence.Cursor = System.Windows.Forms.Cursors.Default;
+            this.numSequence.Location = new System.Drawing.Point(83, 30);
+            this.numSequence.Name = "numSequence";
+            this.numSequence.Size = new System.Drawing.Size(39, 23);
+            this.numSequence.TabIndex = 21;
+            // 
             // txtStepName
             // 
             this.txtStepName.Cursor = System.Windows.Forms.Cursors.Default;
@@ -150,6 +169,7 @@
             // 
             // tbStepDesc
             // 
+            this.tbStepDesc.Controls.Add(this.cmbInputRV);
             this.tbStepDesc.Controls.Add(this.cmbURL);
             this.tbStepDesc.Controls.Add(this.label7);
             this.tbStepDesc.Controls.Add(this.btnOpenObjectMap);
@@ -168,6 +188,21 @@
             this.tbStepDesc.TabIndex = 0;
             this.tbStepDesc.Text = "Step Desc";
             this.tbStepDesc.UseVisualStyleBackColor = true;
+            // 
+            // cmbInputRV
+            // 
+            this.cmbInputRV.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cmbInputRV.FormattingEnabled = true;
+            this.cmbInputRV.Items.AddRange(new object[] {
+            "Click",
+            "Type",
+            "Validate",
+            "Hover"});
+            this.cmbInputRV.Location = new System.Drawing.Point(384, 175);
+            this.cmbInputRV.Name = "cmbInputRV";
+            this.cmbInputRV.Size = new System.Drawing.Size(280, 23);
+            this.cmbInputRV.TabIndex = 19;
+            this.cmbInputRV.Visible = false;
             // 
             // cmbURL
             // 
@@ -198,7 +233,7 @@
             this.btnOpenObjectMap.Name = "btnOpenObjectMap";
             this.btnOpenObjectMap.Size = new System.Drawing.Size(132, 32);
             this.btnOpenObjectMap.TabIndex = 16;
-            this.btnOpenObjectMap.Text = "Get..";
+            this.btnOpenObjectMap.Text = "Add Object..";
             this.btnOpenObjectMap.UseVisualStyleBackColor = false;
             this.btnOpenObjectMap.Click += new System.EventHandler(this.btnOpenObjectMap_Click);
             // 
@@ -210,6 +245,7 @@
             this.cmbObjectMapItem.Name = "cmbObjectMapItem";
             this.cmbObjectMapItem.Size = new System.Drawing.Size(635, 23);
             this.cmbObjectMapItem.TabIndex = 15;
+            this.cmbObjectMapItem.TextChanged += new System.EventHandler(this.cmbObjectMapItem_TextChanged);
             // 
             // label2
             // 
@@ -491,20 +527,21 @@
             this.cmbVerificationType.Items.AddRange(new object[] {
             "Exist",
             "DoesNotExist",
+            "EqualToVariableValue",
+            "EqualToRangeValue",
+            "EqualToValue",
+            "EqualToRegEx",
             "=",
+            "!=",
             ">",
             ">=",
             "<",
-            "<=",
-            "EqualToVariableValue",
-            "EqualToValue",
-            "EqualToRegEx",
-            "AttributeEqualTo",
-            "AttributeNotEqualTo"});
+            "<="});
             this.cmbVerificationType.Location = new System.Drawing.Point(120, 87);
             this.cmbVerificationType.Name = "cmbVerificationType";
             this.cmbVerificationType.Size = new System.Drawing.Size(202, 23);
             this.cmbVerificationType.TabIndex = 1;
+            this.cmbVerificationType.TextChanged += new System.EventHandler(this.cmbVerificationType_TextChanged);
             // 
             // txtElementName
             // 
@@ -526,7 +563,6 @@
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnAddStep
             // 
@@ -540,13 +576,13 @@
             this.btnAddStep.TabIndex = 15;
             this.btnAddStep.Text = "Add";
             this.btnAddStep.UseVisualStyleBackColor = false;
-            this.btnAddStep.Click += new System.EventHandler(this.btnAddStep_Click);
             // 
             // dgGUISteps
             // 
             this.dgGUISteps.AllowUserToAddRows = false;
             this.dgGUISteps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgGUISteps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colSequence,
             this.colTestName,
             this.colUserName,
             this.colInput,
@@ -564,6 +600,14 @@
             this.dgGUISteps.RowTemplate.Height = 25;
             this.dgGUISteps.Size = new System.Drawing.Size(800, 259);
             this.dgGUISteps.TabIndex = 0;
+            this.dgGUISteps.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgGUISteps_RightMouseClick);
+            // 
+            // colSequence
+            // 
+            this.colSequence.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colSequence.DataPropertyName = "sequence";
+            this.colSequence.HeaderText = "Sequence";
+            this.colSequence.Name = "colSequence";
             // 
             // colTestName
             // 
@@ -636,23 +680,6 @@
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
-            // numSequence
-            // 
-            this.numSequence.Cursor = System.Windows.Forms.Cursors.Default;
-            this.numSequence.Location = new System.Drawing.Point(83, 30);
-            this.numSequence.Name = "numSequence";
-            this.numSequence.Size = new System.Drawing.Size(39, 23);
-            this.numSequence.TabIndex = 21;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 30);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 15);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "Step Name";
-            // 
             // frmScriptEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -668,6 +695,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tbStepDesc.ResumeLayout(false);
             this.tbStepDesc.PerformLayout();
@@ -676,7 +704,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgGUISteps)).EndInit();
             this.ctxObjectMapGridOptions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bsGUISteps)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -713,6 +740,12 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txtStepName;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ContextMenuStrip ctxObjectMapGridOptions;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numSequence;
+        private System.Windows.Forms.ComboBox cmbInputRV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSequence;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTestName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colUserName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colInput;
@@ -721,9 +754,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colXPath;
         private System.Windows.Forms.DataGridViewTextBoxColumn colOperation;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFieldExpectedResultList;
-        private System.Windows.Forms.ContextMenuStrip ctxObjectMapGridOptions;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numSequence;
     }
 }

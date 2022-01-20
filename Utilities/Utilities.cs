@@ -22,13 +22,17 @@
     using System.Text.RegularExpressions;
     using System.Diagnostics;
     using System.Globalization;
+    using HtmlAgilityPack;
+    using OpenQA.Selenium;
+    using OpenQA.Selenium.Chrome;
+    using OpenQA.Selenium.Support.UI;
 
     public static class Utilities
     {
         public static string[,] selectedRanges = new string[50, 100];
         public static int selectedRangeNameCounter = 0;
         public static int selectedRangeValueCounter = 0;
-
+        static IWebDriver driver = null;
         public static string GenerateDetail(string beginStr, bool batchMode = false, bool firstBatchRun = false)
         {
             string endStr = "";
@@ -1795,6 +1799,130 @@
                 returnValue = false;
             }
             return returnValue;
+        }
+
+        public static bool ExecuteGUITest(string testName)
+        {
+            bool returnValue = true;
+            try
+            {
+                List<TestSuite.Test> testList = TestSuite.GetGUITests(testName);
+                foreach (TestSuite.Test test in testList)
+                { 
+                    string url = test.URL;
+                    string xpath = test.XPath;
+                    string operation = test.Operation;
+                    string testData = test.Input;
+                    string fieldName = "";
+                    string attribute = "";
+                    string comparitor = "";
+                    string expectedValue = "";
+                    string actualValue = "";
+                    var fieldExpectedR = test.FieldExpectedResultList;
+                    foreach(TestSuite.FieldExpectedResult f in fieldExpectedR)
+                    {
+                        fieldName = f.FieldName;
+                        var expectedArray = f.ExpectedResult.Split(",");
+                        attribute = expectedArray[0];
+                        comparitor = expectedArray[1];
+                        expectedValue = expectedArray[2];
+                    }
+                    driver = new ChromeDriver();
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+                    bool passed = Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                    if (!passed)
+                    {
+                        returnValue = false;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            System.Xml.XPath.XPathExpression expr = System.Xml.XPath.XPathExpression.Compile(xpath);
+                        }
+                        catch (System.Xml.XPath.XPathException)
+                        {
+                            returnValue = false;
+                        }
+                        if (returnValue)
+                        {
+                            driver.Navigate().GoToUrl(url);
+                            IWebElement element = driver.FindElement(By.XPath(xpath));
+                            switch (operation)
+                            {
+                                case "Click":
+                                    element.Click();
+                                    break;
+                                case "Type":
+                                    element.SendKeys(testData);
+                                    break;
+                                case "Validate":
+                                    if (comparitor.Length < 3)
+                                    {
+                                        actualValue = element.GetAttribute(attribute);
+                                        returnValue = Compare(comparitor, actualValue, expectedValue);
+                                    }
+                                    else
+                                    {
+                                        switch (comparitor)
+                                        {
+                                            case "Exist":
+                                                returnValue = element.Displayed;
+                                                break;
+                                            case "DoesNotExist":
+                                                returnValue = !element.Displayed;
+                                                break;
+                                            case "EqualToVariableValue":
+                                                actualValue = Variables.GetSavedValue(testData);
+                                                returnValue = Compare("=", actualValue, expectedValue);
+                                                break;
+                                            case "EqualToRangeValue":
+                                                actualValue = "To do";
+                                                returnValue = Compare("=", actualValue, expectedValue);
+                                                break;
+                                            case "EqualToValue":
+                                                actualValue = element.GetAttribute("value");
+                                                returnValue = Compare("=", testData, actualValue);
+                                                break;
+                                            case "EqualToRegEx":
+                                                actualValue = element.GetAttribute("value");
+                                                var reg = new Regex(testData);
+                                                if (reg.IsMatch(actualValue)) returnValue = true;
+                                                else returnValue = false;
+                                                break;
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logs.NewLogItem("ExecuteGUITest failed: " + e.Message, TraceEventType.Error);
+                returnValue = false;
+            }
+            if (driver != null)
+            {
+                driver.Quit();
+                driver = null;
+            }
+            return returnValue;
+        }
+
+        public static bool Compare(string sign, string actualValue, string expectedValue)
+        {
+            switch (sign)
+            {
+                case "<": return decimal.Parse(actualValue) < decimal.Parse(expectedValue);
+                case ">": return decimal.Parse(actualValue) > decimal.Parse(expectedValue);
+                case "<=": return decimal.Parse(actualValue) <= decimal.Parse(expectedValue);
+                case ">=": return decimal.Parse(actualValue) >= decimal.Parse(expectedValue);
+                case "=": return actualValue == expectedValue;
+                case "!=": return actualValue != expectedValue;
+                default: return false;
+            }
         }
 
     }

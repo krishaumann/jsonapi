@@ -201,7 +201,7 @@
                 {
                     string tempString = doc.AsBsonValue.ToJson();
                     tempValue = JsonConvert.DeserializeObject<GUIObjectList>(tempString);
-                    if (tempValue.URL.ToLower() == url)
+                    if (tempValue.URL.ToLower() == url.ToLower())
                     {
                         returnValue.Add(tempValue.XPath);  
                     }

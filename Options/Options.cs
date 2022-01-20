@@ -98,6 +98,7 @@ namespace JSONAPI.Options
                 {
                     lstTestList.Items.Add(test.TestName);
                 }
+
                 AddChkBoxHeader_DataGridView();
                 btnDeleteTestSuite.Enabled = false;
                 btnExportResults.Enabled = false;
