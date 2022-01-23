@@ -43,15 +43,18 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgObjectMap = new System.Windows.Forms.DataGridView();
-            this.ctxObjectMapGridOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsMenuDeleteObjectMap = new System.Windows.Forms.ToolStripMenuItem();
-            this.bsObjectMap = new System.Windows.Forms.BindingSource(this.components);
             this.colSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colObjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colXPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colURL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIsValidated = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colUserName = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ctxObjectMapGridOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsMenuDeleteObjectMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.bsObjectMap = new System.Windows.Forms.BindingSource(this.components);
+            this.tbObjectElement = new System.Windows.Forms.TabControl();
+            this.tbElements = new System.Windows.Forms.TabPage();
+            this.tbBrowser = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -60,6 +63,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgObjectMap)).BeginInit();
             this.ctxObjectMapGridOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsObjectMap)).BeginInit();
+            this.tbObjectElement.SuspendLayout();
+            this.tbElements.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -72,7 +77,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.tbObjectElement);
             // 
             // splitContainer1.Panel2
             // 
@@ -93,9 +98,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtName);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(785, 191);
+            this.groupBox1.Size = new System.Drawing.Size(765, 164);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Object Element";
@@ -104,7 +109,7 @@
             // 
             this.btnAddObject.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnAddObject.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAddObject.Location = new System.Drawing.Point(560, 148);
+            this.btnAddObject.Location = new System.Drawing.Point(560, 132);
             this.btnAddObject.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnAddObject.Name = "btnAddObject";
             this.btnAddObject.Size = new System.Drawing.Size(103, 32);
@@ -117,7 +122,7 @@
             // 
             this.btnCancelObject.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnCancelObject.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnCancelObject.Location = new System.Drawing.Point(667, 148);
+            this.btnCancelObject.Location = new System.Drawing.Point(669, 132);
             this.btnCancelObject.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnCancelObject.Name = "btnCancelObject";
             this.btnCancelObject.Size = new System.Drawing.Size(109, 32);
@@ -130,7 +135,7 @@
             // 
             this.btnValidateXPath.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnValidateXPath.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnValidateXPath.Location = new System.Drawing.Point(370, 148);
+            this.btnValidateXPath.Location = new System.Drawing.Point(355, 132);
             this.btnValidateXPath.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnValidateXPath.Name = "btnValidateXPath";
             this.btnValidateXPath.Size = new System.Drawing.Size(132, 32);
@@ -143,7 +148,7 @@
             this.chkValidated.AutoSize = true;
             this.chkValidated.Enabled = false;
             this.chkValidated.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.chkValidated.Location = new System.Drawing.Point(696, 23);
+            this.chkValidated.Location = new System.Drawing.Point(679, 18);
             this.chkValidated.Name = "chkValidated";
             this.chkValidated.Size = new System.Drawing.Size(80, 20);
             this.chkValidated.TabIndex = 7;
@@ -152,7 +157,7 @@
             // 
             // txtUrl
             // 
-            this.txtUrl.Location = new System.Drawing.Point(117, 108);
+            this.txtUrl.Location = new System.Drawing.Point(117, 103);
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new System.Drawing.Size(573, 23);
             this.txtUrl.TabIndex = 5;
@@ -160,7 +165,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 116);
+            this.label3.Location = new System.Drawing.Point(10, 103);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(22, 15);
             this.label3.TabIndex = 4;
@@ -168,7 +173,7 @@
             // 
             // txtXPath
             // 
-            this.txtXPath.Location = new System.Drawing.Point(117, 69);
+            this.txtXPath.Location = new System.Drawing.Point(117, 62);
             this.txtXPath.Name = "txtXPath";
             this.txtXPath.Size = new System.Drawing.Size(573, 23);
             this.txtXPath.TabIndex = 3;
@@ -176,7 +181,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 70);
+            this.label2.Location = new System.Drawing.Point(11, 62);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 15);
             this.label2.TabIndex = 2;
@@ -192,7 +197,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 28);
+            this.label1.Location = new System.Drawing.Point(11, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(85, 15);
             this.label1.TabIndex = 0;
@@ -220,19 +225,6 @@
             this.dgObjectMap.Size = new System.Drawing.Size(800, 240);
             this.dgObjectMap.TabIndex = 0;
             this.dgObjectMap.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgObjectMap_CellBeginEdit);
-            // 
-            // ctxObjectMapGridOptions
-            // 
-            this.ctxObjectMapGridOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsMenuDeleteObjectMap});
-            this.ctxObjectMapGridOptions.Name = "ctxObjectMapGridOptions";
-            this.ctxObjectMapGridOptions.Size = new System.Drawing.Size(108, 26);
-            // 
-            // tsMenuDeleteObjectMap
-            // 
-            this.tsMenuDeleteObjectMap.Name = "tsMenuDeleteObjectMap";
-            this.tsMenuDeleteObjectMap.Size = new System.Drawing.Size(107, 22);
-            this.tsMenuDeleteObjectMap.Text = "Delete";
             // 
             // colSelect
             // 
@@ -274,6 +266,52 @@
             this.colUserName.Name = "colUserName";
             this.colUserName.Visible = false;
             // 
+            // ctxObjectMapGridOptions
+            // 
+            this.ctxObjectMapGridOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsMenuDeleteObjectMap});
+            this.ctxObjectMapGridOptions.Name = "ctxObjectMapGridOptions";
+            this.ctxObjectMapGridOptions.Size = new System.Drawing.Size(108, 26);
+            // 
+            // tsMenuDeleteObjectMap
+            // 
+            this.tsMenuDeleteObjectMap.Name = "tsMenuDeleteObjectMap";
+            this.tsMenuDeleteObjectMap.Size = new System.Drawing.Size(107, 22);
+            this.tsMenuDeleteObjectMap.Text = "Delete";
+            // 
+            // tbObjectElement
+            // 
+            this.tbObjectElement.Controls.Add(this.tbElements);
+            this.tbObjectElement.Controls.Add(this.tbBrowser);
+            this.tbObjectElement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbObjectElement.Location = new System.Drawing.Point(0, 0);
+            this.tbObjectElement.Name = "tbObjectElement";
+            this.tbObjectElement.SelectedIndex = 0;
+            this.tbObjectElement.Size = new System.Drawing.Size(800, 206);
+            this.tbObjectElement.TabIndex = 1;
+            this.tbObjectElement.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
+            // 
+            // tbElements
+            // 
+            this.tbElements.Controls.Add(this.groupBox1);
+            this.tbElements.Location = new System.Drawing.Point(4, 24);
+            this.tbElements.Name = "tbElements";
+            this.tbElements.Padding = new System.Windows.Forms.Padding(3);
+            this.tbElements.Size = new System.Drawing.Size(777, 176);
+            this.tbElements.TabIndex = 0;
+            this.tbElements.Text = "Elements";
+            this.tbElements.UseVisualStyleBackColor = true;
+            // 
+            // tbBrowser
+            // 
+            this.tbBrowser.Location = new System.Drawing.Point(4, 24);
+            this.tbBrowser.Name = "tbBrowser";
+            this.tbBrowser.Padding = new System.Windows.Forms.Padding(3);
+            this.tbBrowser.Size = new System.Drawing.Size(792, 178);
+            this.tbBrowser.TabIndex = 1;
+            this.tbBrowser.Text = "Browser";
+            this.tbBrowser.UseVisualStyleBackColor = true;
+            // 
             // frmObjectMap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -292,6 +330,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgObjectMap)).EndInit();
             this.ctxObjectMapGridOptions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bsObjectMap)).EndInit();
+            this.tbObjectElement.ResumeLayout(false);
+            this.tbElements.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -320,5 +360,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colURL;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colIsValidated;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colUserName;
+        private System.Windows.Forms.TabControl tbObjectElement;
+        private System.Windows.Forms.TabPage tbElements;
+        private System.Windows.Forms.TabPage tbBrowser;
     }
 }

@@ -1,4 +1,6 @@
-﻿using HtmlAgilityPack;
+﻿using CefSharp.WinForms;
+using CefSharp.WinForms.Host;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace JSONAPI
 {
     public partial class frmObjectMap : Form
@@ -19,6 +22,7 @@ namespace JSONAPI
         public string oldURL = "";
         public bool oldIsValidated = false;
         public int selectedRow = 0;
+        private ChromiumWebBrowser browser;
         public frmObjectMap()
         {
             InitializeComponent();
@@ -43,6 +47,24 @@ namespace JSONAPI
                 ctxObjectMapGridOptions.Show(this, new Point(Cursor.Position.X, Cursor.Position.Y));//places the menu at the pointer position
             }
         }
+
+        private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tbObjectElement.SelectedTab == tbBrowser)
+            {
+
+                browser = new ChromiumWebBrowser();
+                {
+                    Dock = DockStyle.Fill;
+                    Bounds = tbBrowser.Bounds;
+                };
+
+                tbBrowser.Controls.Add(browser);
+                browser.Load("www.google.com");
+            }
+        }
+
+        
 
         private void dgObjectMap_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {

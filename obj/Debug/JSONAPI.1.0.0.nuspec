@@ -7,6 +7,8 @@
     <description>Package Description</description>
     <dependencies>
       <group targetFramework="net5.0-windows7.0">
+        <dependency id="CefSharp.Common" version="97.1.60" exclude="Build,Analyzers" />
+        <dependency id="CefSharp.WinForms" version="97.1.60" exclude="Build,Analyzers" />
         <dependency id="DataGridViewAutoFilter" version="1.0.0" exclude="Build,Analyzers" />
         <dependency id="DocumentFormat.OpenXml" version="2.14.0" exclude="Build,Analyzers" />
         <dependency id="Grpc.Core" version="2.41.1" exclude="Build,Analyzers" />
@@ -26,7 +28,9 @@
         <dependency id="Octokit" version="0.50.0" exclude="Build,Analyzers" />
         <dependency id="OpenXmlPowerTools" version="4.5.3.2" exclude="Build,Analyzers" />
         <dependency id="Scintilla.NET" version="5.1.5.4" exclude="Build,Analyzers" />
+        <dependency id="Selenium.Support" version="4.1.0" exclude="Build,Analyzers" />
         <dependency id="Selenium.WebDriver" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="Selenium.WebDriver.ChromeDriver" version="97.0.4692.7100" exclude="Build,Analyzers" />
         <dependency id="Serilog" version="2.10.0" exclude="Build,Analyzers" />
         <dependency id="System.IdentityModel.Tokens.Jwt" version="6.14.1" exclude="Build,Analyzers" />
         <dependency id="WindowsAPICodePack" version="1.1.2" exclude="Build,Analyzers" />
@@ -40,9 +44,35 @@
         <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
       </group>
     </frameworkReferences>
+    <contentFiles>
+      <files include="any/net5.0-windows7.0/chromedriver.exe" buildAction="Content" />
+      <files include="any/net5.0-windows7.0/CefSharp.BrowserSubprocess.Core.dll" buildAction="Content" />
+      <files include="any/net5.0-windows7.0/CefSharp.BrowserSubprocess.Core.pdb" buildAction="Content" />
+      <files include="any/net5.0-windows7.0/CefSharp.BrowserSubprocess.exe" buildAction="Content" />
+      <files include="any/net5.0-windows7.0/CefSharp.BrowserSubprocess.pdb" buildAction="Content" />
+      <files include="any/net5.0-windows7.0/CefSharp.Core.Runtime.dll" buildAction="Content" />
+      <files include="any/net5.0-windows7.0/CefSharp.Core.Runtime.pdb" buildAction="Content" />
+      <files include="any/net5.0-windows7.0/CefSharp.Core.Runtime.xml" buildAction="Content" />
+    </contentFiles>
   </metadata>
   <files>
-    <file src="C:\Users\jkhau\source\repos\jsonapi\bin\Debug\net5.0-windows7.0\JSONAPI.runtimeconfig.json" target="lib\net5.0-windows7.0\JSONAPI.runtimeconfig.json" />
-    <file src="C:\Users\jkhau\source\repos\jsonapi\bin\Debug\net5.0-windows7.0\JSONAPI.dll" target="lib\net5.0-windows7.0\JSONAPI.dll" />
+    <file src="C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAPI.runtimeconfig.json" target="lib\net5.0-windows7.0\JSONAPI.runtimeconfig.json" />
+    <file src="C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAPI.dll" target="lib\net5.0-windows7.0\JSONAPI.dll" />
+    <file src="C:\Users\jkhau\.nuget\packages\selenium.webdriver.chromedriver\97.0.4692.7100\driver\win32\chromedriver.exe" target="content\chromedriver.exe" />
+    <file src="C:\Users\jkhau\.nuget\packages\selenium.webdriver.chromedriver\97.0.4692.7100\driver\win32\chromedriver.exe" target="contentFiles\any\net5.0-windows7.0\chromedriver.exe" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.Core.dll" target="content\CefSharp.BrowserSubprocess.Core.dll" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.Core.dll" target="contentFiles\any\net5.0-windows7.0\CefSharp.BrowserSubprocess.Core.dll" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.Core.pdb" target="content\CefSharp.BrowserSubprocess.Core.pdb" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.Core.pdb" target="contentFiles\any\net5.0-windows7.0\CefSharp.BrowserSubprocess.Core.pdb" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.exe" target="content\CefSharp.BrowserSubprocess.exe" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.exe" target="contentFiles\any\net5.0-windows7.0\CefSharp.BrowserSubprocess.exe" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.pdb" target="content\CefSharp.BrowserSubprocess.pdb" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.BrowserSubprocess.pdb" target="contentFiles\any\net5.0-windows7.0\CefSharp.BrowserSubprocess.pdb" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.Core.Runtime.dll" target="content\CefSharp.Core.Runtime.dll" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.Core.Runtime.dll" target="contentFiles\any\net5.0-windows7.0\CefSharp.Core.Runtime.dll" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.Core.Runtime.pdb" target="content\CefSharp.Core.Runtime.pdb" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.Core.Runtime.pdb" target="contentFiles\any\net5.0-windows7.0\CefSharp.Core.Runtime.pdb" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.Core.Runtime.xml" target="content\CefSharp.Core.Runtime.xml" />
+    <file src="C:\Users\jkhau\.nuget\packages\cefsharp.common\97.1.60\CefSharp\x64\CefSharp.Core.Runtime.xml" target="contentFiles\any\net5.0-windows7.0\CefSharp.Core.Runtime.xml" />
   </files>
 </package>

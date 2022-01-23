@@ -779,7 +779,7 @@
             string url = "";
             if (headerDict.TryGetValue("Url", out url))
             {
-                WriteLogItem("url: " +url, TraceEventType.Information);
+                WriteLogItem("url: " + url, TraceEventType.Information);
                 if (url == "") continueFlag = false;
                 headerDict.Remove("Url");
             }
@@ -1801,9 +1801,10 @@
             return returnValue;
         }
 
-        public static bool ExecuteGUITest(string testName)
+        public static bool ExecuteGUITest(string testSuiteName, string testRunName, string testName)
         {
             bool returnValue = true;
+            int incrementNr = 1;
             try
             {
                 List<TestSuite.Test> testList = TestSuite.GetGUITests(testName);
@@ -1827,8 +1828,7 @@
                         comparitor = expectedArray[1];
                         expectedValue = expectedArray[2];
                     }
-                    driver = new ChromeDriver();
-                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+                    
                     bool passed = Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
                     if (!passed)
                     {
@@ -1839,6 +1839,7 @@
                         try
                         {
                             System.Xml.XPath.XPathExpression expr = System.Xml.XPath.XPathExpression.Compile(xpath);
+                            returnValue = true;
                         }
                         catch (System.Xml.XPath.XPathException)
                         {
@@ -1846,56 +1847,90 @@
                         }
                         if (returnValue)
                         {
+                            ChromeOptions options = new ChromeOptions();
+                            options.AddArguments("test-type");
+                            options.AddArgument("--disable-popup-blocking");
+                            options.AddArgument("--ignore-certificate-errors");
+                            driver = new ChromeDriver(GetBasePath, options);
+                            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
                             driver.Navigate().GoToUrl(url);
-                            
-                            IWebElement element = driver.FindElement(By.XPath(xpath));
-                            switch (operation)
+                            IWebElement element = null;
+                            bool continueFlag = true;
+                            try
                             {
-                                case "Click":
-                                    element.Click();
-                                    break;
-                                case "Type":
-                                    element.SendKeys(testData);
-                                    break;
-                                case "Validate":
-                                    if (comparitor.Length < 3)
-                                    {
-                                        if (attribute.ToLower() != "none") actualValue = element.GetAttribute(attribute);
-                                        else actualValue = element.GetAttribute("value");
-                                        returnValue = Compare(comparitor, actualValue, expectedValue);
-                                    }
-                                    else
-                                    {
-                                        switch (comparitor)
-                                        {
-                                            case "Exist":
-                                                returnValue = element.Displayed;
-                                                break;
-                                            case "DoesNotExist":
-                                                returnValue = !element.Displayed;
-                                                break;
-                                            case "EqualToVariableValue":
-                                                actualValue = Variables.GetSavedValue(testData);
-                                                returnValue = Compare("=", actualValue, expectedValue);
-                                                break;
-                                            case "EqualToRangeValue":
-                                                actualValue = "To do";
-                                                returnValue = Compare("=", actualValue, expectedValue);
-                                                break;
-                                            case "EqualToValue":
-                                                actualValue = element.GetAttribute("value");
-                                                returnValue = Compare("=", testData, actualValue);
-                                                break;
-                                            case "EqualToRegEx":
-                                                actualValue = element.GetAttribute("value");
-                                                var reg = new Regex(testData);
-                                                if (reg.IsMatch(actualValue)) returnValue = true;
-                                                else returnValue = false;
-                                                break;
-                                        }
-                                    }
-                                    break;
+                                wait.Until(driver => driver.FindElement(By.XPath(xpath)));
+                                element = driver.FindElement(By.XPath(xpath));
                             }
+                            catch (NoSuchElementException te)
+                            {
+                                Logs.NewLogItem("Element with XPath= " + xpath + " not found. " + te.Message, TraceEventType.Error);
+                                continueFlag = false;
+                            }
+                            catch (Exception e)
+                            {
+                                Logs.NewLogItem("Unhadled exception with Element with XPath= " + xpath + " not found. " + e.Message, TraceEventType.Error);
+                                continueFlag = false;
+                            }
+                            if (continueFlag)
+                            {
+                                switch (operation)
+                                {
+                                    case "Click":
+                                        element.Click();
+                                        break;
+                                    case "Type":
+                                        element.SendKeys(testData);
+                                        break;
+                                    case "Select":
+                                        SelectElement selectElement = new SelectElement(element);
+                                        selectElement.SelectByText(testData);
+                                        break;
+                                    case "Validate":
+                                        if (comparitor.Length < 3)
+                                        {
+                                            if (attribute.ToLower() != "none") actualValue = element.GetAttribute(attribute);
+                                            else actualValue = element.GetAttribute("value");
+                                            returnValue = Compare(comparitor, actualValue, expectedValue);
+                                        }
+                                        else
+                                        {
+                                            switch (comparitor)
+                                            {
+                                                case "Exist":
+                                                    returnValue = element.Displayed;
+                                                    break;
+                                                case "DoesNotExist":
+                                                    returnValue = !element.Displayed;
+                                                    break;
+                                                case "EqualToVariableValue":
+                                                    actualValue = Variables.GetSavedValue(testData);
+                                                    returnValue = Compare("=", actualValue, expectedValue);
+                                                    break;
+                                                case "EqualToRangeValue":
+                                                    actualValue = "To do";
+                                                    returnValue = Compare("=", actualValue, expectedValue);
+                                                    break;
+                                                case "EqualToValue":
+                                                    actualValue = element.GetAttribute("value");
+                                                    returnValue = Compare("=", testData, actualValue);
+                                                    break;
+                                                case "EqualToRegEx":
+                                                    actualValue = element.GetAttribute("value");
+                                                    var reg = new Regex(testData);
+                                                    if (reg.IsMatch(actualValue)) returnValue = true;
+                                                    else returnValue = false;
+                                                    break;
+                                            }
+                                        }
+                                        break;
+
+                                }
+                            }
+                            string testResult = "";
+                            if (returnValue) testResult = "Pass";
+                            else testResult = "False";
+                            ExecutionResult.AddTestResult(testRunName, testSuiteName, testName, incrementNr, fieldName, expectedValue, actualValue, testResult);
+                            incrementNr++;
                         }
                     }
                 }
@@ -1912,6 +1947,32 @@
             }
             return returnValue;
         }
+
+        public static void ExtractResource(string path)
+        {
+            byte[] bytes = Properties.Resources.chromedriver;
+            try
+            {
+                String tempPath = Path.GetFullPath(path).Split("chromedriver.exe")[0];
+                System.Environment.SetEnvironmentVariable("webdriver.chrome.driver", tempPath, EnvironmentVariableTarget.User);
+                File.WriteAllBytes(path, bytes);
+            }
+            catch (Exception e)
+            {
+                Logs.NewLogItem("ChromeDriver already loaded: " + e.Message, TraceEventType.Information);
+            }
+        }
+
+        public static string GetBasePath
+        {
+            get
+            {
+                var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                
+                return basePath;
+            }
+        }
+
 
         public static bool Compare(string sign, string actualValue, string expectedValue)
         {

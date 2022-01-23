@@ -129,7 +129,7 @@
                 Sequence = 0;
             }
 
-            public Test(string testName, string headerInput, string input, int sequence)
+            public Test(string testName, string headerInput, string input, int sequence, string xpath)
             {
                 TestName = testName;
                 Input = input;
@@ -137,7 +137,7 @@
                 UserName = Users.currentUser;
                 FieldExpectedResultList = new List<FieldExpectedResult>();
                 URL = "";
-                XPath = "";
+                XPath = xpath;
                 Operation = "";
                 Sequence = sequence;
             }
@@ -242,7 +242,7 @@
             return returnValue;
         }
 
-        public static bool NewTestWithDetail(string testName, string headerInput, string input, int sequence)
+        public static bool NewTestWithDetail(string testName, string headerInput, string input, int sequence, string xpath)
         {
             bool returnValue = true;
             try
@@ -254,7 +254,7 @@
 
                 if (!IsValidTestName(testName, sequence))
                 {
-                    Test test = new Test(testName, headerInput, input, sequence);
+                    Test test = new Test(testName, headerInput, input, sequence, xpath);
                     docNewTest.InsertOne(test);
                 }
                 else
@@ -495,6 +495,68 @@
             }
             return returnList;
         }
+        public static List<Test> GetGUITests(bool returnUnique)
+        {
+            List<Test> returnList = new List<Test>();
+            Test arrayOfStrings;
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testListCollection = database.GetCollection<Test>("colTests");
+            var userNameFilter = Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser);
+
+            // projection stage
+            var simpleProjection = Builders<Test>.Projection
+                //.Include(t => t.TestSuiteList)
+                .Exclude("_id");
+            try
+            {
+                var docs = testListCollection.Find(userNameFilter).Project(simpleProjection).ToList();
+                //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
+                docs.ForEach(doc =>
+                {
+                    string tempString = doc.AsBsonValue.ToJson();
+                    arrayOfStrings = JsonConvert.DeserializeObject<Test>(tempString);
+                    if (arrayOfStrings.XPath.Length > 0)
+                    {
+                        int index = returnList.FindIndex(item => item.TestName == arrayOfStrings.TestName);
+                        if (index == -1) returnList.Add(arrayOfStrings);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("GetGUITests(returnUnique) failed; " + e.ToString(), TraceEventType.Error);
+            }
+            return returnList;
+        }
+
+        public static bool IsGUITest(string testName)
+        {
+            bool returnValue = false;
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testListCollection = database.GetCollection<Test>("colTests");
+
+            var variableFilter = Builders<Test>.Filter.Eq(u => u.TestName, testName);
+            // projection stage
+            var simpleProjection = Builders<Test>.Projection
+                .Exclude("_id");
+
+            var docs = testListCollection.Find(variableFilter).Project(simpleProjection).ToList();
+            //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
+            docs.ForEach(doc =>
+            {
+                string tempString = doc.AsBsonValue.ToJson();
+                var testObj = JsonConvert.DeserializeObject<Test>(tempString);
+                var tempTestName = testObj.TestName;
+                var tempXPath = testObj.XPath;
+                if (tempTestName == testName && tempXPath.Length > 0) returnValue = true;
+            });
+            return returnValue;
+        }
+
         public class SortBySequence : IComparer<Test>
         {
             public int Compare(Test x, Test y)
@@ -620,6 +682,23 @@
             catch (Exception e)
             {
                 Utilities.WriteLogItem("DeleteTest(testName); " + e.ToString(), TraceEventType.Error);
+            }
+        }
+        public static void DeleteTest(string testName, int sequenceNr)
+        {
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var docSearchForElement = database.GetCollection<Test>("colTests");
+
+            try
+            {
+                var testNameFilter = Builders<Test>.Filter.Eq(u => u.TestName, testName) & Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser) & Builders<Test>.Filter.Eq(u => u.Sequence, sequenceNr);
+                docSearchForElement.DeleteOne(testNameFilter);
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("DeleteTest(testName, sequenceNr); " + e.ToString(), TraceEventType.Error);
             }
         }
 
@@ -1590,6 +1669,8 @@
             string testRunName = DateTime.Now.ToString("yyyyMMddhh24mmss");
             System.Environment.SetEnvironmentVariable("testRunName", testRunName, EnvironmentVariableTarget.User);
             List<TestList> testList = GetTestList(testSuiteName);
+            //string exePath = ".\\chromeDriver.exe";
+            //Utilities.ExtractResource(exePath);
             for (var i = 0; i < testList.Count; i++)
             {
                 testStatus = true;
@@ -1603,7 +1684,16 @@
                 System.Environment.SetEnvironmentVariable("testRunName", testRunName, EnvironmentVariableTarget.User);
                 System.Environment.SetEnvironmentVariable("testSuiteName", testSuiteName, EnvironmentVariableTarget.User);
                 System.Environment.SetEnvironmentVariable("testName", testName, EnvironmentVariableTarget.User);
-
+                Boolean executedFlag = false;
+                if (IsGUITest(testName))
+                {
+                    testStatus = Utilities.ExecuteGUITest(testSuiteName, testRunName, testName);
+                    string testR = "";
+                    if (testStatus) testR = "Pass";
+                    else testR = "Fail";
+                    UpdateTestStatus_NewInstance(testSuiteName, testName, testR, "", "", "", "", 1);
+                    executedFlag = true;
+                }
                 if (testName.Contains(".js"))
                 {
                     var result = Utilities.ExecuteJavaScript(inputString);
@@ -1617,52 +1707,55 @@
                 }
                 else
                 {
+                    if (!executedFlag)
+                    {
                     System.Environment.SetEnvironmentVariable("jsonFlag", "yes", EnvironmentVariableTarget.User);
                     //Generate Details to send
 
                     List<string> detailMessages = Utilities.GenerateBatchDetail(inputString);
-                    foreach (string generatedDetailMessage in detailMessages)
-                    {
-                        Dictionary<string, string> responseDict = Utilities.SendHttpRequest(generatedDetailMessage, incrementCounter, testSuiteName, testName, "In Progress");
-                        if (responseDict.TryGetValue("Response", out tempValue))
+                        foreach (string generatedDetailMessage in detailMessages)
                         {
-                            if (tempValue.ToLower() == "ok")
+                            Dictionary<string, string> responseDict = Utilities.SendHttpRequest(generatedDetailMessage, incrementCounter, testSuiteName, testName, "In Progress");
+                            if (responseDict.TryGetValue("Response", out tempValue))
                             {
-                                testStatus = true;
-                            }
-                            else
-                            {
-                                testStatus = false;
-                                if (testRunStatus != false)
+                                if (tempValue.ToLower() == "ok")
                                 {
-                                    testRunStatus = true;
+                                    testStatus = true;
                                 }
                                 else
                                 {
-                                    testRunStatus = false;
+                                    testStatus = false;
+                                    if (testRunStatus != false)
+                                    {
+                                        testRunStatus = true;
+                                    }
+                                    else
+                                    {
+                                        testRunStatus = false;
+                                    }
                                 }
                             }
-                        }
-                        foreach (string key in responseDict.Keys)
-                        {
-                            if (key.ToLower().Contains("header_"))
+                            foreach (string key in responseDict.Keys)
                             {
-                                headerResponse += "\"" + key.Substring(7) + "\"" + ":" + "\"" + responseDict[key] + "\"" + ",";
+                                if (key.ToLower().Contains("header_"))
+                                {
+                                    headerResponse += "\"" + key.Substring(7) + "\"" + ":" + "\"" + responseDict[key] + "\"" + ",";
+                                }
                             }
+                            if (responseDict.TryGetValue("Body", out tempValue))
+                            {
+                                bodyResponse = responseDict["Body"].ToString();
+                            }
+                            string headerRequest = "";
+                            if (responseDict.TryGetValue("HeaderRequest", out tempValue))
+                            {
+                                headerRequest = responseDict["HeaderRequest"].ToString();
+                            }
+                            if (testStatus) { tempValue = "Pass"; }
+                            if (!testStatus) { tempValue = "Fail"; }
+                            UpdateTestStatus_NewInstance(testSuiteName, testName, tempValue, headerRequest, generatedDetailMessage, headerResponse, bodyResponse, incrementCounter);
+                            incrementCounter++;
                         }
-                        if (responseDict.TryGetValue("Body", out tempValue))
-                        {
-                            bodyResponse = responseDict["Body"].ToString();
-                        }
-                        string headerRequest = "";
-                        if (responseDict.TryGetValue("HeaderRequest", out tempValue))
-                        {
-                            headerRequest = responseDict["HeaderRequest"].ToString();
-                        }
-                        if (testStatus) { tempValue = "Pass"; }
-                        if (!testStatus) { tempValue = "Fail"; }
-                        UpdateTestStatus_NewInstance(testSuiteName, testName, tempValue, headerRequest, generatedDetailMessage, headerResponse, bodyResponse, incrementCounter);
-                        incrementCounter++;
                     }
                 }
                 if (testRunStatus) { tempValue = "Pass"; }
@@ -1671,6 +1764,8 @@
                 testStatus = true;
             }
             HandleTestSuiteOutput(testSuiteName, "AutoGeneratedTestResults.csv");
+
+           //File.Delete(exePath);
         }
     }
 }

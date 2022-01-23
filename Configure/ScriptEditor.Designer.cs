@@ -32,12 +32,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmScriptEditor));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.numSequence = new System.Windows.Forms.NumericUpDown();
             this.txtStepName = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbStepDesc = new System.Windows.Forms.TabPage();
+            this.numSequence = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.cmbInputRV = new System.Windows.Forms.ComboBox();
             this.cmbURL = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -60,7 +60,7 @@
             this.cmbVerificationType = new System.Windows.Forms.ComboBox();
             this.txtElementName = new System.Windows.Forms.TextBox();
             this.btnCancel = new JSONAPI.Controls.JSONAPIButton();
-            this.btnAddStep = new JSONAPI.Controls.JSONAPIButton();
+            this.btnAddGUITestStep = new JSONAPI.Controls.JSONAPIButton();
             this.dgGUISteps = new System.Windows.Forms.DataGridView();
             this.colSequence = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTestName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -72,16 +72,17 @@
             this.colOperation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFieldExpectedResultList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ctxObjectMapGridOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsMenuDeleteGUITest = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsMenuAddGUITest = new System.Windows.Forms.ToolStripMenuItem();
             this.bsGUISteps = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tbStepDesc.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).BeginInit();
             this.tbExpectedResult.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGUISteps)).BeginInit();
             this.ctxObjectMapGridOptions.SuspendLayout();
@@ -113,30 +114,13 @@
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.tabControl1);
             this.groupBox1.Controls.Add(this.btnCancel);
-            this.groupBox1.Controls.Add(this.btnAddStep);
+            this.groupBox1.Controls.Add(this.btnAddGUITestStep);
             this.groupBox1.Location = new System.Drawing.Point(12, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(776, 364);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Navigation Steps";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 15);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "Sequence";
-            // 
-            // numSequence
-            // 
-            this.numSequence.Cursor = System.Windows.Forms.Cursors.Default;
-            this.numSequence.Location = new System.Drawing.Point(106, 13);
-            this.numSequence.Name = "numSequence";
-            this.numSequence.Size = new System.Drawing.Size(39, 23);
-            this.numSequence.TabIndex = 21;
             // 
             // txtStepName
             // 
@@ -188,6 +172,23 @@
             this.tbStepDesc.TabIndex = 0;
             this.tbStepDesc.Text = "Step Desc";
             this.tbStepDesc.UseVisualStyleBackColor = true;
+            // 
+            // numSequence
+            // 
+            this.numSequence.Cursor = System.Windows.Forms.Cursors.Default;
+            this.numSequence.Location = new System.Drawing.Point(106, 13);
+            this.numSequence.Name = "numSequence";
+            this.numSequence.Size = new System.Drawing.Size(39, 23);
+            this.numSequence.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 15);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Sequence";
             // 
             // cmbInputRV
             // 
@@ -313,7 +314,8 @@
             "Click",
             "Type",
             "Validate",
-            "Hover"});
+            "Hover",
+            "Select"});
             this.cmbOperationDesc.Location = new System.Drawing.Point(106, 127);
             this.cmbOperationDesc.Name = "cmbOperationDesc";
             this.cmbOperationDesc.Size = new System.Drawing.Size(280, 23);
@@ -564,18 +566,19 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
             // 
-            // btnAddStep
+            // btnAddGUITestStep
             // 
-            this.btnAddStep.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnAddStep.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnAddStep.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAddStep.Location = new System.Drawing.Point(537, 332);
-            this.btnAddStep.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnAddStep.Name = "btnAddStep";
-            this.btnAddStep.Size = new System.Drawing.Size(132, 32);
-            this.btnAddStep.TabIndex = 15;
-            this.btnAddStep.Text = "Add";
-            this.btnAddStep.UseVisualStyleBackColor = false;
+            this.btnAddGUITestStep.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnAddGUITestStep.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnAddGUITestStep.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAddGUITestStep.Location = new System.Drawing.Point(537, 332);
+            this.btnAddGUITestStep.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnAddGUITestStep.Name = "btnAddGUITestStep";
+            this.btnAddGUITestStep.Size = new System.Drawing.Size(132, 32);
+            this.btnAddGUITestStep.TabIndex = 15;
+            this.btnAddGUITestStep.Text = "Add";
+            this.btnAddGUITestStep.UseVisualStyleBackColor = false;
+            this.btnAddGUITestStep.Click += new System.EventHandler(this.btnAddStep_Click);
             // 
             // dgGUISteps
             // 
@@ -670,15 +673,24 @@
             // ctxObjectMapGridOptions
             // 
             this.ctxObjectMapGridOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteToolStripMenuItem});
+            this.tsMenuDeleteGUITest,
+            this.tsMenuAddGUITest});
             this.ctxObjectMapGridOptions.Name = "contextMenuStrip1";
-            this.ctxObjectMapGridOptions.Size = new System.Drawing.Size(108, 26);
+            this.ctxObjectMapGridOptions.Size = new System.Drawing.Size(123, 48);
             // 
-            // deleteToolStripMenuItem
+            // tsMenuDeleteGUITest
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
+            this.tsMenuDeleteGUITest.Name = "tsMenuDeleteGUITest";
+            this.tsMenuDeleteGUITest.Size = new System.Drawing.Size(122, 22);
+            this.tsMenuDeleteGUITest.Text = "Delete";
+            this.tsMenuDeleteGUITest.Click += new System.EventHandler(this.tsMenuDeleteGUITest_Click);
+            // 
+            // tsMenuAddGUITest
+            // 
+            this.tsMenuAddGUITest.Name = "tsMenuAddGUITest";
+            this.tsMenuAddGUITest.Size = new System.Drawing.Size(122, 22);
+            this.tsMenuAddGUITest.Text = "Add Step";
+            this.tsMenuAddGUITest.Click += new System.EventHandler(this.tsMenuAddGUITest_Click);
             // 
             // frmScriptEditor
             // 
@@ -695,10 +707,10 @@
             this.splitContainer1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tbStepDesc.ResumeLayout(false);
             this.tbStepDesc.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSequence)).EndInit();
             this.tbExpectedResult.ResumeLayout(false);
             this.tbExpectedResult.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGUISteps)).EndInit();
@@ -724,7 +736,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cmbOperationDesc;
         private Controls.JSONAPIButton btnCancel;
-        private Controls.JSONAPIButton btnAddStep;
+        private Controls.JSONAPIButton btnAddGUITestStep;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabPage tbExpectedResult;
         private Controls.JSONAPIButton btnOpenObjectMap;
@@ -741,7 +753,7 @@
         private System.Windows.Forms.TextBox txtStepName;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ContextMenuStrip ctxObjectMapGridOptions;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsMenuDeleteGUITest;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numSequence;
         private System.Windows.Forms.ComboBox cmbInputRV;
@@ -754,5 +766,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colXPath;
         private System.Windows.Forms.DataGridViewTextBoxColumn colOperation;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFieldExpectedResultList;
+        private System.Windows.Forms.ToolStripMenuItem tsMenuAddGUITest;
     }
 }

@@ -215,7 +215,7 @@ namespace JSONAPI
                     tds.SelectedImageKey = "folder";
                 }
             }
-            List<Utilities.TestSuite.Test> GUITestList = Utilities.TestSuite.GetGUITests();
+            List<Utilities.TestSuite.Test> GUITestList = Utilities.TestSuite.GetGUITests(true);
             foreach (Utilities.TestSuite.Test test in GUITestList)
             {
                 TreeNode tds = td.Nodes.Add(test.TestName);
@@ -572,9 +572,9 @@ namespace JSONAPI
         {
             Cursor.Current = Cursors.WaitCursor;
             Options.OptionForm optionfrm = new Options.OptionForm();
-            optionfrm.TopMost = true;
+            //optionfrm.TopMost = true;
             optionfrm.ShowDialog();
-            optionfrm.SetDesktopLocation(Cursor.Position.X, Cursor.Position.Y);
+            //optionfrm.SetDesktopLocation(Cursor.Position.X, Cursor.Position.Y);
             Cursor.Current = Cursors.Default;
         }
 

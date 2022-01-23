@@ -6,6 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
+      "CefSharp.Common/97.1.60": {},
+      "CefSharp.WinForms/97.1.60": {
+        "runtime": {
+          "lib/net452/CefSharp.WinForms.dll": {
+            "assemblyVersion": "97.1.60.0",
+            "fileVersion": "97.1.60.0"
+          }
+        }
+      },
       "chilkat-x64/9.5.0.89": {
         "runtime": {
           "lib/net461/ChilkatDotNet46.dll": {
@@ -693,6 +702,17 @@
           }
         }
       },
+      "Selenium.Support/4.1.0": {
+        "dependencies": {
+          "Selenium.WebDriver": "4.1.0"
+        },
+        "runtime": {
+          "lib/net5.0/WebDriver.Support.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
+          }
+        }
+      },
       "Selenium.WebDriver/4.1.0": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3"
@@ -704,6 +724,7 @@
           }
         }
       },
+      "Selenium.WebDriver.ChromeDriver/97.0.4692.7100": {},
       "Serilog/2.10.0": {
         "runtime": {
           "lib/netstandard2.1/Serilog.dll": {
@@ -1504,6 +1525,20 @@
     }
   },
   "libraries": {
+    "CefSharp.Common/97.1.60": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7ESL8JGcobio0sr1a9X8TJNZUaxOPR6SiZEEguh6fA1YsY8lMI8flZ9fbO3WYXL/yWn+R6E8IXOl7rS0flRgbg==",
+      "path": "cefsharp.common/97.1.60",
+      "hashPath": "cefsharp.common.97.1.60.nupkg.sha512"
+    },
+    "CefSharp.WinForms/97.1.60": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-c/RUfJKElahbos0W3oP9qLjDtwoRGPjfH0VO7mcSQZPnivb9idvmG/bQzdzUtsFZB62SZdk9FV8Nf3CuwIWmhQ==",
+      "path": "cefsharp.winforms/97.1.60",
+      "hashPath": "cefsharp.winforms.97.1.60.nupkg.sha512"
+    },
     "chilkat-x64/9.5.0.89": {
       "type": "package",
       "serviceable": true,
@@ -1945,12 +1980,26 @@
       "path": "scintilla.net/5.1.5.4",
       "hashPath": "scintilla.net.5.1.5.4.nupkg.sha512"
     },
+    "Selenium.Support/4.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wuK5cfgVaimOZqyuriY2geGpNsI9DWky8CuBlrkBnmebkSrRftxqwyUVy0NLooHaAB2iaMj7qM+VOdUEX5bCHQ==",
+      "path": "selenium.support/4.1.0",
+      "hashPath": "selenium.support.4.1.0.nupkg.sha512"
+    },
     "Selenium.WebDriver/4.1.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-d4smisz4a/wJCM2TzkKTl+BLfvZUTvaobhKElDfCVZlvY8ThsC8VAoBNWTlg1H/GGzIP//yVGko/W0FILTgkYA==",
       "path": "selenium.webdriver/4.1.0",
       "hashPath": "selenium.webdriver.4.1.0.nupkg.sha512"
+    },
+    "Selenium.WebDriver.ChromeDriver/97.0.4692.7100": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/5wf4Rv9vTmab2qWo3enuYLoumOyVb6+rO0f2hbym+MQzDGYb7GpadhWk/jgNtUf6eFvsqL90TyzXrcCfOhCyQ==",
+      "path": "selenium.webdriver.chromedriver/97.0.4692.7100",
+      "hashPath": "selenium.webdriver.chromedriver.97.0.4692.7100.nupkg.sha512"
     },
     "Serilog/2.10.0": {
       "type": "package",

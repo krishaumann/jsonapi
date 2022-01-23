@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "cs9/Rbz4DL3MwS7zufcI1b0ynP4VOmyoMB5p/ya2FrnvjZ7IyKZ5rbH8k0jL8n65IBGozDkQ4xS1hxZkoQLMrg==",
+  "dgSpecHash": "nI6JRbQB5E34M8gp2OTuQPXRfpVlyfUESpfXEEwclT2DgBYcY/0ip+zgdCJwbHK3iRWo+8/AWt+vpRmeAkiNmg==",
   "success": true,
   "projectFilePath": "C:\\Users\\jkhau\\source\\repos\\jsonapi\\JSONAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\jkhau\\.nuget\\packages\\cefsharp.common\\97.1.60\\cefsharp.common.97.1.60.nupkg.sha512",
+    "C:\\Users\\jkhau\\.nuget\\packages\\cefsharp.winforms\\97.1.60\\cefsharp.winforms.97.1.60.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\chilkat-x64\\9.5.0.89\\chilkat-x64.9.5.0.89.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\datagridviewautofilter\\1.0.0\\datagridviewautofilter.1.0.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\dnsclient\\1.4.0\\dnsclient.1.4.0.nupkg.sha512",
@@ -67,7 +69,9 @@
     "C:\\Users\\jkhau\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\scintilla.net\\5.1.5.4\\scintilla.net.5.1.5.4.nupkg.sha512",
+    "C:\\Users\\jkhau\\.nuget\\packages\\selenium.support\\4.1.0\\selenium.support.4.1.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\selenium.webdriver\\4.1.0\\selenium.webdriver.4.1.0.nupkg.sha512",
+    "C:\\Users\\jkhau\\.nuget\\packages\\selenium.webdriver.chromedriver\\97.0.4692.7100\\selenium.webdriver.chromedriver.97.0.4692.7100.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\serilog\\2.10.0\\serilog.2.10.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\sharpcompress\\0.23.0\\sharpcompress.0.23.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\sharpziplib\\1.3.2\\sharpziplib.1.3.2.nupkg.sha512",
@@ -129,6 +133,16 @@
     "C:\\Users\\jkhau\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'CefSharp.WinForms 97.1.60' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "CefSharp.WinForms",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",
