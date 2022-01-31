@@ -1,11 +1,4 @@
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\chromedriver.exe
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.BrowserSubprocess.Core.dll
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.BrowserSubprocess.Core.pdb
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.BrowserSubprocess.exe
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.BrowserSubprocess.pdb
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.Core.Runtime.dll
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.Core.Runtime.pdb
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.Core.Runtime.xml
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAPI.exe
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAPI.dll.config
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAPI.deps.json
@@ -14,7 +7,6 @@ C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAP
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAPI.dll
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\ref\JSONAPI.dll
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\JSONAPI.pdb
-C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\CefSharp.WinForms.dll
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\ChilkatDotNet46.dll
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\DataGridViewAutoFilter.dll
 C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\DnsClient.dll
@@ -117,3 +109,7 @@ C:\Users\jkhau\source\repos\jsonapi\obj\x64\Debug\net5.0-windows7.0\JSONAPI.dll
 C:\Users\jkhau\source\repos\jsonapi\obj\x64\Debug\net5.0-windows7.0\ref\JSONAPI.dll
 C:\Users\jkhau\source\repos\jsonapi\obj\x64\Debug\net5.0-windows7.0\JSONAPI.pdb
 C:\Users\jkhau\source\repos\jsonapi\obj\x64\Debug\net5.0-windows7.0\JSONAPI.genruntimeconfig.cache
+C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\EO.Base.dll
+C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\EO.WebBrowser.dll
+C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\EO.WebEngine.dll
+C:\Users\jkhau\source\repos\jsonapi\bin\Debug\x64\Debug\net5.0-windows7.0\EO.WebBrowser.WinForm.dll

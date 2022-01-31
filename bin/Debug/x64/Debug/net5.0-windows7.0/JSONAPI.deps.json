@@ -8,10 +8,9 @@
     ".NETCoreApp,Version=v5.0": {
       "JSONAPI/1.0.0": {
         "dependencies": {
-          "CefSharp.Common": "97.1.60",
-          "CefSharp.WinForms": "97.1.60",
           "DataGridViewAutoFilter": "1.0.0",
           "DocumentFormat.OpenXml": "2.14.0",
+          "EO.WebBrowser.WinForm": "21.3.18",
           "Grpc.Core": "2.41.1",
           "HtmlAgilityPack": "1.11.40",
           "IdentityModel.OidcClient": "4.0.0",
@@ -41,15 +40,6 @@
         },
         "runtime": {
           "JSONAPI.dll": {}
-        }
-      },
-      "CefSharp.Common/97.1.60": {},
-      "CefSharp.WinForms/97.1.60": {
-        "runtime": {
-          "lib/net452/CefSharp.WinForms.dll": {
-            "assemblyVersion": "97.1.60.0",
-            "fileVersion": "97.1.60.0"
-          }
         }
       },
       "chilkat-x64/9.5.0.89": {
@@ -84,6 +74,33 @@
           "lib/netstandard2.0/DocumentFormat.OpenXml.dll": {
             "assemblyVersion": "2.14.0.0",
             "fileVersion": "2.14.0.0"
+          }
+        }
+      },
+      "EO.WebBrowser/21.3.18": {
+        "runtime": {
+          "lib/EO.Base.dll": {
+            "assemblyVersion": "21.3.18.0",
+            "fileVersion": "21.3.18.0"
+          },
+          "lib/EO.WebBrowser.dll": {
+            "assemblyVersion": "21.3.18.0",
+            "fileVersion": "21.3.18.0"
+          },
+          "lib/EO.WebEngine.dll": {
+            "assemblyVersion": "21.3.18.0",
+            "fileVersion": "21.3.18.0"
+          }
+        }
+      },
+      "EO.WebBrowser.WinForm/21.3.18": {
+        "dependencies": {
+          "EO.WebBrowser": "21.3.18"
+        },
+        "runtime": {
+          "lib/EO.WebBrowser.WinForm.dll": {
+            "assemblyVersion": "21.3.18.0",
+            "fileVersion": "21.3.18.0"
           }
         }
       },
@@ -1164,20 +1181,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CefSharp.Common/97.1.60": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-7ESL8JGcobio0sr1a9X8TJNZUaxOPR6SiZEEguh6fA1YsY8lMI8flZ9fbO3WYXL/yWn+R6E8IXOl7rS0flRgbg==",
-      "path": "cefsharp.common/97.1.60",
-      "hashPath": "cefsharp.common.97.1.60.nupkg.sha512"
-    },
-    "CefSharp.WinForms/97.1.60": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-c/RUfJKElahbos0W3oP9qLjDtwoRGPjfH0VO7mcSQZPnivb9idvmG/bQzdzUtsFZB62SZdk9FV8Nf3CuwIWmhQ==",
-      "path": "cefsharp.winforms/97.1.60",
-      "hashPath": "cefsharp.winforms.97.1.60.nupkg.sha512"
-    },
     "chilkat-x64/9.5.0.89": {
       "type": "package",
       "serviceable": true,
@@ -1205,6 +1208,20 @@
       "sha512": "sha512-efqKeJ8gJwTD27cKwW60pG/JpelkVlsexNN7yWQ8e12urfEwUdHhlQEaQlNapEFGyxqzr4/Ys/5Snt5rjhw3sA==",
       "path": "documentformat.openxml/2.14.0",
       "hashPath": "documentformat.openxml.2.14.0.nupkg.sha512"
+    },
+    "EO.WebBrowser/21.3.18": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-CRlc5e777cqPlGP/MrwUjqQ4rmZfEvqZO++Jiy4eXSTteuz6rLT3DA0VCq1SnxfoYkWPj6z254LYPHiFFZyYDQ==",
+      "path": "eo.webbrowser/21.3.18",
+      "hashPath": "eo.webbrowser.21.3.18.nupkg.sha512"
+    },
+    "EO.WebBrowser.WinForm/21.3.18": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7t+09PEC1ecXaofW4LprM90mHh4gHQgvXvgzYdrE9ItdE2GDZIdB7QeaqhVH9FzjUJc82fkLa4qsnJRmBg8d1A==",
+      "path": "eo.webbrowser.winform/21.3.18",
+      "hashPath": "eo.webbrowser.winform.21.3.18.nupkg.sha512"
     },
     "Grpc.Core/2.41.1": {
       "type": "package",

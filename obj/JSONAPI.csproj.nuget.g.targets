@@ -4,6 +4,5 @@
     <Import Project="$(NuGetPackageRoot)selenium.webdriver.chromedriver\97.0.4692.7100\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('$(NuGetPackageRoot)selenium.webdriver.chromedriver\97.0.4692.7100\build\Selenium.WebDriver.ChromeDriver.targets')" />
     <Import Project="$(NuGetPackageRoot)netstandard.library\2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('$(NuGetPackageRoot)netstandard.library\2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
     <Import Project="$(NuGetPackageRoot)microsoft.visualstudio.azure.containers.tools.targets\1.14.0\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.visualstudio.azure.containers.tools.targets\1.14.0\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets')" />
-    <Import Project="$(NuGetPackageRoot)cefsharp.common\97.1.60\buildTransitive\CefSharp.Common.targets" Condition="Exists('$(NuGetPackageRoot)cefsharp.common\97.1.60\buildTransitive\CefSharp.Common.targets')" />
   </ImportGroup>
 </Project>

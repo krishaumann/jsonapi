@@ -1,17 +1,9 @@
-﻿using CefSharp.WinForms;
-using CefSharp.WinForms.Host;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace JSONAPI
 {
@@ -22,7 +14,7 @@ namespace JSONAPI
         public string oldURL = "";
         public bool oldIsValidated = false;
         public int selectedRow = 0;
-        private ChromiumWebBrowser browser;
+        private WebBrowser browser;
         public frmObjectMap()
         {
             InitializeComponent();
@@ -38,6 +30,26 @@ namespace JSONAPI
             this.btnValidateXPath.Click += new EventHandler(this.btnValidateXPath_Click);
             this.dgObjectMap.CellDoubleClick += new DataGridViewCellEventHandler(this.dgObjectMap_CellContentDoubleClick);
             this.tsMenuDeleteObjectMap.Click += new EventHandler(this.tsMenuDeleteVariable_Click);
+            this.tbObjectElement.SelectedIndexChanged += new EventHandler(this.ObjectMapTabs_SelectedIndexChanged);
+        }
+
+        private void Navigate(String address)
+        {
+            if (String.IsNullOrEmpty(address)) return;
+            if (address.Equals("about:blank")) return;
+            if (!address.StartsWith("http://") &&
+                !address.StartsWith("https://"))
+            {
+                address = "http://" + address;
+            }
+            try
+            {
+                browser.Navigate(new Uri(address));
+            }
+            catch (System.UriFormatException)
+            {
+                return;
+            }
         }
 
         private void dgObjectMap_RightMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -48,19 +60,33 @@ namespace JSONAPI
             }
         }
 
-        private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
+        private void ObjectMapTabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tbObjectElement.SelectedTab == tbBrowser)
             {
 
-                browser = new ChromiumWebBrowser();
+                browser = new WebBrowser();
                 {
-                    Dock = DockStyle.Fill;
-                    Bounds = tbBrowser.Bounds;
+                
+                    browser.Dock = DockStyle.Fill;
+                    browser.Visible = true;
+                    tbBrowser.Controls.Add(browser);
+                    browser.Parent = tbObjectElement.SelectedTab;
+                    browser.Url = new Uri("http://www.google.com");
                 };
 
-                tbBrowser.Controls.Add(browser);
-                browser.Load("www.google.com");
+                var doc = new HtmlAgilityPack.HtmlDocument();
+                doc.Load(browser.DocumentText);
+                var links = doc.DocumentNode.Descendants("a").ToList();
+                var images = doc.DocumentNode.Descendants("img").ToList();
+                var buttons = doc.DocumentNode.Descendants("button").ToList();
+                var inputs = doc.DocumentNode.Descendants("input").ToList();
+                var selects = doc.DocumentNode.Descendants("select").ToList();
+                var labels = doc.DocumentNode.Descendants("label").ToList();
+                var textAreas = doc.DocumentNode.Descendants("textarea").ToList();
+                var fieldsets = doc.DocumentNode.Descendants("fieldset").ToList();
+                var datalists = doc.DocumentNode.Descendants("datalist").ToList();
+                var outputs = doc.DocumentNode.Descendants("output").ToList();
             }
         }
 

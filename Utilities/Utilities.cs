@@ -1,31 +1,23 @@
 ﻿namespace JSONAPI.Utilities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using Newtonsoft.Json;
-    using System.Net;
-    using Microsoft.Net.Http.Server;
-    using MongoDB.Driver;
-    using MongoDB.Bson;
-    using System.Linq;
-    using MongoDB.Bson.Serialization;
-    using OpenXmlPowerTools;
-    using System.Threading.Tasks;
-    using MongoDB.Driver.Builders;
-    using MongoDB.Driver.Linq;
-    using System.Windows.Forms;
-    using Newtonsoft.Json.Linq;
-    using System.Xml;
     using Microsoft.Office.Interop.Excel;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Diagnostics;
-    using System.Globalization;
-    using HtmlAgilityPack;
+    using MongoDB.Driver;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Chrome;
     using OpenQA.Selenium.Support.UI;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Windows.Forms;
+    using System.Xml;
 
     public static class Utilities
     {
@@ -753,7 +745,12 @@
 
         public static Dictionary<string, string> SendHttpRequest(string bodyText, int incrementCounter, string testSuiteName = "", string testName = "", string tempValue = "")
         {
-            HttpWebRequest client;
+            HttpClient client = new HttpClient();
+            HttpRequestMessage requestMessage = new HttpRequestMessage();
+            StringContent httpContent = new StringContent(bodyText);
+            Stream streamResponse = null;
+            StreamReader streamReader = null;
+            HttpResponseMessage httpResponseClient = null;
             bool continueFlag = true;
             if (IsValidJson(bodyText)) System.Environment.SetEnvironmentVariable("fileType", "json", EnvironmentVariableTarget.User);
             else System.Environment.SetEnvironmentVariable("fileType", "xml", EnvironmentVariableTarget.User);
@@ -772,28 +769,27 @@
             }
             returnDict.Add("HeaderRequest", dictionaryString + "}");
             Dictionary<string, string> responseDict = new Dictionary<string, string>();
-            HttpWebResponse httpResponse = null;
-            Stream streamResponse = null;
-            StreamReader streamReader = null;
-
             string url = "";
+            string url2 = url;
             if (headerDict.TryGetValue("Url", out url))
             {
+                client.BaseAddress = new Uri(url);
+                client.Timeout = TimeSpan.FromMinutes(10);
+                client.DefaultRequestHeaders.Connection.Add("Keep-Alive");
                 WriteLogItem("url: " + url, TraceEventType.Information);
                 if (url == "") continueFlag = false;
                 headerDict.Remove("Url");
             }
             if (continueFlag)
-            {
-                client = (HttpWebRequest)WebRequest.Create(url);
+            {           
                 if (headerDict.ContainsKey("Type"))
                 {
                     if (headerDict.TryGetValue("Type", out url))
                     {
                         try
                         {
-                            if (url == "") continueFlag = false; 
-                            else client.Method = url;
+                            if (url == "") continueFlag = false;
+                            else requestMessage.Method = new HttpMethod(url);
                             headerDict.Remove("Type");
                         }
                         catch (Exception typeException)
@@ -813,7 +809,7 @@
                         {
                             try
                             {
-                                client.Accept = url;
+                                requestMessage.Headers.Add("Accept", url);
                                 headerDict.Remove("Accept");
                             }
                             catch (Exception acceptException)
@@ -831,28 +827,52 @@
                         try
                         {
                             if (key != "")
-                            client.Headers[key] = headerDict[key];
+                                requestMessage.Headers.Add(key, headerDict[key]);
                         }
                         catch (Exception fr)
                         {
                             WriteLogItem("Unable to read Header:" + fr.ToString(), TraceEventType.Error);
                         }
                     }
-                    if (!headerDict.ContainsKey("Content-Type"))
-                    {
-                        if (System.Environment.GetEnvironmentVariable("fileType", EnvironmentVariableTarget.User) == "json") client.ContentType = "application/json";
-                        else client.ContentType = "application/xml";
-                    }
-                    client.ReadWriteTimeout = 60000;
-                    client.KeepAlive = true;
+
                     try
                     {
-                        using (var streamWriter = new StreamWriter(client.GetRequestStream()))
+                        if (System.Environment.GetEnvironmentVariable("fileType", EnvironmentVariableTarget.User) == "json")
                         {
-                            streamWriter.Write(bodyText);
-                            if (streamWriter != null)
-                                streamWriter.Dispose();
-                            streamWriter.Close();
+                            var content = new StringContent(bodyText, Encoding.UTF8, "application/json");
+                            requestMessage.Content = content;
+                            httpResponseClient = client.Send(requestMessage);
+                        }
+                        else
+                        {
+                            var xmlContent = new StringContent(bodyText, Encoding.UTF8, "text/xml");
+                            requestMessage.Content = xmlContent;
+
+                            httpResponseClient = client.Send(requestMessage);
+                        }
+
+                        if (httpResponseClient.IsSuccessStatusCode)
+                        {
+                            returnDict.Add("HttpResponse", httpResponseClient.StatusCode.ToString() + "-" + httpResponseClient.ReasonPhrase.ToString());
+                            try
+                            {
+                                streamResponse = httpResponseClient.Content.ReadAsStream();
+                                streamReader = new StreamReader(streamResponse);
+                                returnDict.Add("Body", streamReader.ReadToEnd());
+                                continueFlag = true;
+                            }
+                            finally
+                            {
+                                streamReader.Close();
+                                streamResponse.Close();
+                            }
+                        }
+                        else
+                        {
+                            returnDict.Add("HttpResponse", httpResponseClient.StatusCode.ToString());
+                            returnDict.Add("Body", "No response");
+                            continueFlag = false;
+                            WriteLogItem("Exception with HTTP Response Code:" + httpResponseClient.StatusCode.ToString(), TraceEventType.Error);
                         }
                     }
                     catch (Exception e)
@@ -860,110 +880,72 @@
                         returnDict.Add("HttpResponse", "Error");
                         returnDict.Add("Body", e.ToString());
                         continueFlag = false;
-                        WriteLogItem("Exception on sending HTTP Request: " + e.ToString(), TraceEventType.Error);
+                        WriteLogItem("Exception with HTTP Response:" + e.ToString(), TraceEventType.Error);
+                        //MessageBox.Show("Exception on getting HTTP Response:" + e.ToString());
                     }
-
-                    try
-                    {
-                        httpResponse = null;
-                        if (continueFlag)
+                }
+                if (continueFlag)
+                {
+                    try 
+                    {        
+                        List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
+                        foreach (var httpResponse in httpResponseClient.Headers)
                         {
-                            try
+                            returnDict.Add("Header_" + httpResponse.Key, httpResponse.Value.ToString());
+                            for (int j = 0; j < savedVariableList.Count; j++)
                             {
-                                httpResponse = (HttpWebResponse)client.GetResponse();
-                                if (client.HaveResponse)
+                                if (savedVariableList[j].SearchForElement.Contains(httpResponse.Key))
                                 {
-                                    returnDict.Add("HttpResponse", httpResponse.StatusCode.ToString() + "-" + httpResponse.StatusDescription);
-                                    try
+                                    if (savedVariableList[j].ReplaceWhere.ToLower() != "static" && savedVariableList[j].ReplaceWhere.ToLower() != "body")
                                     {
-                                        streamResponse = httpResponse.GetResponseStream();
-                                        streamReader = new StreamReader(streamResponse);
-                                        returnDict.Add("Body", streamReader.ReadToEnd());
-                                        continueFlag = true;
-
+                                        savedVariableList[j].SavedValue = httpResponse.Value.ToString();
+                                        Variables.UpdateVariableSavedValue(httpResponse.Key, httpResponse.Value.ToString());
                                     }
-                                    finally
-                                    {
-                                        streamReader.Close();
-                                        streamResponse.Close();
-                                        //httpResponse.Close();
-                                    }
-                                }
-                                else
-                                {
-                                    continueFlag = false;
                                 }
                             }
-                            catch (Exception e)
+                            //Read Token from header based on the Token Element Specified in Options screen
+                            if (httpResponse.Key.ToString().ToLower().Contains(System.Environment.GetEnvironmentVariable("tokenElement", EnvironmentVariableTarget.User).ToString().ToLower()))
                             {
-                                returnDict.Add("HttpResponse", "Error");
-                                returnDict.Add("Body", e.ToString());
-                                continueFlag = false;
-                                WriteLogItem("Exception with HTTP Response:" + e.ToString(), TraceEventType.Error);
-                                //MessageBox.Show("Exception on getting HTTP Response:" + e.ToString());
+                                if (System.Environment.GetEnvironmentVariable("useBearerToken", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
+
+                                if (System.Environment.GetEnvironmentVariable("useBasicToken", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
+
+                                if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
+                                if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("customKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
                             }
-                        }
-                        if (continueFlag)
-                        {
-                            List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
-                            for (int i = 0; i < httpResponse.Headers.Count; ++i)
+                            else
                             {
-                                returnDict.Add("Header_" + httpResponse.Headers.Keys[i], httpResponse.Headers[i]);
-                                for (int j = 0; j < savedVariableList.Count; j++)
+                                if (httpResponse.Key.ToString().ToLower().Contains("authorization"))
                                 {
-                                    if (savedVariableList[j].SearchForElement.Contains(httpResponse.Headers.Keys[i]))
+                                    switch (httpResponse.Value.ToString().ToLower())
                                     {
-                                        if (savedVariableList[j].ReplaceWhere.ToLower() != "static" && savedVariableList[j].ReplaceWhere.ToLower() != "body")
-                                        {
-                                            savedVariableList[j].SavedValue = httpResponse.Headers[i];
-                                            Variables.UpdateVariableSavedValue(httpResponse.Headers.Keys[i], httpResponse.Headers[i]);
-                                        }
-                                    }
-                                }
-                                //Read Token from header based on the Token Element Specified in Options screen
-                                if (httpResponse.Headers.Keys[i].ToString().ToLower().Contains(System.Environment.GetEnvironmentVariable("tokenElement", EnvironmentVariableTarget.User).ToString().ToLower()))
-                                {
-                                    if (System.Environment.GetEnvironmentVariable("useBearerToken", EnvironmentVariableTarget.User) == "yes")
-                                    {
-                                        System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                    }
-
-                                    if (System.Environment.GetEnvironmentVariable("useBasicToken", EnvironmentVariableTarget.User) == "yes")
-                                    {
-                                        System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                    }
-
-                                    if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
-                                    {
-                                        System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                    }
-                                    if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
-                                    {
-                                        System.Environment.SetEnvironmentVariable("customKey", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                    }
-                                }
-                                else
-                                {
-                                    if (httpResponse.Headers.Keys[i].ToString().ToLower().Contains("authorization"))
-                                    {
-                                        switch (httpResponse.Headers[i].ToString().ToLower())
-                                        {
-                                            case "bearer":
-                                                System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                                break;
-                                            case "api_key":
-                                                System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                                break;
-                                            case "api-key":
-                                                System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                                break;
-                                            case "basic":
-                                                System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                                break;
-                                            default:
-                                                System.Environment.SetEnvironmentVariable("customKey", httpResponse.Headers[i].ToString(), EnvironmentVariableTarget.User);
-                                                break;
-                                        }
+                                        case "bearer":
+                                            System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        case "api_key":
+                                            System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        case "api-key":
+                                            System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        case "basic":
+                                            System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        default:
+                                            System.Environment.SetEnvironmentVariable("customKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
                                     }
                                 }
                             }
@@ -982,11 +964,11 @@
                     }
                     finally
                     {
-                        client.Abort();
+                        client.Dispose();
                         if (streamReader != null)
                             streamReader.Dispose();
-                        if (httpResponse != null)
-                            httpResponse.Close();
+                        if (httpResponseClient != null)
+                            httpResponseClient.Dispose();
                     }
                 }
                 else

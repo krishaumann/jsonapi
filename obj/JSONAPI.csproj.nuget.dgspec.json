@@ -40,14 +40,6 @@
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows7.0",
           "dependencies": {
-            "CefSharp.Common": {
-              "target": "Package",
-              "version": "[97.1.60, )"
-            },
-            "CefSharp.WinForms": {
-              "target": "Package",
-              "version": "[97.1.60, )"
-            },
             "DataGridViewAutoFilter": {
               "target": "Package",
               "version": "[1.0.0, )"
@@ -55,6 +47,10 @@
             "DocumentFormat.OpenXml": {
               "target": "Package",
               "version": "[2.14.0, )"
+            },
+            "EO.WebBrowser.WinForm": {
+              "target": "Package",
+              "version": "[21.3.18, )"
             },
             "Grpc.Core": {
               "target": "Package",

@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmObjectMap));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tbObjectElement = new System.Windows.Forms.TabControl();
+            this.tbElements = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnAddObject = new JSONAPI.Controls.JSONAPIButton();
             this.btnCancelObject = new JSONAPI.Controls.JSONAPIButton();
@@ -42,6 +44,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tbBrowser = new System.Windows.Forms.TabPage();
             this.dgObjectMap = new System.Windows.Forms.DataGridView();
             this.colSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colObjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,19 +55,16 @@
             this.ctxObjectMapGridOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsMenuDeleteObjectMap = new System.Windows.Forms.ToolStripMenuItem();
             this.bsObjectMap = new System.Windows.Forms.BindingSource(this.components);
-            this.tbObjectElement = new System.Windows.Forms.TabControl();
-            this.tbElements = new System.Windows.Forms.TabPage();
-            this.tbBrowser = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tbObjectElement.SuspendLayout();
+            this.tbElements.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgObjectMap)).BeginInit();
             this.ctxObjectMapGridOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsObjectMap)).BeginInit();
-            this.tbObjectElement.SuspendLayout();
-            this.tbElements.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -85,6 +85,29 @@
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 206;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // tbObjectElement
+            // 
+            this.tbObjectElement.Controls.Add(this.tbElements);
+            this.tbObjectElement.Controls.Add(this.tbBrowser);
+            this.tbObjectElement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbObjectElement.Location = new System.Drawing.Point(0, 0);
+            this.tbObjectElement.Name = "tbObjectElement";
+            this.tbObjectElement.SelectedIndex = 0;
+            this.tbObjectElement.Size = new System.Drawing.Size(800, 206);
+            this.tbObjectElement.TabIndex = 1;
+            this.tbObjectElement.SelectedIndexChanged += new System.EventHandler(this.ObjectMapTabs_SelectedIndexChanged);
+            // 
+            // tbElements
+            // 
+            this.tbElements.Controls.Add(this.groupBox1);
+            this.tbElements.Location = new System.Drawing.Point(4, 24);
+            this.tbElements.Name = "tbElements";
+            this.tbElements.Padding = new System.Windows.Forms.Padding(3);
+            this.tbElements.Size = new System.Drawing.Size(792, 178);
+            this.tbElements.TabIndex = 0;
+            this.tbElements.Text = "Elements";
+            this.tbElements.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -203,6 +226,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Element Name";
             // 
+            // tbBrowser
+            // 
+            this.tbBrowser.Location = new System.Drawing.Point(4, 24);
+            this.tbBrowser.Name = "tbBrowser";
+            this.tbBrowser.Padding = new System.Windows.Forms.Padding(3);
+            this.tbBrowser.Size = new System.Drawing.Size(792, 178);
+            this.tbBrowser.TabIndex = 1;
+            this.tbBrowser.Text = "Browser";
+            this.tbBrowser.UseVisualStyleBackColor = true;
+            // 
             // dgObjectMap
             // 
             this.dgObjectMap.AllowUserToAddRows = false;
@@ -279,39 +312,6 @@
             this.tsMenuDeleteObjectMap.Size = new System.Drawing.Size(107, 22);
             this.tsMenuDeleteObjectMap.Text = "Delete";
             // 
-            // tbObjectElement
-            // 
-            this.tbObjectElement.Controls.Add(this.tbElements);
-            this.tbObjectElement.Controls.Add(this.tbBrowser);
-            this.tbObjectElement.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbObjectElement.Location = new System.Drawing.Point(0, 0);
-            this.tbObjectElement.Name = "tbObjectElement";
-            this.tbObjectElement.SelectedIndex = 0;
-            this.tbObjectElement.Size = new System.Drawing.Size(800, 206);
-            this.tbObjectElement.TabIndex = 1;
-            this.tbObjectElement.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
-            // 
-            // tbElements
-            // 
-            this.tbElements.Controls.Add(this.groupBox1);
-            this.tbElements.Location = new System.Drawing.Point(4, 24);
-            this.tbElements.Name = "tbElements";
-            this.tbElements.Padding = new System.Windows.Forms.Padding(3);
-            this.tbElements.Size = new System.Drawing.Size(777, 176);
-            this.tbElements.TabIndex = 0;
-            this.tbElements.Text = "Elements";
-            this.tbElements.UseVisualStyleBackColor = true;
-            // 
-            // tbBrowser
-            // 
-            this.tbBrowser.Location = new System.Drawing.Point(4, 24);
-            this.tbBrowser.Name = "tbBrowser";
-            this.tbBrowser.Padding = new System.Windows.Forms.Padding(3);
-            this.tbBrowser.Size = new System.Drawing.Size(792, 178);
-            this.tbBrowser.TabIndex = 1;
-            this.tbBrowser.Text = "Browser";
-            this.tbBrowser.UseVisualStyleBackColor = true;
-            // 
             // frmObjectMap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -325,13 +325,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tbObjectElement.ResumeLayout(false);
+            this.tbElements.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgObjectMap)).EndInit();
             this.ctxObjectMapGridOptions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bsObjectMap)).EndInit();
-            this.tbObjectElement.ResumeLayout(false);
-            this.tbElements.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

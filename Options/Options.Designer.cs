@@ -30,19 +30,19 @@ namespace JSONAPI.Options
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bsVariables = new System.Windows.Forms.BindingSource(this.components);
             this.ctxVariableGridOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsMenuDeleteVariable = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,30 +67,10 @@ namespace JSONAPI.Options
             this.btnDeleteTestSuite = new JSONAPI.Controls.JSONAPIButton();
             this.btnRunTests = new JSONAPI.Controls.JSONAPIButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.txtSampleOutput = new System.Windows.Forms.RichTextBox();
-            this.lstVariables = new System.Windows.Forms.ListBox();
-            this.lstVariableList = new System.Windows.Forms.ListBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.btnRemoveAllVariables = new JSONAPI.Controls.JSONAPIButton();
-            this.btnRemoveOneVariable = new JSONAPI.Controls.JSONAPIButton();
-            this.btnAddSingleVariable = new JSONAPI.Controls.JSONAPIButton();
-            this.btnAddAllVariables = new JSONAPI.Controls.JSONAPIButton();
             this.chkExportResults = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnMoveUp = new JSONAPI.Controls.JSONAPIButton();
-            this.btnMoveDown = new JSONAPI.Controls.JSONAPIButton();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.btnAddTest = new JSONAPI.Controls.JSONAPIButton();
-            this.lstTestList = new System.Windows.Forms.ListBox();
             this.txtTestName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.btnRemoveAll = new JSONAPI.Controls.JSONAPIButton();
-            this.lstTestNames = new System.Windows.Forms.ListBox();
-            this.btnRemoveOne = new JSONAPI.Controls.JSONAPIButton();
-            this.btnAddSingleTest = new JSONAPI.Controls.JSONAPIButton();
-            this.btnAddAll = new JSONAPI.Controls.JSONAPIButton();
             this.tbPageOptions = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -159,6 +139,33 @@ namespace JSONAPI.Options
             this.label15 = new System.Windows.Forms.Label();
             this.bsTestRun = new System.Windows.Forms.BindingSource(this.components);
             this.ofdTestResults = new System.Windows.Forms.OpenFileDialog();
+            this.tbTestSuite = new System.Windows.Forms.TabControl();
+            this.tbTestSuiteDetails = new System.Windows.Forms.TabPage();
+            this.tbConcurrentUsers = new System.Windows.Forms.TabPage();
+            this.btnMoveUp = new JSONAPI.Controls.JSONAPIButton();
+            this.btnMoveDown = new JSONAPI.Controls.JSONAPIButton();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lstTestList = new System.Windows.Forms.ListBox();
+            this.btnRemoveAll = new JSONAPI.Controls.JSONAPIButton();
+            this.lstTestNames = new System.Windows.Forms.ListBox();
+            this.btnRemoveOne = new JSONAPI.Controls.JSONAPIButton();
+            this.btnAddSingleTest = new JSONAPI.Controls.JSONAPIButton();
+            this.btnAddAll = new JSONAPI.Controls.JSONAPIButton();
+            this.tbOutput = new System.Windows.Forms.TabPage();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtSampleOutput = new System.Windows.Forms.RichTextBox();
+            this.lstVariables = new System.Windows.Forms.ListBox();
+            this.lstVariableList = new System.Windows.Forms.ListBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.btnRemoveAllVariables = new JSONAPI.Controls.JSONAPIButton();
+            this.btnRemoveOneVariable = new JSONAPI.Controls.JSONAPIButton();
+            this.btnAddSingleVariable = new JSONAPI.Controls.JSONAPIButton();
+            this.btnAddAllVariables = new JSONAPI.Controls.JSONAPIButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dgConcurrentUsers = new System.Windows.Forms.DataGridView();
+            this.colTestName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colConcurrentPercentage = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewNumericUpDownColumn();
             ((System.ComponentModel.ISupportInitialize)(this.bsVariables)).BeginInit();
             this.ctxVariableGridOptions.SuspendLayout();
             this.tbPageTestSuite.SuspendLayout();
@@ -195,6 +202,11 @@ namespace JSONAPI.Options
             this.tbPageRanges.SuspendLayout();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsTestRun)).BeginInit();
+            this.tbTestSuite.SuspendLayout();
+            this.tbTestSuiteDetails.SuspendLayout();
+            this.tbConcurrentUsers.SuspendLayout();
+            this.tbOutput.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgConcurrentUsers)).BeginInit();
             this.SuspendLayout();
             // 
             // ctxVariableGridOptions
@@ -273,15 +285,15 @@ namespace JSONAPI.Options
             this.dgTestSuiteList.Location = new System.Drawing.Point(0, 0);
             this.dgTestSuiteList.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.dgTestSuiteList.Name = "dgTestSuiteList";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgTestSuiteList.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle32.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle32.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgTestSuiteList.RowHeadersDefaultCellStyle = dataGridViewCellStyle32;
             this.dgTestSuiteList.RowHeadersVisible = false;
             this.dgTestSuiteList.RowHeadersWidth = 70;
             this.dgTestSuiteList.RowTemplate.Height = 25;
@@ -292,11 +304,11 @@ namespace JSONAPI.Options
             // colSelected
             // 
             this.colSelected.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.NullValue = false;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colSelected.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle26.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle26.NullValue = false;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colSelected.DefaultCellStyle = dataGridViewCellStyle26;
             this.colSelected.HeaderText = "Select";
             this.colSelected.MinimumWidth = 80;
             this.colSelected.Name = "colSelected";
@@ -307,9 +319,9 @@ namespace JSONAPI.Options
             // 
             this.colTestSuiteName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colTestSuiteName.DataPropertyName = "testSuiteName";
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colTestSuiteName.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle27.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colTestSuiteName.DefaultCellStyle = dataGridViewCellStyle27;
             this.colTestSuiteName.HeaderText = "Test Suite Name";
             this.colTestSuiteName.MinimumWidth = 100;
             this.colTestSuiteName.Name = "colTestSuiteName";
@@ -319,9 +331,9 @@ namespace JSONAPI.Options
             // 
             this.colLastExecuted.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colLastExecuted.DataPropertyName = "lastExecuted";
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colLastExecuted.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle28.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colLastExecuted.DefaultCellStyle = dataGridViewCellStyle28;
             this.colLastExecuted.HeaderText = "Last Executed";
             this.colLastExecuted.MinimumWidth = 50;
             this.colLastExecuted.Name = "colLastExecuted";
@@ -331,8 +343,8 @@ namespace JSONAPI.Options
             // 
             this.colStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colStatus.DataPropertyName = "testStatus";
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            this.colStatus.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle29.BackColor = System.Drawing.Color.White;
+            this.colStatus.DefaultCellStyle = dataGridViewCellStyle29;
             this.colStatus.HeaderText = "Status";
             this.colStatus.MinimumWidth = 50;
             this.colStatus.Name = "colStatus";
@@ -341,10 +353,10 @@ namespace JSONAPI.Options
             // colTestList
             // 
             this.colTestList.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.CornflowerBlue;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colTestList.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle30.BackColor = System.Drawing.Color.CornflowerBlue;
+            dataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colTestList.DefaultCellStyle = dataGridViewCellStyle30;
             this.colTestList.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.colTestList.HeaderText = "Tests..";
             this.colTestList.MinimumWidth = 70;
@@ -357,10 +369,10 @@ namespace JSONAPI.Options
             // 
             // colHistory
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.CornflowerBlue;
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.colHistory.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle31.BackColor = System.Drawing.Color.CornflowerBlue;
+            dataGridViewCellStyle31.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.colHistory.DefaultCellStyle = dataGridViewCellStyle31;
             this.colHistory.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.colHistory.HeaderText = "History..";
             this.colHistory.MinimumWidth = 70;
@@ -487,140 +499,20 @@ namespace JSONAPI.Options
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label22);
-            this.groupBox2.Controls.Add(this.txtSampleOutput);
-            this.groupBox2.Controls.Add(this.lstVariables);
-            this.groupBox2.Controls.Add(this.lstVariableList);
-            this.groupBox2.Controls.Add(this.label21);
-            this.groupBox2.Controls.Add(this.btnRemoveAllVariables);
-            this.groupBox2.Controls.Add(this.btnRemoveOneVariable);
-            this.groupBox2.Controls.Add(this.btnAddSingleVariable);
-            this.groupBox2.Controls.Add(this.btnAddAllVariables);
+            this.groupBox2.Controls.Add(this.tbTestSuite);
             this.groupBox2.Controls.Add(this.chkExportResults);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.btnMoveUp);
-            this.groupBox2.Controls.Add(this.btnMoveDown);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.btnAddTest);
-            this.groupBox2.Controls.Add(this.lstTestList);
             this.groupBox2.Controls.Add(this.txtTestName);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.btnRemoveAll);
-            this.groupBox2.Controls.Add(this.lstTestNames);
-            this.groupBox2.Controls.Add(this.btnRemoveOne);
-            this.groupBox2.Controls.Add(this.btnAddSingleTest);
-            this.groupBox2.Controls.Add(this.btnAddAll);
             this.groupBox2.Cursor = System.Windows.Forms.Cursors.Default;
             this.groupBox2.Location = new System.Drawing.Point(6, 3);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox2.Size = new System.Drawing.Size(1009, 442);
+            this.groupBox2.Size = new System.Drawing.Size(1032, 442);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Test Suite Details";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(789, 253);
-            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(90, 16);
-            this.label22.TabIndex = 27;
-            this.label22.Text = "Sample Output";
-            // 
-            // txtSampleOutput
-            // 
-            this.txtSampleOutput.Location = new System.Drawing.Point(789, 272);
-            this.txtSampleOutput.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtSampleOutput.Name = "txtSampleOutput";
-            this.txtSampleOutput.ReadOnly = true;
-            this.txtSampleOutput.Size = new System.Drawing.Size(202, 154);
-            this.txtSampleOutput.TabIndex = 26;
-            this.txtSampleOutput.Text = "";
-            // 
-            // lstVariables
-            // 
-            this.lstVariables.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lstVariables.FormattingEnabled = true;
-            this.lstVariables.ItemHeight = 16;
-            this.lstVariables.Location = new System.Drawing.Point(435, 272);
-            this.lstVariables.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.lstVariables.Name = "lstVariables";
-            this.lstVariables.Size = new System.Drawing.Size(338, 148);
-            this.lstVariables.TabIndex = 25;
-            // 
-            // lstVariableList
-            // 
-            this.lstVariableList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lstVariableList.FormattingEnabled = true;
-            this.lstVariableList.ItemHeight = 16;
-            this.lstVariableList.Location = new System.Drawing.Point(19, 272);
-            this.lstVariableList.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.lstVariableList.Name = "lstVariableList";
-            this.lstVariableList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lstVariableList.Size = new System.Drawing.Size(338, 148);
-            this.lstVariableList.TabIndex = 24;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(435, 253);
-            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(151, 16);
-            this.label21.TabIndex = 23;
-            this.label21.Text = "Selected Output Variables";
-            // 
-            // btnRemoveAllVariables
-            // 
-            this.btnRemoveAllVariables.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnRemoveAllVariables.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveAllVariables.Image = global::JSONAPI.Properties.Resources.DoubleLeftArrow;
-            this.btnRemoveAllVariables.Location = new System.Drawing.Point(378, 387);
-            this.btnRemoveAllVariables.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnRemoveAllVariables.Name = "btnRemoveAllVariables";
-            this.btnRemoveAllVariables.Size = new System.Drawing.Size(37, 24);
-            this.btnRemoveAllVariables.TabIndex = 20;
-            this.btnRemoveAllVariables.UseVisualStyleBackColor = false;
-            // 
-            // btnRemoveOneVariable
-            // 
-            this.btnRemoveOneVariable.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnRemoveOneVariable.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveOneVariable.Image = global::JSONAPI.Properties.Resources.LeftArrow;
-            this.btnRemoveOneVariable.Location = new System.Drawing.Point(378, 357);
-            this.btnRemoveOneVariable.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnRemoveOneVariable.Name = "btnRemoveOneVariable";
-            this.btnRemoveOneVariable.Size = new System.Drawing.Size(37, 24);
-            this.btnRemoveOneVariable.TabIndex = 19;
-            this.btnRemoveOneVariable.UseVisualStyleBackColor = false;
-            // 
-            // btnAddSingleVariable
-            // 
-            this.btnAddSingleVariable.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnAddSingleVariable.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddSingleVariable.Image = global::JSONAPI.Properties.Resources.RightArrow;
-            this.btnAddSingleVariable.Location = new System.Drawing.Point(378, 294);
-            this.btnAddSingleVariable.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnAddSingleVariable.Name = "btnAddSingleVariable";
-            this.btnAddSingleVariable.Size = new System.Drawing.Size(37, 24);
-            this.btnAddSingleVariable.TabIndex = 17;
-            this.btnAddSingleVariable.UseVisualStyleBackColor = false;
-            // 
-            // btnAddAllVariables
-            // 
-            this.btnAddAllVariables.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnAddAllVariables.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddAllVariables.Image = global::JSONAPI.Properties.Resources.DoubleRightArrow;
-            this.btnAddAllVariables.Location = new System.Drawing.Point(378, 324);
-            this.btnAddAllVariables.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnAddAllVariables.Name = "btnAddAllVariables";
-            this.btnAddAllVariables.Size = new System.Drawing.Size(37, 24);
-            this.btnAddAllVariables.TabIndex = 18;
-            this.btnAddAllVariables.UseVisualStyleBackColor = false;
             // 
             // chkExportResults
             // 
@@ -633,65 +525,11 @@ namespace JSONAPI.Options
             this.chkExportResults.Text = "Export Test Results";
             this.chkExportResults.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 253);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(153, 16);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Available Output Variables";
-            // 
-            // btnMoveUp
-            // 
-            this.btnMoveUp.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnMoveUp.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnMoveUp.Image = global::JSONAPI.Properties.Resources.UpArrow;
-            this.btnMoveUp.Location = new System.Drawing.Point(870, 107);
-            this.btnMoveUp.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnMoveUp.Name = "btnMoveUp";
-            this.btnMoveUp.Size = new System.Drawing.Size(37, 24);
-            this.btnMoveUp.TabIndex = 11;
-            this.btnMoveUp.UseVisualStyleBackColor = false;
-            // 
-            // btnMoveDown
-            // 
-            this.btnMoveDown.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnMoveDown.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnMoveDown.Image = global::JSONAPI.Properties.Resources.DownArrow;
-            this.btnMoveDown.Location = new System.Drawing.Point(870, 138);
-            this.btnMoveDown.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnMoveDown.Name = "btnMoveDown";
-            this.btnMoveDown.Size = new System.Drawing.Size(37, 24);
-            this.btnMoveDown.TabIndex = 12;
-            this.btnMoveDown.UseVisualStyleBackColor = false;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(485, 57);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(89, 16);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Selected Tests";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(19, 57);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 16);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Available Tests";
-            // 
             // btnAddTest
             // 
             this.btnAddTest.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnAddTest.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnAddTest.Location = new System.Drawing.Point(870, 217);
+            this.btnAddTest.Location = new System.Drawing.Point(924, 343);
             this.btnAddTest.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnAddTest.Name = "btnAddTest";
             this.btnAddTest.Size = new System.Drawing.Size(103, 23);
@@ -699,18 +537,6 @@ namespace JSONAPI.Options
             this.btnAddTest.Text = "Add Item";
             this.btnAddTest.UseVisualStyleBackColor = false;
             this.btnAddTest.Click += new System.EventHandler(this.AddTest_Click);
-            // 
-            // lstTestList
-            // 
-            this.lstTestList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lstTestList.FormattingEnabled = true;
-            this.lstTestList.ItemHeight = 16;
-            this.lstTestList.Location = new System.Drawing.Point(19, 76);
-            this.lstTestList.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.lstTestList.Name = "lstTestList";
-            this.lstTestList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lstTestList.Size = new System.Drawing.Size(377, 148);
-            this.lstTestList.TabIndex = 1;
             // 
             // txtTestName
             // 
@@ -729,65 +555,6 @@ namespace JSONAPI.Options
             this.label7.Size = new System.Drawing.Size(99, 16);
             this.label7.TabIndex = 2;
             this.label7.Text = "Test Suite Name";
-            // 
-            // btnRemoveAll
-            // 
-            this.btnRemoveAll.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnRemoveAll.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveAll.Image = global::JSONAPI.Properties.Resources.DoubleLeftArrow;
-            this.btnRemoveAll.Location = new System.Drawing.Point(420, 189);
-            this.btnRemoveAll.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnRemoveAll.Name = "btnRemoveAll";
-            this.btnRemoveAll.Size = new System.Drawing.Size(37, 24);
-            this.btnRemoveAll.TabIndex = 7;
-            this.btnRemoveAll.UseVisualStyleBackColor = false;
-            // 
-            // lstTestNames
-            // 
-            this.lstTestNames.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lstTestNames.FormattingEnabled = true;
-            this.lstTestNames.ItemHeight = 16;
-            this.lstTestNames.Location = new System.Drawing.Point(485, 76);
-            this.lstTestNames.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.lstTestNames.Name = "lstTestNames";
-            this.lstTestNames.Size = new System.Drawing.Size(359, 148);
-            this.lstTestNames.TabIndex = 3;
-            // 
-            // btnRemoveOne
-            // 
-            this.btnRemoveOne.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnRemoveOne.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveOne.Image = global::JSONAPI.Properties.Resources.LeftArrow;
-            this.btnRemoveOne.Location = new System.Drawing.Point(420, 158);
-            this.btnRemoveOne.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnRemoveOne.Name = "btnRemoveOne";
-            this.btnRemoveOne.Size = new System.Drawing.Size(37, 24);
-            this.btnRemoveOne.TabIndex = 6;
-            this.btnRemoveOne.UseVisualStyleBackColor = false;
-            // 
-            // btnAddSingleTest
-            // 
-            this.btnAddSingleTest.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnAddSingleTest.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddSingleTest.Image = global::JSONAPI.Properties.Resources.RightArrow;
-            this.btnAddSingleTest.Location = new System.Drawing.Point(420, 96);
-            this.btnAddSingleTest.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnAddSingleTest.Name = "btnAddSingleTest";
-            this.btnAddSingleTest.Size = new System.Drawing.Size(37, 24);
-            this.btnAddSingleTest.TabIndex = 4;
-            this.btnAddSingleTest.UseVisualStyleBackColor = false;
-            // 
-            // btnAddAll
-            // 
-            this.btnAddAll.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnAddAll.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddAll.Image = global::JSONAPI.Properties.Resources.DoubleRightArrow;
-            this.btnAddAll.Location = new System.Drawing.Point(420, 127);
-            this.btnAddAll.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnAddAll.Name = "btnAddAll";
-            this.btnAddAll.Size = new System.Drawing.Size(37, 24);
-            this.btnAddAll.TabIndex = 5;
-            this.btnAddAll.UseVisualStyleBackColor = false;
             // 
             // tbPageOptions
             // 
@@ -1077,9 +844,9 @@ namespace JSONAPI.Options
             // 
             this.colVariableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colVariableName.DataPropertyName = "variableName";
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colVariableName.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colVariableName.DefaultCellStyle = dataGridViewCellStyle20;
             this.colVariableName.HeaderText = "Variable Name";
             this.colVariableName.MinimumWidth = 6;
             this.colVariableName.Name = "colVariableName";
@@ -1088,9 +855,9 @@ namespace JSONAPI.Options
             // 
             this.colSearchForElement.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colSearchForElement.DataPropertyName = "searchForElement";
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colSearchForElement.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle33.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colSearchForElement.DefaultCellStyle = dataGridViewCellStyle33;
             this.colSearchForElement.HeaderText = "Search For Element";
             this.colSearchForElement.MinimumWidth = 6;
             this.colSearchForElement.Name = "colSearchForElement";
@@ -1099,9 +866,9 @@ namespace JSONAPI.Options
             // 
             this.colSavedValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colSavedValue.DataPropertyName = "savedValue";
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colSavedValue.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle34.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colSavedValue.DefaultCellStyle = dataGridViewCellStyle34;
             this.colSavedValue.HeaderText = "Saved Value";
             this.colSavedValue.MinimumWidth = 6;
             this.colSavedValue.Name = "colSavedValue";
@@ -1110,9 +877,9 @@ namespace JSONAPI.Options
             // 
             this.colReplaceWhere.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colReplaceWhere.DataPropertyName = "replaceWhere";
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colReplaceWhere.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle35.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colReplaceWhere.DefaultCellStyle = dataGridViewCellStyle35;
             this.colReplaceWhere.HeaderText = "Replace Where";
             this.colReplaceWhere.MinimumWidth = 6;
             this.colReplaceWhere.Name = "colReplaceWhere";
@@ -1121,9 +888,9 @@ namespace JSONAPI.Options
             // 
             this.colPartialSave.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colPartialSave.DataPropertyName = "partialSave";
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colPartialSave.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle36.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colPartialSave.DefaultCellStyle = dataGridViewCellStyle36;
             this.colPartialSave.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
             this.colPartialSave.HeaderText = "Save Partial";
             this.colPartialSave.Items.AddRange(new object[] {
@@ -1139,9 +906,9 @@ namespace JSONAPI.Options
             // 
             this.colNumChars.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colNumChars.DataPropertyName = "numChars";
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.Aquamarine;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colNumChars.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle37.BackColor = System.Drawing.Color.Aquamarine;
+            dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.colNumChars.DefaultCellStyle = dataGridViewCellStyle37;
             this.colNumChars.HeaderText = "Number of Chars";
             this.colNumChars.MinimumWidth = 6;
             this.colNumChars.Name = "colNumChars";
@@ -1599,6 +1366,327 @@ namespace JSONAPI.Options
             this.ofdTestResults.FileName = "results";
             this.ofdTestResults.Title = "Export Test Results As Excel";
             // 
+            // tbTestSuite
+            // 
+            this.tbTestSuite.Controls.Add(this.tbTestSuiteDetails);
+            this.tbTestSuite.Controls.Add(this.tbConcurrentUsers);
+            this.tbTestSuite.Controls.Add(this.tbOutput);
+            this.tbTestSuite.Location = new System.Drawing.Point(5, 83);
+            this.tbTestSuite.Name = "tbTestSuite";
+            this.tbTestSuite.SelectedIndex = 0;
+            this.tbTestSuite.Size = new System.Drawing.Size(1026, 254);
+            this.tbTestSuite.TabIndex = 28;
+            // 
+            // tbTestSuiteDetails
+            // 
+            this.tbTestSuiteDetails.Controls.Add(this.btnMoveUp);
+            this.tbTestSuiteDetails.Controls.Add(this.btnMoveDown);
+            this.tbTestSuiteDetails.Controls.Add(this.label10);
+            this.tbTestSuiteDetails.Controls.Add(this.label6);
+            this.tbTestSuiteDetails.Controls.Add(this.lstTestList);
+            this.tbTestSuiteDetails.Controls.Add(this.btnRemoveAll);
+            this.tbTestSuiteDetails.Controls.Add(this.lstTestNames);
+            this.tbTestSuiteDetails.Controls.Add(this.btnRemoveOne);
+            this.tbTestSuiteDetails.Controls.Add(this.btnAddSingleTest);
+            this.tbTestSuiteDetails.Controls.Add(this.btnAddAll);
+            this.tbTestSuiteDetails.Location = new System.Drawing.Point(4, 25);
+            this.tbTestSuiteDetails.Name = "tbTestSuiteDetails";
+            this.tbTestSuiteDetails.Padding = new System.Windows.Forms.Padding(3);
+            this.tbTestSuiteDetails.Size = new System.Drawing.Size(1018, 225);
+            this.tbTestSuiteDetails.TabIndex = 0;
+            this.tbTestSuiteDetails.Text = "Details";
+            this.tbTestSuiteDetails.UseVisualStyleBackColor = true;
+            // 
+            // tbConcurrentUsers
+            // 
+            this.tbConcurrentUsers.Controls.Add(this.dgConcurrentUsers);
+            this.tbConcurrentUsers.Location = new System.Drawing.Point(4, 25);
+            this.tbConcurrentUsers.Name = "tbConcurrentUsers";
+            this.tbConcurrentUsers.Padding = new System.Windows.Forms.Padding(3);
+            this.tbConcurrentUsers.Size = new System.Drawing.Size(1018, 225);
+            this.tbConcurrentUsers.TabIndex = 1;
+            this.tbConcurrentUsers.Text = "Concurrent Users";
+            this.tbConcurrentUsers.UseVisualStyleBackColor = true;
+            // 
+            // btnMoveUp
+            // 
+            this.btnMoveUp.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnMoveUp.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMoveUp.Image = global::JSONAPI.Properties.Resources.UpArrow;
+            this.btnMoveUp.Location = new System.Drawing.Point(861, 68);
+            this.btnMoveUp.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnMoveUp.Name = "btnMoveUp";
+            this.btnMoveUp.Size = new System.Drawing.Size(37, 24);
+            this.btnMoveUp.TabIndex = 21;
+            this.btnMoveUp.UseVisualStyleBackColor = false;
+            // 
+            // btnMoveDown
+            // 
+            this.btnMoveDown.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnMoveDown.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMoveDown.Image = global::JSONAPI.Properties.Resources.DownArrow;
+            this.btnMoveDown.Location = new System.Drawing.Point(861, 99);
+            this.btnMoveDown.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnMoveDown.Name = "btnMoveDown";
+            this.btnMoveDown.Size = new System.Drawing.Size(37, 24);
+            this.btnMoveDown.TabIndex = 22;
+            this.btnMoveDown.UseVisualStyleBackColor = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(476, 18);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(89, 16);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "Selected Tests";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 18);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(91, 16);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Available Tests";
+            // 
+            // lstTestList
+            // 
+            this.lstTestList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lstTestList.FormattingEnabled = true;
+            this.lstTestList.ItemHeight = 16;
+            this.lstTestList.Location = new System.Drawing.Point(10, 37);
+            this.lstTestList.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.lstTestList.Name = "lstTestList";
+            this.lstTestList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.lstTestList.Size = new System.Drawing.Size(377, 148);
+            this.lstTestList.TabIndex = 14;
+            // 
+            // btnRemoveAll
+            // 
+            this.btnRemoveAll.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnRemoveAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemoveAll.Image = global::JSONAPI.Properties.Resources.DoubleLeftArrow;
+            this.btnRemoveAll.Location = new System.Drawing.Point(411, 150);
+            this.btnRemoveAll.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnRemoveAll.Name = "btnRemoveAll";
+            this.btnRemoveAll.Size = new System.Drawing.Size(37, 24);
+            this.btnRemoveAll.TabIndex = 19;
+            this.btnRemoveAll.UseVisualStyleBackColor = false;
+            // 
+            // lstTestNames
+            // 
+            this.lstTestNames.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lstTestNames.FormattingEnabled = true;
+            this.lstTestNames.ItemHeight = 16;
+            this.lstTestNames.Location = new System.Drawing.Point(476, 37);
+            this.lstTestNames.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.lstTestNames.Name = "lstTestNames";
+            this.lstTestNames.Size = new System.Drawing.Size(359, 148);
+            this.lstTestNames.TabIndex = 15;
+            // 
+            // btnRemoveOne
+            // 
+            this.btnRemoveOne.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnRemoveOne.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemoveOne.Image = global::JSONAPI.Properties.Resources.LeftArrow;
+            this.btnRemoveOne.Location = new System.Drawing.Point(411, 119);
+            this.btnRemoveOne.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnRemoveOne.Name = "btnRemoveOne";
+            this.btnRemoveOne.Size = new System.Drawing.Size(37, 24);
+            this.btnRemoveOne.TabIndex = 18;
+            this.btnRemoveOne.UseVisualStyleBackColor = false;
+            // 
+            // btnAddSingleTest
+            // 
+            this.btnAddSingleTest.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnAddSingleTest.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddSingleTest.Image = global::JSONAPI.Properties.Resources.RightArrow;
+            this.btnAddSingleTest.Location = new System.Drawing.Point(411, 57);
+            this.btnAddSingleTest.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnAddSingleTest.Name = "btnAddSingleTest";
+            this.btnAddSingleTest.Size = new System.Drawing.Size(37, 24);
+            this.btnAddSingleTest.TabIndex = 16;
+            this.btnAddSingleTest.UseVisualStyleBackColor = false;
+            // 
+            // btnAddAll
+            // 
+            this.btnAddAll.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnAddAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddAll.Image = global::JSONAPI.Properties.Resources.DoubleRightArrow;
+            this.btnAddAll.Location = new System.Drawing.Point(411, 88);
+            this.btnAddAll.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnAddAll.Name = "btnAddAll";
+            this.btnAddAll.Size = new System.Drawing.Size(37, 24);
+            this.btnAddAll.TabIndex = 17;
+            this.btnAddAll.UseVisualStyleBackColor = false;
+            // 
+            // tbOutput
+            // 
+            this.tbOutput.Controls.Add(this.label22);
+            this.tbOutput.Controls.Add(this.txtSampleOutput);
+            this.tbOutput.Controls.Add(this.lstVariables);
+            this.tbOutput.Controls.Add(this.lstVariableList);
+            this.tbOutput.Controls.Add(this.label21);
+            this.tbOutput.Controls.Add(this.btnRemoveAllVariables);
+            this.tbOutput.Controls.Add(this.btnRemoveOneVariable);
+            this.tbOutput.Controls.Add(this.btnAddSingleVariable);
+            this.tbOutput.Controls.Add(this.btnAddAllVariables);
+            this.tbOutput.Controls.Add(this.label1);
+            this.tbOutput.Location = new System.Drawing.Point(4, 25);
+            this.tbOutput.Name = "tbOutput";
+            this.tbOutput.Size = new System.Drawing.Size(1018, 295);
+            this.tbOutput.TabIndex = 2;
+            this.tbOutput.Text = "Output";
+            this.tbOutput.UseVisualStyleBackColor = true;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(781, 16);
+            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(90, 16);
+            this.label22.TabIndex = 37;
+            this.label22.Text = "Sample Output";
+            // 
+            // txtSampleOutput
+            // 
+            this.txtSampleOutput.Location = new System.Drawing.Point(781, 35);
+            this.txtSampleOutput.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.txtSampleOutput.Name = "txtSampleOutput";
+            this.txtSampleOutput.ReadOnly = true;
+            this.txtSampleOutput.Size = new System.Drawing.Size(202, 154);
+            this.txtSampleOutput.TabIndex = 36;
+            this.txtSampleOutput.Text = "";
+            // 
+            // lstVariables
+            // 
+            this.lstVariables.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lstVariables.FormattingEnabled = true;
+            this.lstVariables.ItemHeight = 16;
+            this.lstVariables.Location = new System.Drawing.Point(427, 35);
+            this.lstVariables.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.lstVariables.Name = "lstVariables";
+            this.lstVariables.Size = new System.Drawing.Size(338, 148);
+            this.lstVariables.TabIndex = 35;
+            // 
+            // lstVariableList
+            // 
+            this.lstVariableList.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lstVariableList.FormattingEnabled = true;
+            this.lstVariableList.ItemHeight = 16;
+            this.lstVariableList.Location = new System.Drawing.Point(11, 35);
+            this.lstVariableList.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.lstVariableList.Name = "lstVariableList";
+            this.lstVariableList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.lstVariableList.Size = new System.Drawing.Size(338, 148);
+            this.lstVariableList.TabIndex = 34;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(427, 16);
+            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(151, 16);
+            this.label21.TabIndex = 33;
+            this.label21.Text = "Selected Output Variables";
+            // 
+            // btnRemoveAllVariables
+            // 
+            this.btnRemoveAllVariables.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnRemoveAllVariables.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemoveAllVariables.Image = global::JSONAPI.Properties.Resources.DoubleLeftArrow;
+            this.btnRemoveAllVariables.Location = new System.Drawing.Point(370, 150);
+            this.btnRemoveAllVariables.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnRemoveAllVariables.Name = "btnRemoveAllVariables";
+            this.btnRemoveAllVariables.Size = new System.Drawing.Size(37, 24);
+            this.btnRemoveAllVariables.TabIndex = 32;
+            this.btnRemoveAllVariables.UseVisualStyleBackColor = false;
+            // 
+            // btnRemoveOneVariable
+            // 
+            this.btnRemoveOneVariable.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnRemoveOneVariable.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemoveOneVariable.Image = global::JSONAPI.Properties.Resources.LeftArrow;
+            this.btnRemoveOneVariable.Location = new System.Drawing.Point(370, 120);
+            this.btnRemoveOneVariable.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnRemoveOneVariable.Name = "btnRemoveOneVariable";
+            this.btnRemoveOneVariable.Size = new System.Drawing.Size(37, 24);
+            this.btnRemoveOneVariable.TabIndex = 31;
+            this.btnRemoveOneVariable.UseVisualStyleBackColor = false;
+            // 
+            // btnAddSingleVariable
+            // 
+            this.btnAddSingleVariable.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnAddSingleVariable.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddSingleVariable.Image = global::JSONAPI.Properties.Resources.RightArrow;
+            this.btnAddSingleVariable.Location = new System.Drawing.Point(370, 57);
+            this.btnAddSingleVariable.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnAddSingleVariable.Name = "btnAddSingleVariable";
+            this.btnAddSingleVariable.Size = new System.Drawing.Size(37, 24);
+            this.btnAddSingleVariable.TabIndex = 29;
+            this.btnAddSingleVariable.UseVisualStyleBackColor = false;
+            // 
+            // btnAddAllVariables
+            // 
+            this.btnAddAllVariables.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnAddAllVariables.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddAllVariables.Image = global::JSONAPI.Properties.Resources.DoubleRightArrow;
+            this.btnAddAllVariables.Location = new System.Drawing.Point(370, 87);
+            this.btnAddAllVariables.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnAddAllVariables.Name = "btnAddAllVariables";
+            this.btnAddAllVariables.Size = new System.Drawing.Size(37, 24);
+            this.btnAddAllVariables.TabIndex = 30;
+            this.btnAddAllVariables.UseVisualStyleBackColor = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(153, 16);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "Available Output Variables";
+            // 
+            // dgConcurrentUsers
+            // 
+            this.dgConcurrentUsers.AllowUserToAddRows = false;
+            this.dgConcurrentUsers.AllowUserToDeleteRows = false;
+            this.dgConcurrentUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgConcurrentUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colTestName,
+            this.colConcurrentPercentage});
+            this.dgConcurrentUsers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgConcurrentUsers.Location = new System.Drawing.Point(3, 3);
+            this.dgConcurrentUsers.MultiSelect = false;
+            this.dgConcurrentUsers.Name = "dgConcurrentUsers";
+            this.dgConcurrentUsers.RowHeadersVisible = false;
+            this.dgConcurrentUsers.RowTemplate.Height = 25;
+            this.dgConcurrentUsers.Size = new System.Drawing.Size(1012, 219);
+            this.dgConcurrentUsers.TabIndex = 0;
+            // 
+            // colTestName
+            // 
+            this.colTestName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colTestName.HeaderText = "Test Name";
+            this.colTestName.Name = "colTestName";
+            this.colTestName.ReadOnly = true;
+            // 
+            // colConcurrentPercentage
+            // 
+            this.colConcurrentPercentage.AllowDecimals = false;
+            this.colConcurrentPercentage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colConcurrentPercentage.HeaderText = "% of Concurrent Users";
+            this.colConcurrentPercentage.Name = "colConcurrentPercentage";
+            this.colConcurrentPercentage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colConcurrentPercentage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colConcurrentPercentage.Width = 504;
+            // 
             // OptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1655,6 +1743,13 @@ namespace JSONAPI.Options
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsTestRun)).EndInit();
+            this.tbTestSuite.ResumeLayout(false);
+            this.tbTestSuiteDetails.ResumeLayout(false);
+            this.tbTestSuiteDetails.PerformLayout();
+            this.tbConcurrentUsers.ResumeLayout(false);
+            this.tbOutput.ResumeLayout(false);
+            this.tbOutput.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgConcurrentUsers)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1669,14 +1764,7 @@ namespace JSONAPI.Options
         private System.Windows.Forms.SplitContainer splitContainer5;
         private JSONAPI.Controls.JSONAPIButton btnAddTest;
         private System.Windows.Forms.TextBox txtTestName;
-        private JSONAPI.Controls.JSONAPIButton btnRemoveAll;
-        private JSONAPI.Controls.JSONAPIButton btnRemoveOne;
-        private JSONAPI.Controls.JSONAPIButton btnAddAll;
-        private JSONAPI.Controls.JSONAPIButton btnAddSingleTest;
-        private System.Windows.Forms.ListBox lstTestNames;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ListBox lstTestList;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tbPageOptions;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer3;
@@ -1702,7 +1790,6 @@ namespace JSONAPI.Options
         private System.Windows.Forms.GroupBox grpOptionVariables;
         private JSONAPI.Controls.JSONAPIButton btnExportResults;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.OpenFileDialog ofdTestResults;
         private System.Windows.Forms.TabPage tbPageAuthentication;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1739,8 +1826,6 @@ namespace JSONAPI.Options
         private JSONAPI.Controls.JSONAPIButton btnRangeAddToList;
         private JSONAPI.Controls.JSONAPIButton btnRangeDelete;
         private JSONAPI.Controls.JSONAPIButton btnRangeItemDelete;
-        private JSONAPI.Controls.JSONAPIButton btnMoveUp;
-        private JSONAPI.Controls.JSONAPIButton btnMoveDown;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox txtTokenElement;
         private JSONAPI.Controls.JSONAPIButton btnOpenResults;
@@ -1749,16 +1834,6 @@ namespace JSONAPI.Options
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem1;
         private System.Windows.Forms.CheckBox chkUseVariables;
         private System.Windows.Forms.CheckBox chkExportResults;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label21;
-        private JSONAPI.Controls.JSONAPIButton btnRemoveAllVariables;
-        private JSONAPI.Controls.JSONAPIButton btnRemoveOneVariable;
-        private JSONAPI.Controls.JSONAPIButton btnAddSingleVariable;
-        private JSONAPI.Controls.JSONAPIButton btnAddAllVariables;
-        private System.Windows.Forms.ListBox lstVariables;
-        private System.Windows.Forms.ListBox lstVariableList;
-        private System.Windows.Forms.RichTextBox txtSampleOutput;
-        private System.Windows.Forms.Label label22;
         private System.Windows.Forms.ComboBox cmbSaveLen;
         private System.Windows.Forms.DataGridViewTextBoxColumn colVariableName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSearchForElement;
@@ -1776,5 +1851,32 @@ namespace JSONAPI.Options
         private System.Windows.Forms.DataGridViewCheckBoxColumn colExportTestResults;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRunOutput;
         private System.Windows.Forms.DataGridViewTextBoxColumn colUserName;
+        private System.Windows.Forms.TabControl tbTestSuite;
+        private System.Windows.Forms.TabPage tbTestSuiteDetails;
+        private Controls.JSONAPIButton btnMoveUp;
+        private Controls.JSONAPIButton btnMoveDown;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ListBox lstTestList;
+        private Controls.JSONAPIButton btnRemoveAll;
+        private System.Windows.Forms.ListBox lstTestNames;
+        private Controls.JSONAPIButton btnRemoveOne;
+        private Controls.JSONAPIButton btnAddSingleTest;
+        private Controls.JSONAPIButton btnAddAll;
+        private System.Windows.Forms.TabPage tbConcurrentUsers;
+        private System.Windows.Forms.DataGridView dgConcurrentUsers;
+        private System.Windows.Forms.TabPage tbOutput;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.RichTextBox txtSampleOutput;
+        private System.Windows.Forms.ListBox lstVariables;
+        private System.Windows.Forms.ListBox lstVariableList;
+        private System.Windows.Forms.Label label21;
+        private Controls.JSONAPIButton btnRemoveAllVariables;
+        private Controls.JSONAPIButton btnRemoveOneVariable;
+        private Controls.JSONAPIButton btnAddSingleVariable;
+        private Controls.JSONAPIButton btnAddAllVariables;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTestName;
+        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewNumericUpDownColumn colConcurrentPercentage;
     }
 }

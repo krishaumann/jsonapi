@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "nI6JRbQB5E34M8gp2OTuQPXRfpVlyfUESpfXEEwclT2DgBYcY/0ip+zgdCJwbHK3iRWo+8/AWt+vpRmeAkiNmg==",
+  "dgSpecHash": "7DVc1Ek+t1J7dXwledwb525bCZnYRYironVlWGZFMNsGxEG+TREfGblmZqlkvW4qWcDuKwQ68U8KOAcCxsflTg==",
   "success": true,
   "projectFilePath": "C:\\Users\\jkhau\\source\\repos\\jsonapi\\JSONAPI.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\jkhau\\.nuget\\packages\\cefsharp.common\\97.1.60\\cefsharp.common.97.1.60.nupkg.sha512",
-    "C:\\Users\\jkhau\\.nuget\\packages\\cefsharp.winforms\\97.1.60\\cefsharp.winforms.97.1.60.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\chilkat-x64\\9.5.0.89\\chilkat-x64.9.5.0.89.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\datagridviewautofilter\\1.0.0\\datagridviewautofilter.1.0.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\dnsclient\\1.4.0\\dnsclient.1.4.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\documentformat.openxml\\2.14.0\\documentformat.openxml.2.14.0.nupkg.sha512",
+    "C:\\Users\\jkhau\\.nuget\\packages\\eo.webbrowser\\21.3.18\\eo.webbrowser.21.3.18.nupkg.sha512",
+    "C:\\Users\\jkhau\\.nuget\\packages\\eo.webbrowser.winform\\21.3.18\\eo.webbrowser.winform.21.3.18.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\grpc.core\\2.41.1\\grpc.core.2.41.1.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\grpc.core.api\\2.41.1\\grpc.core.api.2.41.1.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\htmlagilitypack\\1.11.40\\htmlagilitypack.1.11.40.nupkg.sha512",
@@ -137,16 +137,6 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'CefSharp.WinForms 97.1.60' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
-      "libraryId": "CefSharp.WinForms",
-      "targetGraphs": [
-        "net5.0-windows7.0"
-      ]
-    },
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
       "message": "Package 'chilkat-x64 9.5.0.89' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
       "libraryId": "chilkat-x64",
       "targetGraphs": [
@@ -159,6 +149,26 @@
       "warningLevel": 1,
       "message": "Package 'DataGridViewAutoFilter 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
       "libraryId": "DataGridViewAutoFilter",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'EO.WebBrowser 21.3.18' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "EO.WebBrowser",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'EO.WebBrowser.WinForm 21.3.18' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "EO.WebBrowser.WinForm",
       "targetGraphs": [
         "net5.0-windows7.0"
       ]
