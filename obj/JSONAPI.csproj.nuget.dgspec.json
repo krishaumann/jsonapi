@@ -40,6 +40,10 @@
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows7.0",
           "dependencies": {
+            "CsvHelper": {
+              "target": "Package",
+              "version": "[27.2.1, )"
+            },
             "DataGridViewAutoFilter": {
               "target": "Package",
               "version": "[1.0.0, )"
@@ -136,6 +140,10 @@
               "target": "Package",
               "version": "[2.10.0, )"
             },
+            "System.Data.Odbc": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.14.1, )"
@@ -147,6 +155,10 @@
             "chilkat-x64": {
               "target": "Package",
               "version": "[9.5.0.89, )"
+            },
+            "linq2db": {
+              "target": "Package",
+              "version": "[3.6.0, )"
             },
             "mongocsharpdriver": {
               "target": "Package",

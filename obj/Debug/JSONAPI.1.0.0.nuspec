@@ -7,6 +7,7 @@
     <description>Package Description</description>
     <dependencies>
       <group targetFramework="net5.0-windows7.0">
+        <dependency id="CsvHelper" version="27.2.1" exclude="Build,Analyzers" />
         <dependency id="DataGridViewAutoFilter" version="1.0.0" exclude="Build,Analyzers" />
         <dependency id="DocumentFormat.OpenXml" version="2.14.0" exclude="Build,Analyzers" />
         <dependency id="EO.WebBrowser.WinForm" version="21.3.18" exclude="Build,Analyzers" />
@@ -31,9 +32,11 @@
         <dependency id="Selenium.WebDriver" version="4.1.0" exclude="Build,Analyzers" />
         <dependency id="Selenium.WebDriver.ChromeDriver" version="97.0.4692.7100" exclude="Build,Analyzers" />
         <dependency id="Serilog" version="2.10.0" exclude="Build,Analyzers" />
+        <dependency id="System.Data.Odbc" version="6.0.0" exclude="Build,Analyzers" />
         <dependency id="System.IdentityModel.Tokens.Jwt" version="6.14.1" exclude="Build,Analyzers" />
         <dependency id="WindowsAPICodePack" version="1.1.2" exclude="Build,Analyzers" />
         <dependency id="chilkat-x64" version="9.5.0.89" exclude="Build,Analyzers" />
+        <dependency id="linq2db" version="3.6.0" exclude="Build,Analyzers" />
         <dependency id="mongocsharpdriver" version="2.13.2" exclude="Build,Analyzers" />
         <dependency id="morelinq" version="3.3.2" exclude="Build,Analyzers" />
       </group>

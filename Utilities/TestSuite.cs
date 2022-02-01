@@ -64,8 +64,9 @@
             //Only for export of testresults
             public string TestSuiteName { get; set; }
             public int ConcurrentUserPercentage { get; set; }
+            public bool IsLogin { get; set; }
             public List<ExecutionResult.TestResult> TestResultList { get; set; }
-            public TestList(string testName, int incrementCounter, string executionStatus, string headerRequest, string bodyRequest, string headerResponse, string bodyResponse, string testSuiteName, int conPerc)
+            public TestList(string testName, int incrementCounter, string executionStatus, string headerRequest, string bodyRequest, string headerResponse, string bodyResponse, string testSuiteName, int conPerc, bool isLogin)
             {
                 TestName = testName;
                 IncrementCounter = incrementCounter;
@@ -76,6 +77,7 @@
                 BodyResponse = bodyResponse;
                 TestSuiteName = testSuiteName;
                 ConcurrentUserPercentage = conPerc;
+                IsLogin = isLogin;
             }
         }
 
@@ -1188,6 +1190,43 @@
             return returnList;
         }
 
+        public static Dictionary<string, int> GetConcurrentUsers(string testSuiteName)
+        {
+            Dictionary<string, int> returnList = new Dictionary<string, int>();
+            TestRunList arrayOfStrings;
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testListCollection = database.GetCollection<TestRunList>("colTestSuites");
+
+            var testSuiteNameFilter = Builders<TestRunList>.Filter.Eq(u => u.TestSuiteName, testSuiteName) & Builders<TestRunList>.Filter.Eq(u => u.UserName, Users.currentUser);
+
+            var filter = testSuiteNameFilter;
+            // projection stage
+            var simpleProjection = Builders<TestRunList>.Projection
+                .Exclude("_id");
+            try
+            {
+                var docs = testListCollection.Find(filter).Project(simpleProjection).ToList();
+                //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
+                docs.ForEach(doc =>
+                {
+                    string tempString = doc.AsBsonDocument.ToJson();
+                    arrayOfStrings = JsonConvert.DeserializeObject<TestRunList>(tempString);
+                    foreach (TestList tempTestList in arrayOfStrings.TestList)
+                    {
+                        returnList.Add(tempTestList.TestName, tempTestList.ConcurrentUserPercentage);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("GetConcurrentUsers(testSuiteName) failed; " + e.ToString(), TraceEventType.Error);
+
+            }
+            return returnList;
+        }
+
         public static List<TestList> GetTestList()
         {
             List<TestList> returnList = new List<TestList>();
@@ -1268,7 +1307,7 @@
             }
         }
 
-        public static void UpdateTestStatus_NewInstance(string testSuiteName, string testName, string testStatus, string headerRequest, string bodyRequest, string headerResponse, string bodyResponse, int incrementCounter, int concPerc)
+        public static void UpdateTestStatus_NewInstance(string testSuiteName, string testName, string testStatus, string headerRequest, string bodyRequest, string headerResponse, string bodyResponse, int incrementCounter, int concPerc, bool isLogin = false)
         {
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
@@ -1325,7 +1364,7 @@
                         {
                             if (!findFlag)
                             {
-                                TestList newTestList = new TestList(testName, incrementCounter, testStatus, headerRequest, bodyRequest, headerResponse, bodyResponse, testSuiteName, concPerc);
+                                TestList newTestList = new TestList(testName, incrementCounter, testStatus, headerRequest, bodyRequest, headerResponse, bodyResponse, testSuiteName, concPerc, isLogin);
                                 testRunList.TestList.Add(newTestList);
                                 //DeleteTestSuite(testSuiteName);
                                 //docTestStatus.InsertOne(testRunList);
@@ -1739,7 +1778,7 @@
                     string testR = "";
                     if (testStatus) testR = "Pass";
                     else testR = "Fail";
-                    UpdateTestStatus_NewInstance(testSuiteName, testName, testR, "", "", "", "", 1,100);
+                    UpdateTestStatus_NewInstance(testSuiteName, testName, testR, "", "", "", "", 1,100, false);
                     executedFlag = true;
                 }
                 if (testName.Contains(".js"))
@@ -1751,7 +1790,7 @@
                         Variables.UpdateVariableSavedValue(testName, result.ToString());
                     }
                     testStatus = true;
-                    UpdateTestStatus_NewInstance(testSuiteName, testName, "Executed", "", "", "", "", 1,100);
+                    UpdateTestStatus_NewInstance(testSuiteName, testName, "Executed", "", "", "", "", 1,100, false);
                 }
                 else
                 {

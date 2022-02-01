@@ -1,5 +1,6 @@
 ﻿namespace JSONAPI.Utilities
 {
+    using CsvHelper;
     using Microsoft.Office.Interop.Excel;
     using MongoDB.Driver;
     using Newtonsoft.Json;
@@ -1967,6 +1968,23 @@
                 case "=": return actualValue == expectedValue;
                 case "!=": return actualValue != expectedValue;
                 default: return false;
+            }
+        }
+
+        public static string JsonToCsv(string jsonContent, string delimiter)
+        {
+            var expandos = JsonConvert.DeserializeObject<System.Dynamic.ExpandoObject[]>(jsonContent);
+
+            using (var writer = new StringWriter())
+            {
+                //using (var csv = new CsvWriter(writer))
+                //{
+                    //csv.Configuration.Delimiter = delimiter;
+
+                   // csv.WriteRecords(expandos as IEnumerable<dynamic>);
+               // }
+
+                return writer.ToString();
             }
         }
 
