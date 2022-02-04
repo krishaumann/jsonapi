@@ -130,6 +130,14 @@
             var client = new MongoClient(settings);
             var database = client.GetDatabase("JSONAPI");
             var testRangeCollection = database.GetCollection<RangeList>("colRangeList");
+            string colName = "";
+            bool multipleColumnFlag = false;
+            if (rangeName.Contains("."))
+            {
+                rangeName = rangeName.Split(".")[0];
+                colName = rangeName.Split(".")[1];
+                multipleColumnFlag = true;
+            }
 
             var tcBuilder = Builders<BsonDocument>.Filter;
             var rangeFilter = Builders<RangeList>.Filter.Eq(u => u.RangeName, rangeName) & Builders<RangeList>.Filter.Eq("UserName", Users.currentUser);
@@ -143,11 +151,42 @@
                 //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
                 docs.ForEach(doc =>
                 {
+                    // First see if it is a JArray
+                    
                     string tempString = doc.AsBsonValue.ToJson();
-                    tempString = tempString.Split(":".ToCharArray())[1];
-
-                    tempString = tempString.Replace("\"", "").Replace("{", "").Replace("}", "").Replace("[", "").Replace("]", "");
-                    returnListObj = tempString.Split(",".ToCharArray());
+                    int c = 0;
+                    var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(tempString);
+                    foreach (KeyValuePair<string, object> d in values)
+                    {
+                        // if (d.Value.GetType().FullName.Contains("Newtonsoft.Json.Linq.JObject"))            
+                        if (d.Value is JArray)
+                        {
+                            JArray JArr = (JArray)d.Value;
+                            string fieldName = "";
+                            string fieldValue = "";
+                            foreach (JObject parsedObject in JArr.Children<JObject>())
+                            {
+                                foreach (JProperty parsedProperty in parsedObject.Properties())
+                                {
+                                    fieldName = parsedProperty.Name;
+                                    fieldValue = parsedProperty.Value.ToString();
+                                    if (fieldName == colName)
+                                    {
+                                        returnListObj[c] = fieldValue;
+                                        c++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (!multipleColumnFlag)
+                            {
+                                tempString = tempString.Replace("\"", "").Replace("{", "").Replace("}", "").Replace("[", "").Replace("]", "");
+                                returnListObj = tempString.Split(",".ToCharArray());
+                            }
+                        }
+                    }
                     //{ \"RangeValues\" : [\"DK\", \"US\", \"UK\", \"ZA\", \"DE\", \"AU\", \"NZ\", \"IT\", \"FR\", \"NL\", \"BE\", \"CZ\"] }"
                     //var Json = JsonConvert.DeserializeObject(tempString);
                     //returnValue1 = tempString.Split(",");

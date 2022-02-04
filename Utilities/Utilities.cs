@@ -1737,6 +1737,41 @@
             return returnValue;
         }
 
+        public static string[] GetGridValuesAsCSV(DataGridView GridView1)
+        {
+            string[] returnValue = new string[GridView1.Rows.Count + 1];
+            int counter = 1;
+            string tempValue = "";
+            try
+            {               
+                for (int k = 0; k < GridView1.Columns.Count; k++)
+                {
+                    //add separator
+                    returnValue[0] += GridView1.Columns[k].HeaderText + ",";
+                }
+
+                for (int i = 0; i < GridView1.Rows.Count; i++)
+                {
+                    for (int k = 0; k < GridView1.Columns.Count; k++)
+                    {
+                        tempValue = GridView1.Rows[i].Cells[k].Value.ToString();
+                        if (tempValue == null) tempValue = "";
+                        if (returnValue[counter] == null) returnValue[counter] = "";
+                        if (returnValue[counter].Length > 0)
+                            returnValue[counter] += "," + tempValue.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace(",", "").Replace(":", "-");
+                        else returnValue[counter] = tempValue.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace(",", "").Replace(":", "-");
+                    }     
+                    counter++;
+                }
+
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("Grid Excel screen scrape failed with: " + e.ToString(), TraceEventType.Error);
+            }
+            return returnValue;
+        }
+
         private static bool IsValidJson(string strInput)
         {
             if (string.IsNullOrWhiteSpace(strInput)) { return false; }
@@ -1971,22 +2006,105 @@
             }
         }
 
-        public static string JsonToCsv(string jsonContent, string delimiter)
+        public static string[] JsonToCsv(string jsonContent)
         {
-            var expandos = JsonConvert.DeserializeObject<System.Dynamic.ExpandoObject[]>(jsonContent);
-
-            using (var writer = new StringWriter())
+            string fieldName = "";
+            string fieldValue = "";
+            int detailCounter = 1;
+            string[] returnValue = new string[100000];
+            string lastColValue = "";
+            string prevColValue = "";
+            var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonContent);
+            foreach (KeyValuePair<string, object> d in values)
             {
-                //using (var csv = new CsvWriter(writer))
-                //{
-                    //csv.Configuration.Delimiter = delimiter;
-
-                   // csv.WriteRecords(expandos as IEnumerable<dynamic>);
-               // }
-
-                return writer.ToString();
+                // if (d.Value.GetType().FullName.Contains("Newtonsoft.Json.Linq.JObject"))            
+                if (d.Value is JArray)
+                {
+                    JArray JArr = (JArray)d.Value;
+                    int c = 0;
+                    if (returnValue[c] == null) returnValue[c] = "";
+                    foreach (JObject parsedObject in JArr.Children<JObject>())
+                    {
+                        c++;
+                        if (returnValue[c] == null) returnValue[c] = "";
+                        foreach (JProperty parsedProperty in parsedObject.Properties())
+                        {
+                            fieldName = parsedProperty.Name;
+                            fieldValue = parsedProperty.Value.ToString();
+                            
+                            if (returnValue[0].Contains(fieldName))
+                            {
+                                if (returnValue[c].Length == 0) returnValue[c] = fieldValue;
+                                else returnValue[c] += "," + fieldValue;
+                            }
+                            else
+                            {
+                                if (returnValue[0].Length == 0) returnValue[0] = fieldName;
+                                else returnValue[0] += "," + fieldName;
+                                if (returnValue[c].Length == 0) returnValue[c] = fieldValue;
+                                else returnValue[c] += "," + fieldValue;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (d.Value is JObject)
+                    {
+                        foreach (JProperty x in (JToken)d.Value)
+                        { // if 'obj' is a JObject
+                            if (x.Value is JObject)
+                            {
+                                foreach (JProperty y in (JToken)x.Value)
+                                {
+                                    fieldName = y.Name.ToString();
+                                    fieldValue = y.Value.ToString();
+                                }
+                            }
+                            else
+                            {
+                                fieldName = x.Name.ToString();
+                                fieldValue = x.Value.ToString();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        fieldName = d.Key.ToString();
+                        fieldValue = d.Value.ToString();
+                    }
+                    if (returnValue[0] == null) returnValue[0] = "";
+                    if (returnValue[detailCounter] == null) returnValue[detailCounter] = "";
+                    if (returnValue[0].Contains(fieldName))
+                    {
+                        detailCounter++;
+                        if (returnValue[detailCounter] == null | returnValue[detailCounter].Length == 0) returnValue[detailCounter] = fieldValue;
+                        else returnValue[detailCounter] += "," + fieldValue;
+                    }
+                    else
+                    {
+                        if (returnValue[0].Length == 0) returnValue[0] = fieldName;
+                        else returnValue[0] += "," + fieldName;
+                        if (returnValue[detailCounter].Length == 0) returnValue[detailCounter] = fieldValue;
+                        else returnValue[detailCounter] += "," + fieldValue;
+                    }
+                }
             }
+            
+            int count = 0;
+            for (int g = 0; g < returnValue.Length; g++)
+            {
+                if (returnValue[g] != null)
+                    count++;
+            }
+            string[] finalReturnValue = new string[count];
+            for (int f = 0; f < count; f++)
+            {
+                if (returnValue[f] != null)
+                    finalReturnValue[f] = returnValue[f];
+            }
+                
+            return finalReturnValue;
         }
-
     }
 }
