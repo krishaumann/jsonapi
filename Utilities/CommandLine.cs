@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace JSONAPI.Utilities
 {
@@ -17,6 +18,8 @@ namespace JSONAPI.Utilities
         // args[4] parallel users - Optional, Default = 1
         // args[5] duration of run - Optional, if not specified, tests will only be executed once
         public static string[] commandLineArray = new string[] { "runTestSuite" };
+        private static List<TestSuite.PerformanceTestDetail> perfTests = null;
+
         public static void StartTasks(string userName, string testSuiteName)
         {
             System.Environment.SetEnvironmentVariable("jsonapiuserName", userName, EnvironmentVariableTarget.User);
@@ -93,7 +96,7 @@ namespace JSONAPI.Utilities
                                                 Dictionary<string, int> threadList = TestSuite.GetConcurrentUsers(args[2]);
                                                 foreach (KeyValuePair<string, int> entry in threadList)
                                                 {
-                                                    ThreadStart testThread = delegate { RunUser(entry.Value); };
+                                                    ThreadStart testThread = delegate { RunUser(entry.Value,int.Parse(args[5])); };
                                                     new Thread(testThread).Start();
                                                 }
 
@@ -133,8 +136,9 @@ namespace JSONAPI.Utilities
             return returnValue;
         }
 
-        static void RunUser(int n)
+        static void RunUser(int n, int timerInterval)
         {
+            StoredProcedureTimer.Start(timerInterval);
             ParallelLoopResult parallelLoopResult = Parallel.For(0, n,
                 (int i, ParallelLoopState loopControl) =>
                 {
@@ -145,13 +149,135 @@ namespace JSONAPI.Utilities
                     else
                     {
                         Logs.NewLogItem("Working on " + i, TraceEventType.Information);
-                        //TO Do call the Send Request
+                        while (StoredProcedureTimer.status)
+                        {
+                            //TO Do call the Send Request
+                            foreach (TestSuite.PerformanceTestDetail perfTest in perfTests)
+                            {
+                                if (perfTest.UserNumber == i)
+                                {
+                                    for (int c = 0; c < perfTest.PerformanceTestMessageDetailList.Count; c++)
+                                    {
+                                        Utilities.SendPerformanceTestMessage(perfTest.PerformanceTestMessageDetailList[c].HeaderRequest, perfTest.PerformanceTestMessageDetailList[c].DetailRequest);
+                                    }
+                                }
+                            }
+                        }
                     }
                 });
 
             if (!parallelLoopResult.IsCompleted)
             {
                 Logs.NewLogItem("Problem with theread parallel loop.", TraceEventType.Error);
+            }
+        }
+
+        public static void BuildPerformanceTestMessages(string testSuiteName, int totalUsers)
+        {
+            Dictionary<string, int> concurrentUserDetails = TestSuite.GetConcurrentUsers(testSuiteName);
+            int allocatedUsers = 0;
+            string testName = "";
+            TestSuite.Test testDetails;
+            List<TestSuite.PerformanceTestMessageDetail> performanceTestMessageList = null;
+            foreach (var item in concurrentUserDetails)
+            {
+                allocatedUsers = item.Value;
+                testName = item.Key;
+                testDetails = TestSuite.GetTestDetails(testName);
+                List<string> detailMessages = Utilities.GenerateBatchDetail(testDetails.Input);
+                
+                for (int c = 1; c <= totalUsers*allocatedUsers/100; c++)
+                {
+                   
+                    foreach(string detailMessage in detailMessages)
+                    {
+                        TestSuite.PerformanceTestMessageDetail perfMessage = new TestSuite.PerformanceTestMessageDetail(testDetails.HeaderInput, detailMessage);
+                        performanceTestMessageList.Add(perfMessage);
+                    }
+                    TestSuite.PerformanceTestDetail perfTest = new TestSuite.PerformanceTestDetail(c, performanceTestMessageList);
+                    perfTests.Add(perfTest);
+                }
+            }
+        }
+
+        public static class StoredProcedureTimer
+        {
+            static System.Timers.Timer SPTimer;
+            static bool iscreated = false;
+            static bool isrunning = false;
+            static int interval = 3600;
+            static int APincriment = 10;
+            static int HPincriment = 1;
+
+            // Create the timer
+            static void CreateTimer(int interval)
+            {
+                // Set multiple in seconds
+                SPTimer = new System.Timers.Timer(1000 * interval);
+                SPTimer.Elapsed += new ElapsedEventHandler(SPTimer_Elapsed);
+
+                //enable
+                SPTimer.Enabled = true;
+
+                // Stop garbage collection being a right gay
+                GC.KeepAlive(SPTimer);
+
+                iscreated = true;
+            }
+
+            static void SPTimer_Elapsed(object sender, ElapsedEventArgs e)
+            {
+                // do stuff
+                Console.WriteLine("Timer completed.");
+            }
+
+            // Start the timer
+            public static void Start(int interval)
+            {
+                if (iscreated == false)
+                {
+                    // create timer
+                    CreateTimer(interval);
+                }
+                else
+                {
+                    // set timer
+                    SPTimer.Interval = (1000 * interval);
+                    // re-enable timer
+                    SPTimer.Enabled = true;
+                }
+
+                // Update isrunning
+                isrunning = true;
+            }
+
+            // Stop the timer
+            public static void Stop()
+            {
+                // only attempt to stop the timer if it exists.
+                if (iscreated == true)
+                {
+                    SPTimer.Enabled = false;
+                }
+
+                // Update isrunning
+                isrunning = false;
+            }
+
+            // Check the timer is running
+            public static bool status
+            {
+                get
+                {
+                    if (iscreated == true && isrunning == true)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
         }
     }

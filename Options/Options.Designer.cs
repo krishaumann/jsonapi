@@ -180,25 +180,6 @@ namespace JSONAPI.Options
             this.btnSaveRange = new JSONAPI.Controls.JSONAPIButton();
             this.label18 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.tbDatabase = new System.Windows.Forms.TabPage();
-            this.btnRunSQL = new JSONAPI.Controls.JSONAPIButton();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tbSQLEditor = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.tbSQLResults = new System.Windows.Forms.TabPage();
-            this.dbDBResults = new System.Windows.Forms.DataGridView();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.cmbDBType = new System.Windows.Forms.ComboBox();
-            this.btnValidateDB = new JSONAPI.Controls.JSONAPIButton();
-            this.txtConnectionString = new System.Windows.Forms.TextBox();
-            this.txtDBName = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.lstDBNames = new System.Windows.Forms.ListBox();
-            this.label26 = new System.Windows.Forms.Label();
-            this.btnDeleteDB = new JSONAPI.Controls.JSONAPIButton();
-            this.btnSaveDB = new JSONAPI.Controls.JSONAPIButton();
             this.bsTestRun = new System.Windows.Forms.BindingSource(this.components);
             this.ofdTestResults = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.bsVariables)).BeginInit();
@@ -247,12 +228,6 @@ namespace JSONAPI.Options
             ((System.ComponentModel.ISupportInitialize)(this.dgRangeMultiple)).BeginInit();
             this.ctxRangeOptions.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            this.tbDatabase.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tbSQLEditor.SuspendLayout();
-            this.tbSQLResults.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dbDBResults)).BeginInit();
-            this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsTestRun)).BeginInit();
             this.SuspendLayout();
             // 
@@ -1302,7 +1277,6 @@ namespace JSONAPI.Options
             this.tbOptions.Controls.Add(this.tbPageTestSuite);
             this.tbOptions.Controls.Add(this.tbPageAuthentication);
             this.tbOptions.Controls.Add(this.tbPageRanges);
-            this.tbOptions.Controls.Add(this.tbDatabase);
             this.tbOptions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbOptions.Font = new System.Drawing.Font("Yu Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tbOptions.Location = new System.Drawing.Point(0, 0);
@@ -1647,6 +1621,7 @@ namespace JSONAPI.Options
             this.dgRangeMultiple.RowTemplate.Height = 25;
             this.dgRangeMultiple.Size = new System.Drawing.Size(685, 233);
             this.dgRangeMultiple.TabIndex = 0;
+            this.dgRangeMultiple.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.txtRange_CellBeginEdit);
             this.dgRangeMultiple.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgRangeMultiple_ColumnHeaderMouseDoubleClick);
             // 
             // ctxRangeOptions
@@ -1878,227 +1853,6 @@ namespace JSONAPI.Options
             this.label15.TabIndex = 1;
             this.label15.Text = "Available Ranges";
             // 
-            // tbDatabase
-            // 
-            this.tbDatabase.Controls.Add(this.btnRunSQL);
-            this.tbDatabase.Controls.Add(this.tabControl1);
-            this.tbDatabase.Controls.Add(this.groupBox4);
-            this.tbDatabase.Controls.Add(this.lstDBNames);
-            this.tbDatabase.Controls.Add(this.label26);
-            this.tbDatabase.Controls.Add(this.btnDeleteDB);
-            this.tbDatabase.Controls.Add(this.btnSaveDB);
-            this.tbDatabase.Location = new System.Drawing.Point(4, 25);
-            this.tbDatabase.Name = "tbDatabase";
-            this.tbDatabase.Size = new System.Drawing.Size(1047, 767);
-            this.tbDatabase.TabIndex = 6;
-            this.tbDatabase.Text = "Databases";
-            this.tbDatabase.UseVisualStyleBackColor = true;
-            // 
-            // btnRunSQL
-            // 
-            this.btnRunSQL.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnRunSQL.Enabled = false;
-            this.btnRunSQL.Location = new System.Drawing.Point(314, 509);
-            this.btnRunSQL.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnRunSQL.Name = "btnRunSQL";
-            this.btnRunSQL.Size = new System.Drawing.Size(75, 28);
-            this.btnRunSQL.TabIndex = 21;
-            this.btnRunSQL.Text = "Execute";
-            this.btnRunSQL.UseVisualStyleBackColor = false;
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tbSQLEditor);
-            this.tabControl1.Controls.Add(this.tbSQLResults);
-            this.tabControl1.Location = new System.Drawing.Point(310, 214);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(730, 293);
-            this.tabControl1.TabIndex = 20;
-            // 
-            // tbSQLEditor
-            // 
-            this.tbSQLEditor.Controls.Add(this.richTextBox1);
-            this.tbSQLEditor.Location = new System.Drawing.Point(4, 25);
-            this.tbSQLEditor.Name = "tbSQLEditor";
-            this.tbSQLEditor.Padding = new System.Windows.Forms.Padding(3);
-            this.tbSQLEditor.Size = new System.Drawing.Size(722, 264);
-            this.tbSQLEditor.TabIndex = 0;
-            this.tbSQLEditor.Text = "SQL";
-            this.tbSQLEditor.UseVisualStyleBackColor = true;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(3, 3);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(716, 258);
-            this.richTextBox1.TabIndex = 18;
-            this.richTextBox1.Text = "";
-            // 
-            // tbSQLResults
-            // 
-            this.tbSQLResults.Controls.Add(this.dbDBResults);
-            this.tbSQLResults.Location = new System.Drawing.Point(4, 25);
-            this.tbSQLResults.Name = "tbSQLResults";
-            this.tbSQLResults.Padding = new System.Windows.Forms.Padding(3);
-            this.tbSQLResults.Size = new System.Drawing.Size(722, 264);
-            this.tbSQLResults.TabIndex = 1;
-            this.tbSQLResults.Text = "Results";
-            this.tbSQLResults.UseVisualStyleBackColor = true;
-            // 
-            // dbDBResults
-            // 
-            this.dbDBResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dbDBResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dbDBResults.Location = new System.Drawing.Point(3, 3);
-            this.dbDBResults.Name = "dbDBResults";
-            this.dbDBResults.RowTemplate.Height = 25;
-            this.dbDBResults.Size = new System.Drawing.Size(716, 258);
-            this.dbDBResults.TabIndex = 0;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.cmbDBType);
-            this.groupBox4.Controls.Add(this.btnValidateDB);
-            this.groupBox4.Controls.Add(this.txtConnectionString);
-            this.groupBox4.Controls.Add(this.txtDBName);
-            this.groupBox4.Controls.Add(this.label23);
-            this.groupBox4.Controls.Add(this.label24);
-            this.groupBox4.Controls.Add(this.label25);
-            this.groupBox4.Location = new System.Drawing.Point(309, 18);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox4.Size = new System.Drawing.Size(731, 190);
-            this.groupBox4.TabIndex = 16;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Connection Details";
-            // 
-            // cmbDBType
-            // 
-            this.cmbDBType.FormattingEnabled = true;
-            this.cmbDBType.Items.AddRange(new object[] {
-            "Microsoft SQL Server",
-            "Microsoft Sql Express",
-            "Microsoft Access",
-            "ORACLE",
-            "IBM DB2",
-            "MySql",
-            "Sybase",
-            "Interbase",
-            "Informix",
-            "Excel",
-            "Text",
-            "dBase Dbf",
-            "Visual FoxPro"});
-            this.cmbDBType.Location = new System.Drawing.Point(156, 75);
-            this.cmbDBType.Name = "cmbDBType";
-            this.cmbDBType.Size = new System.Drawing.Size(418, 24);
-            this.cmbDBType.TabIndex = 16;
-            // 
-            // btnValidateDB
-            // 
-            this.btnValidateDB.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnValidateDB.Enabled = false;
-            this.btnValidateDB.Location = new System.Drawing.Point(600, 151);
-            this.btnValidateDB.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnValidateDB.Name = "btnValidateDB";
-            this.btnValidateDB.Size = new System.Drawing.Size(120, 28);
-            this.btnValidateDB.TabIndex = 15;
-            this.btnValidateDB.Text = "Validate";
-            this.btnValidateDB.UseVisualStyleBackColor = false;
-            this.btnValidateDB.Click += new System.EventHandler(this.btnValidateDB_Click);
-            // 
-            // txtConnectionString
-            // 
-            this.txtConnectionString.Location = new System.Drawing.Point(156, 115);
-            this.txtConnectionString.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtConnectionString.Name = "txtConnectionString";
-            this.txtConnectionString.Size = new System.Drawing.Size(564, 27);
-            this.txtConnectionString.TabIndex = 12;
-            // 
-            // txtDBName
-            // 
-            this.txtDBName.Location = new System.Drawing.Point(156, 36);
-            this.txtDBName.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtDBName.Name = "txtDBName";
-            this.txtDBName.Size = new System.Drawing.Size(564, 27);
-            this.txtDBName.TabIndex = 3;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(5, 115);
-            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(106, 16);
-            this.label23.TabIndex = 11;
-            this.label23.Text = "Connection String";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(5, 36);
-            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(97, 16);
-            this.label24.TabIndex = 2;
-            this.label24.Text = "Database Name";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(5, 75);
-            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(127, 16);
-            this.label25.TabIndex = 4;
-            this.label25.Text = "Database Description";
-            // 
-            // lstDBNames
-            // 
-            this.lstDBNames.FormattingEnabled = true;
-            this.lstDBNames.ItemHeight = 16;
-            this.lstDBNames.Location = new System.Drawing.Point(9, 27);
-            this.lstDBNames.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.lstDBNames.Name = "lstDBNames";
-            this.lstDBNames.Size = new System.Drawing.Size(296, 500);
-            this.lstDBNames.TabIndex = 15;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(9, 7);
-            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(121, 16);
-            this.label26.TabIndex = 13;
-            this.label26.Text = "Available Databases";
-            // 
-            // btnDeleteDB
-            // 
-            this.btnDeleteDB.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnDeleteDB.Enabled = false;
-            this.btnDeleteDB.Location = new System.Drawing.Point(879, 509);
-            this.btnDeleteDB.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnDeleteDB.Name = "btnDeleteDB";
-            this.btnDeleteDB.Size = new System.Drawing.Size(75, 28);
-            this.btnDeleteDB.TabIndex = 17;
-            this.btnDeleteDB.Text = "Delete";
-            this.btnDeleteDB.UseVisualStyleBackColor = false;
-            // 
-            // btnSaveDB
-            // 
-            this.btnSaveDB.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnSaveDB.Location = new System.Drawing.Point(958, 509);
-            this.btnSaveDB.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnSaveDB.Name = "btnSaveDB";
-            this.btnSaveDB.Size = new System.Drawing.Size(75, 28);
-            this.btnSaveDB.TabIndex = 14;
-            this.btnSaveDB.Text = "Save";
-            this.btnSaveDB.UseVisualStyleBackColor = false;
-            // 
             // ofdTestResults
             // 
             this.ofdTestResults.DefaultExt = "xlsx";
@@ -2173,14 +1927,6 @@ namespace JSONAPI.Options
             this.ctxRangeOptions.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            this.tbDatabase.ResumeLayout(false);
-            this.tbDatabase.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tbSQLEditor.ResumeLayout(false);
-            this.tbSQLResults.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dbDBResults)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsTestRun)).EndInit();
             this.ResumeLayout(false);
 
@@ -2316,25 +2062,6 @@ namespace JSONAPI.Options
         private System.Windows.Forms.TabPage tbRangeSingle;
         private System.Windows.Forms.TabPage tbRangeMultiple;
         private System.Windows.Forms.DataGridView dgRangeMultiple;
-        private System.Windows.Forms.TabPage tbDatabase;
-        private Controls.JSONAPIButton btnRunSQL;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tbSQLEditor;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.TabPage tbSQLResults;
-        private System.Windows.Forms.DataGridView dbDBResults;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private Controls.JSONAPIButton btnValidateDB;
-        private System.Windows.Forms.TextBox txtConnectionString;
-        private System.Windows.Forms.TextBox txtDBName;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.ListBox lstDBNames;
-        private System.Windows.Forms.Label label26;
-        private Controls.JSONAPIButton btnDeleteDB;
-        private Controls.JSONAPIButton btnSaveDB;
-        private System.Windows.Forms.ComboBox cmbDBType;
         private System.Windows.Forms.ContextMenuStrip ctxRangeSingleColumnOptions;
         private System.Windows.Forms.ToolStripMenuItem tsSingleRangeAddColumn;
         private System.Windows.Forms.ContextMenuStrip ctxRangeOptions;

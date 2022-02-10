@@ -134,8 +134,9 @@
             bool multipleColumnFlag = false;
             if (rangeName.Contains("."))
             {
-                rangeName = rangeName.Split(".")[0];
-                colName = rangeName.Split(".")[1];
+                var tempArray = rangeName.Split(".");
+                rangeName = tempArray[0];
+                colName = tempArray[1];
                 multipleColumnFlag = true;
             }
 
@@ -155,25 +156,36 @@
                     
                     string tempString = doc.AsBsonValue.ToJson();
                     int c = 0;
+                    int h = 0;
                     var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(tempString);
                     foreach (KeyValuePair<string, object> d in values)
                     {
-                        // if (d.Value.GetType().FullName.Contains("Newtonsoft.Json.Linq.JObject"))            
+                        // if (d.Value.GetType().FullName.Contains("Newtonsoft.Json.Linq.JObject"))
+                        // 
                         if (d.Value is JArray)
                         {
-                            JArray JArr = (JArray)d.Value;
-                            string fieldName = "";
-                            string fieldValue = "";
-                            foreach (JObject parsedObject in JArr.Children<JObject>())
+                            string[] lineArray = d.Value.ToString().Split(
+                                        new string[] { "\r\n", "\r", "\n" },
+                                        StringSplitOptions.None
+                            );
+                            int startRow;
+                            if (lineArray[0].Length < 2) startRow = 1;
+                            else startRow = 0;
+                            string[] headerArray = lineArray[startRow].Split(",");
+                            for (int e = 0; e < headerArray.Length; e++)
                             {
-                                foreach (JProperty parsedProperty in parsedObject.Properties())
+                                if (headerArray[e] == colName)
+                                    c = e;
+                            }
+                            for (int f = startRow+1; f < lineArray.Length; f++)
+                            {
+                                string[] colArray = lineArray[f].Split(",");
+                                for (int g = 0; g < colArray.Length; g++)
                                 {
-                                    fieldName = parsedProperty.Name;
-                                    fieldValue = parsedProperty.Value.ToString();
-                                    if (fieldName == colName)
+                                    if (g == c & colArray[g].Length >=1)
                                     {
-                                        returnListObj[c] = fieldValue;
-                                        c++;
+                                        returnListObj[h] = colArray[g].Replace("\"", "").Replace("\\", "").Replace("{", "").Replace("}", "").Replace("[", "").Replace("]", "");
+                                        h++;
                                     }
                                 }
                             }

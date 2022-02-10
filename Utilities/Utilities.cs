@@ -40,274 +40,282 @@
             string parameterStr = "";
             bool foundFlag = false;
             bool replaceFlag = false;
+            int foundCounter = 0;
             string[] operation1Array = new string[] { "[NUMBER(", "[TEXT(", "[VARIABLE(", "[YESTERDAY(", "[TODAY(", "[TOMORROW(", "[GUID", "[RANGE(" };
-            for (int i = 0; i < operation1Array.Length; i++)
+            String newBeginStr = beginStr;
+            while (newBeginStr.IndexOf("[") >= 0)
             {
-                if (beginStr.IndexOf(operation1Array[i]) >= 0)
+                for (int i = 0; i < operation1Array.Length; i++)
                 {
-                    foundFlag = true;
-                }
-            }
-            if (foundFlag)
-            {
-                String newBeginStr = beginStr;
-                string anotherString = "";
-                while (newBeginStr.IndexOf("[") >= 0)
-                {
-                    replaceFlag = false;
-                    for (int i = 0; i < operation1Array.Length; i++)
+                    if (newBeginStr.IndexOf(operation1Array[i]) >= 0 && !foundFlag)
                     {
-                        operationString = operation1Array[i];
-                        var matchesArray = newBeginStr.Split(operationString.ToCharArray());
-                        //MessageBox.Show("newBeginStr: " + newBeginStr);
-                        for (int d = 0; d < matchesArray.Length - 1; ++d)
+                        foundFlag = true;
+                        foundCounter = i;
+                    }
+                }
+                if (foundFlag)
+                {
+                    string anotherString = "";
+                    foundFlag = false;
+                    replaceFlag = false;
+
+                    operationString = operation1Array[foundCounter];
+                    var matchesArray = newBeginStr.Split(operationString.ToCharArray());
+                    //MessageBox.Show("newBeginStr: " + newBeginStr);
+                    for (int d = 0; d < matchesArray.Length - 1; ++d)
+                    {
+                        if (newBeginStr.IndexOf(operationString) > 0)
                         {
-                            if (newBeginStr.IndexOf(operationString) > 0)
+                            anotherString = newBeginStr.Substring(0, newBeginStr.IndexOf(operationString));
+                            newBeginStr = newBeginStr.Substring(newBeginStr.IndexOf(operationString));
+                        }
+                        if (newBeginStr.IndexOf(operationString) == 0)
+                        {
+                            tagIndex = newBeginStr.IndexOf(operationString) + operationString.Length;
+                            beginStrFromTagIndex = newBeginStr.Substring(tagIndex, newBeginStr.Length - tagIndex);
+                            tagEndIndex = beginStrFromTagIndex.IndexOf(")");
+                            endTagIndex = newBeginStr.IndexOf("]") + 1;
+                            newBeginStr = newBeginStr.Substring(endTagIndex);
+                            if (tagEndIndex >= 0) parameterStr = beginStrFromTagIndex.Substring(0, tagEndIndex);
+                            else parameterStr = "";
+                        }
+                        //MessageBox.Show("newBeginStr;" + newBeginStr);
+                        var generator = new RandomGenerator();
+                        int numDigits = 0;
+                        if (foundCounter <= 2)
+                        {
+                            try
                             {
-                                anotherString = newBeginStr.Substring(0, newBeginStr.IndexOf(operationString));
-                                newBeginStr = newBeginStr.Substring(newBeginStr.IndexOf(operationString));
+                                numDigits = Int32.Parse(parameterStr);
                             }
-                            if (newBeginStr.IndexOf(operationString) == 0)
-                            { 
-                                tagIndex = newBeginStr.IndexOf(operationString) + operationString.Length;
-                                beginStrFromTagIndex = newBeginStr.Substring(tagIndex, newBeginStr.Length - tagIndex);
-                                tagEndIndex = beginStrFromTagIndex.IndexOf(")");
-                                endTagIndex = newBeginStr.IndexOf("]") + 1;
-                                newBeginStr = newBeginStr.Substring(endTagIndex);
-                                if (tagEndIndex >= 0) parameterStr = beginStrFromTagIndex.Substring(0, tagEndIndex);
-                                else parameterStr = "";
-                            }
-                            //MessageBox.Show("newBeginStr;" + newBeginStr);
-                            var generator = new RandomGenerator();
-                            int numDigits = 0;
-                            if (i <= 2)
+                            catch (Exception pe)
                             {
+                                errorStr = operationString + "):Invalid number of digits specified: " + parameterStr;
+                                WriteLogItem("Parsing issue:" + pe.ToString(), TraceEventType.Error);
+                            }
+                        }
+                        switch (foundCounter)
+                        {
+                            case 0:
+                                int rMin = 0;
+                                int rMax = 0;
+                                if (errorStr.Length == 0)
+                                {
+                                    switch (numDigits)
+                                    {
+                                        case 1:
+                                            rMin = 0;
+                                            rMax = 9;
+                                            break;
+                                        case 2:
+                                            rMin = 10;
+                                            rMax = 99;
+                                            break;
+                                        case 3:
+                                            rMin = 100;
+                                            rMax = 999;
+                                            break;
+                                        case 4:
+                                            rMin = 1000;
+                                            rMax = 9999;
+                                            break;
+                                        default:
+                                            rMin = 10000;
+                                            rMax = 99999;
+                                            break;
+                                    }
+                                }
+                                var randomNumber = generator.RandomNumber(rMin, rMax);
+                                errorStr = "";
+                                beginStr = ReplaceWholeWord(beginStr, operationString, randomNumber.ToString(), parameterStr);
+                                //MessageBox.Show("Number: "+ beginStr);
+                                if (anotherString.Length > 0)
+                                {
+                                    newBeginStr = anotherString + newBeginStr;
+                                    anotherString = "";
+                                }
+                                break;
+                            case 1:
+                                if (errorStr.Length == 0)
+                                {
+                                    var randomString = generator.RandomString(int.Parse(parameterStr));
+                                    beginStr = ReplaceWholeWord(beginStr, operationString, randomString, parameterStr);
+                                    //MessageBox.Show("String: " + beginStr);
+                                    if (anotherString.Length > 0)
+                                    {
+                                        newBeginStr = anotherString + newBeginStr;
+                                        anotherString = "";
+                                    }
+                                }
+                                break;
+                            case 2:
+                                var variableValue = Variables.GetSavedValue(parameterStr);
+                                if (variableValue.Length > 0)
+                                {
+                                    beginStr = ReplaceWholeWord(beginStr, operationString, variableValue, parameterStr);
+                                    if (anotherString.Length > 0)
+                                    {
+                                        newBeginStr = anotherString + newBeginStr;
+                                        anotherString = "";
+                                    }
+                                    errorStr = "";
+                                }
+                                else
+                                {
+                                    errorStr = operationString + "):No saved value found for parameter: " + parameterStr;
+                                }
+                                break;
+                            case 3:
+                                string yesterdayValue = "";
                                 try
                                 {
-                                    numDigits = Int32.Parse(parameterStr);
-                                }
-                                catch (Exception pe)
-                                {
-                                    errorStr = operationString + "):Invalid number of digits specified: " + parameterStr;
-                                    WriteLogItem("Parsing issue:" + pe.ToString(), TraceEventType.Error);
-                                }
-                            }
-                            switch (i)
-                            {
-                                case 0:
-                                    int rMin = 0;
-                                    int rMax = 0;
-                                    if (errorStr.Length == 0)
-                                    {
-                                        switch (numDigits)
-                                        {
-                                            case 1:
-                                                rMin = 0;
-                                                rMax = 9;
-                                                break;
-                                            case 2:
-                                                rMin = 10;
-                                                rMax = 99;
-                                                break;
-                                            case 3:
-                                                rMin = 100;
-                                                rMax = 999;
-                                                break;
-                                            case 4:
-                                                rMin = 1000;
-                                                rMax = 9999;
-                                                break;
-                                            default:
-                                                rMin = 10000;
-                                                rMax = 99999;
-                                                break;
-                                        }
-                                    }
-                                    var randomNumber = generator.RandomNumber(rMin, rMax);
+                                    yesterdayValue = DateTime.Now.AddDays(-1).ToString(parameterStr);
                                     errorStr = "";
-                                    beginStr = ReplaceWholeWord(beginStr, operationString, randomNumber.ToString(), parameterStr);
-                                    //MessageBox.Show("Number: "+ beginStr);
+                                }
+                                catch (Exception de)
+                                {
+                                    errorStr = operationString + "):Invalid date format specified: " + parameterStr;
+                                    WriteLogItem("Date format parsing error:" + de.ToString(), TraceEventType.Error);
+                                }
+                                if (errorStr.Length == 0)
+                                {
+                                    beginStr = ReplaceWholeWord(beginStr, operationString, yesterdayValue, parameterStr);
                                     if (anotherString.Length > 0)
                                     {
                                         newBeginStr = anotherString + newBeginStr;
                                         anotherString = "";
                                     }
-                                    break;
-                                case 1:
-                                    if (errorStr.Length == 0)
-                                    {
-                                        var randomString = generator.RandomString(int.Parse(parameterStr));
-                                        beginStr = ReplaceWholeWord(beginStr, operationString, randomString, parameterStr);
-                                        //MessageBox.Show("String: " + beginStr);
-                                        if (anotherString.Length > 0)
-                                        {
-                                            newBeginStr = anotherString + newBeginStr;
-                                            anotherString = "";
-                                        }
-                                    }
-                                    break;
-                                case 2:
-                                    var variableValue = Variables.GetSavedValue(parameterStr);
-                                    if (variableValue.Length > 0)
-                                    {
-                                        beginStr = ReplaceWholeWord(beginStr, operationString, variableValue, parameterStr);
-                                        if (anotherString.Length > 0)
-                                        {
-                                            newBeginStr = anotherString + newBeginStr;
-                                            anotherString = "";
-                                        }
-                                        errorStr = "";
-                                    }
-                                    else
-                                    {
-                                        errorStr = operationString + "):No saved value found for parameter: " + parameterStr;
-                                    }
-                                    break;
-                                case 3:
-                                    string yesterdayValue = "";
-                                    try
-                                    {
-                                        yesterdayValue = DateTime.Now.AddDays(-1).ToString(parameterStr);
-                                        errorStr = "";
-                                    }
-                                    catch (Exception de)
-                                    {
-                                        errorStr = operationString + "):Invalid date format specified: " + parameterStr;
-                                        WriteLogItem("Date format parsing error:" + de.ToString(), TraceEventType.Error);
-                                    }
-                                    if (errorStr.Length == 0)
-                                    {
-                                        beginStr = ReplaceWholeWord(beginStr, operationString, yesterdayValue, parameterStr);
-                                        if (anotherString.Length > 0)
-                                        {
-                                            newBeginStr = anotherString + newBeginStr;
-                                            anotherString = "";
-                                        }
-                                    }
-                                    break;
-                                case 4:
-                                    string todayValue = "";
-                                    try
-                                    {
-                                        todayValue = DateTime.Now.ToString(parameterStr);
-                                        errorStr = "";
-                                    }
-                                    catch (Exception de)
-                                    {
-                                        errorStr = operationString + "):Invalid date format specified: " + parameterStr;
-                                        WriteLogItem("Date format parsing error:" + de.ToString(), TraceEventType.Error);
-                                    }
-                                    if (errorStr.Length == 0)
-                                    {
-                                        beginStr = ReplaceWholeWord(beginStr, operationString, todayValue, parameterStr);
-                                        if (anotherString.Length > 0)
-                                        {
-                                            newBeginStr = anotherString + newBeginStr;
-                                            anotherString = "";
-                                        }
-                                    }
-                                    break;
-                                case 5:
-                                    string tomorrowValue = "";
-                                    try
-                                    {
-                                        tomorrowValue = DateTime.Now.AddDays(1).ToString(parameterStr);
-                                        errorStr = "";
-                                    }
-                                    catch (Exception de)
-                                    {
-                                        errorStr = operationString + "):Invalid date format specified: ";
-                                        WriteLogItem("Date format parsing error:" + de.ToString(), TraceEventType.Error);
-                                    }
-                                    if (errorStr.Length == 0)
-                                    {
-                                        beginStr = ReplaceWholeWord(beginStr, operationString, tomorrowValue, parameterStr);
-                                        if (anotherString.Length > 0)
-                                        {
-                                            newBeginStr = anotherString + newBeginStr;
-                                            anotherString = "";
-                                        }
-                                    }
-                                    break;
-                                case 6:
-                                    Guid guid = Guid.NewGuid();
-                                    beginStr = ReplaceWholeWord(beginStr, operationString, guid.ToString());
+                                }
+                                break;
+                            case 4:
+                                string todayValue = "";
+                                try
+                                {
+                                    todayValue = DateTime.Now.ToString(parameterStr);
+                                    errorStr = "";
+                                }
+                                catch (Exception de)
+                                {
+                                    errorStr = operationString + "):Invalid date format specified: " + parameterStr;
+                                    WriteLogItem("Date format parsing error:" + de.ToString(), TraceEventType.Error);
+                                }
+                                if (errorStr.Length == 0)
+                                {
+                                    beginStr = ReplaceWholeWord(beginStr, operationString, todayValue, parameterStr);
                                     if (anotherString.Length > 0)
                                     {
                                         newBeginStr = anotherString + newBeginStr;
                                         anotherString = "";
                                     }
-                                    break;
-                                case 7:
-                                    if (batchMode == false)
+                                }
+                                break;
+                            case 5:
+                                string tomorrowValue = "";
+                                try
+                                {
+                                    tomorrowValue = DateTime.Now.AddDays(1).ToString(parameterStr);
+                                    errorStr = "";
+                                }
+                                catch (Exception de)
+                                {
+                                    errorStr = operationString + "):Invalid date format specified: ";
+                                    WriteLogItem("Date format parsing error:" + de.ToString(), TraceEventType.Error);
+                                }
+                                if (errorStr.Length == 0)
+                                {
+                                    beginStr = ReplaceWholeWord(beginStr, operationString, tomorrowValue, parameterStr);
+                                    if (anotherString.Length > 0)
                                     {
-                                        string[] rangeValue = Ranges.GetRangeListValues(parameterStr);
-                                        selectedRangeNameCounter = 0;
-                                        for (int c = 0; c < rangeValue.Length; c++)
+                                        newBeginStr = anotherString + newBeginStr;
+                                        anotherString = "";
+                                    }
+                                }
+                                break;
+                            case 6:
+                                Guid guid = Guid.NewGuid();
+                                beginStr = ReplaceWholeWord(beginStr, operationString, guid.ToString());
+                                if (anotherString.Length > 0)
+                                {
+                                    newBeginStr = anotherString + newBeginStr;
+                                    anotherString = "";
+                                }
+                                break;
+                            case 7:
+                                if (batchMode == false)
+                                {
+                                    string[] rangeValue = Ranges.GetRangeListValues(parameterStr);
+                                    selectedRangeNameCounter = 0;
+                                    for (int c = 0; c < rangeValue.Length; c++)
+                                    {
+                                        selectedRanges[selectedRangeNameCounter, c] = rangeValue[c];
+                                    }
+                                    if (rangeValue.Length > 0)
+                                    {
+                                        if (firstBatchRun == false)
                                         {
-                                            selectedRanges[selectedRangeNameCounter, c] = rangeValue[c];
+                                            beginStr = ReplaceWholeWord(beginStr, operationString, rangeValue[0], parameterStr);
                                         }
-                                        if (rangeValue.Length > 0)
+                                        else
                                         {
-                                            if (firstBatchRun == false)
-                                            {
-                                                beginStr = ReplaceWholeWord(beginStr, operationString, rangeValue[0], parameterStr);
-                                            }
-                                            else
-                                            {
-                                                beginStr = ReplaceWholeWord(beginStr, operationString, "RANGE" + selectedRangeValueCounter.ToString(), parameterStr);
-                                            }
+                                            beginStr = ReplaceWholeWord(beginStr, operationString, "RANGE" + selectedRangeValueCounter.ToString(), parameterStr);
+                                        }
 
-                                            if (anotherString.Length > 0)
-                                            {
-                                                newBeginStr = anotherString + newBeginStr;
-                                                anotherString = "";
-                                            }
-                                            errorStr = "";
-                                        }
-                                        else
-                                        {
-                                            errorStr = operationString + "):No saved value found for range: " + parameterStr;
-                                        }
-                                    }
-                                    //In normal mode only first value in the range will be calculated.  In batch mode, all values used to generate multiple detail messages
-                                    else
-                                    {
-                                        beginStr = ReplaceWholeWord(beginStr, operationString, "RANGE", parameterStr);
                                         if (anotherString.Length > 0)
                                         {
                                             newBeginStr = anotherString + newBeginStr;
                                             anotherString = "";
                                         }
                                         errorStr = "";
-                                        selectedRangeValueCounter++;
-                                        if (selectedRangeValueCounter == 99)
-                                        {
-                                            selectedRangeValueCounter = 0;
-                                            selectedRangeNameCounter++;
-                                        }
-                                        else
+                                    }
+                                    else
+                                    {
+                                        errorStr = operationString + "):No saved value found for range: " + parameterStr;
+                                    }
+                                }
+                                //In normal mode only first value in the range will be calculated.  In batch mode, all values used to generate multiple detail messages
+                                else
+                                {
+                                    beginStr = ReplaceWholeWord(beginStr, operationString, "RANGE", parameterStr);
+                                    if (anotherString.Length > 0)
+                                    {
+                                        newBeginStr = anotherString + newBeginStr;
+                                        anotherString = "";
+                                    }
+                                    errorStr = "";
+                                    selectedRangeValueCounter++;
+                                    if (selectedRangeValueCounter == 99)
+                                    {
+                                        selectedRangeValueCounter = 0;
+                                        selectedRangeNameCounter++;
+                                    }
+                                    else
+                                    {
+                                        try
                                         {
                                             if (selectedRanges[selectedRangeNameCounter, selectedRangeValueCounter + 1] == null)
                                                 selectedRangeNameCounter++;
                                         }
+                                        catch (Exception e)
+                                        {
+
+                                        }
                                     }
+                                }
 
-                                    break;
-                            }
-
-                            if (errorStr.Length > 0)
-                            {
-                                newBeginStr = ReplaceWholeWord(newBeginStr, operationString, errorStr);
-                            }
-                            replaceFlag = true;
+                                break;
                         }
+
+                        if (errorStr.Length > 0)
+                        {
+                            newBeginStr = ReplaceWholeWord(newBeginStr, operationString, errorStr);
+                        }
+                        replaceFlag = true;
                     }
                     if (replaceFlag) endStr += beginStr;
                     execCounter++;
                 }
+                else endStr = beginStr;
             }
-            else endStr = beginStr;
             return endStr;
         }
 
@@ -394,7 +402,7 @@
                                 case 1:
                                     //Is Numeric
                                     int numericValue;
-                                    if(actualResult == "JSONAPI") actualResult = "123";
+                                    if (actualResult == "JSONAPI") actualResult = "123";
                                     bool isNumber = int.TryParse(actualResult, out numericValue);
                                     if (isNumber)
                                     {
@@ -427,7 +435,7 @@
                                        "d/M/yyyy h:mm", "d/M/yyyy h:mm",
                                        "dd/MM/yyyy hh:mm", "dd/MM/yyyy hh tt", "dd/MM/yyyy hh:mm:ss"};
                                     if (DateTime.TryParseExact(actualResult, formats, new CultureInfo("en-US"), DateTimeStyles.None, out dateValue))
-                                    {     
+                                    {
                                         if (interimResult == false) interimResult = false;
                                         else interimResult = true;
                                         if (anotherString.Length > 0)
@@ -588,6 +596,133 @@
                 returnValue.Add(beginStr);
             }
             return returnValue;
+        }
+
+        public static Dictionary<string, string> BuildHttpHeaderInformation(string message)
+        {
+            Dictionary<string, string> returnDictionary = new Dictionary<string, string>();
+            string tempValue = "";
+            // Get Token if applicable
+            string token = Variables.GetSavedValue("token");
+            if (token == null) token = "";
+            //First get authentication
+            if (System.Environment.GetEnvironmentVariable("useBearerToken", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User) != "none" & token == "")
+                {
+                    returnDictionary.Add("Authorization", "Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
+                    //MessageBox.Show("Setting Bearer token:  Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
+                }
+                else
+                {
+                    if (token != "") returnDictionary.Add("Authorization", "Bearer " + token);
+                }
+            }
+
+            if (System.Environment.GetEnvironmentVariable("useBasicToken", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User) != "none" & token == "")
+                {
+                    returnDictionary.Add("Authorization", "basic " + System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User));
+                }
+                else
+                {
+                    if (token != "") returnDictionary.Add("Authorization", "basic " + token);
+                }
+            }
+
+            if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (System.Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.User) != "none")
+                    returnDictionary.Add("Authorization", "apikey " + System.Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.User));
+            }
+            if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (System.Environment.GetEnvironmentVariable("customKey", EnvironmentVariableTarget.User) != "none")
+                    returnDictionary.Add("Authorization", System.Environment.GetEnvironmentVariable("customKey", EnvironmentVariableTarget.User));
+            }
+
+            int counter = 1;
+            //MessageBox.Show("Header file; " + path);
+            if (message.Length > 0)
+            {
+                string[] httpAttrs = new string[2];
+                string[] headerArray = message.Split(Environment.NewLine.ToCharArray());
+                string[] headerArray2 = message.Split("\n".ToCharArray());
+                if (headerArray2.Length < headerArray.Length) headerArray = headerArray2;
+                for (int i = 0; i < headerArray.Length; i++)
+                {
+                    headerArray[i] = headerArray[i].Replace("\r", "");
+                    if (counter == 1)
+                    {
+                        returnDictionary.Add("Url", headerArray[i]);
+                    }
+                    if (counter == 2)
+                    {
+                        returnDictionary.Add("Type", headerArray[i]);
+                    }
+                    if (counter == 3)
+                    {
+                        if (!returnDictionary.ContainsKey("Authorization"))
+                            returnDictionary.Add("Authorization", headerArray[i]);
+                    }
+                    if (counter > 3)
+                    {
+                        httpAttrs = headerArray[i].Split(',');
+                        try
+                        {
+                            if (!returnDictionary.ContainsKey(httpAttrs[0]))
+                                returnDictionary.Add(httpAttrs[0], httpAttrs[1]);
+                        }
+                        catch (Exception ae)
+                        {
+                            WriteLogItem("Header file not correct:" + ae.ToString(), TraceEventType.Error);
+                        }
+                    }
+                    counter++;
+                }
+            }
+            //Auto-Add
+            List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
+            for (int j = 0; j < savedVariableList.Count; j++)
+            {
+                if (savedVariableList[j].SavedValue.Length > 0 && savedVariableList[j].VariableName.ToLower() != "token")
+                {
+                    if (returnDictionary.TryGetValue(savedVariableList[j].SearchForElement, out tempValue))
+                    {
+                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "first")
+                        {
+                            int numChars = savedVariableList[j].NumChars;
+                            if (numChars > 0 & numChars <= savedVariableList[j].SavedValue.Length)
+                            {
+                                string tempString = savedVariableList[j].SavedValue;
+                                tempString = tempString.Substring(0, numChars);
+                                returnDictionary[savedVariableList[j].SearchForElement] = tempString;
+                            }
+                        }
+                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "last")
+                        {
+                            int numChars = savedVariableList[j].NumChars;
+                            if (numChars > 0 & numChars <= savedVariableList[j].SavedValue.Length)
+                            {
+                                string tempString = savedVariableList[j].SavedValue;
+                                tempString = tempString.Substring(tempString.Length - numChars);
+                                returnDictionary[savedVariableList[j].SearchForElement] = tempString;
+                            }
+                        }
+                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "all")
+                        {
+                            returnDictionary[savedVariableList[j].SearchForElement] = savedVariableList[j].SavedValue;
+                        }
+                    }
+                    else
+                    {
+                        returnDictionary.Add(savedVariableList[j].SearchForElement, savedVariableList[j].SavedValue);
+                    }
+                }
+            }
+            return returnDictionary;
+
         }
 
         public static Dictionary<string, string> GetHttpHeaderInformation(string testName)
@@ -974,16 +1109,275 @@
                 }
                 else
                 {
-                    returnDict.Add("HttpResponse", "Error");
-                    returnDict.Add("Body", "No HTTP Method specified");
+                    try
+                    {
+                        returnDict.Add("HttpResponse", "Error");
+                        returnDict.Add("Body", "No HTTP Method specified");
+                    }
+                    catch (Exception e)
+                    {
+                        Logs.NewLogItem("Error adding error response: " + e.Message, TraceEventType.Information);
+                    }
                 }
             }
             else
             {
-                returnDict.Add("HttpResponse", "Error");
-                returnDict.Add("Body", "No URL specified");
+                try
+                {
+                    returnDict.Add("HttpResponse", "Error");
+                    returnDict.Add("Body", "No URL specified");
+                }
+                catch (Exception e)
+                {
+                    Logs.NewLogItem("Error adding error response: " + e.Message, TraceEventType.Information);
+                }
             }
             return returnDict;
+        }
+
+        public static void SendPerformanceTestMessage(string headerText, string detailText)
+        {
+            HttpClient client = new HttpClient();
+            HttpRequestMessage requestMessage = new HttpRequestMessage();
+            StringContent httpContent = new StringContent(detailText);
+            Stream streamResponse = null;
+            StreamReader streamReader = null;
+            HttpResponseMessage httpResponseClient = null;
+            bool continueFlag = true;
+            if (IsValidJson(detailText)) System.Environment.SetEnvironmentVariable("fileType", "json", EnvironmentVariableTarget.User);
+            else System.Environment.SetEnvironmentVariable("fileType", "xml", EnvironmentVariableTarget.User);
+            Dictionary<string, string> headerDict = BuildHttpHeaderInformation(headerText);
+            string dictionaryString = "{";
+            //returnDict.Add("HeaderRequest", dictionaryString + "}");
+            Dictionary<string, string> responseDict = new Dictionary<string, string>();
+            string url = "";
+            string url2 = url;
+            if (headerDict.TryGetValue("Url", out url))
+            {
+                client.BaseAddress = new Uri(url);
+                client.Timeout = TimeSpan.FromMinutes(10);
+                client.DefaultRequestHeaders.Connection.Add("Keep-Alive");
+                WriteLogItem("url: " + url, TraceEventType.Information);
+                if (url == "") continueFlag = false;
+                headerDict.Remove("Url");
+            }
+            if (continueFlag)
+            {
+                if (headerDict.ContainsKey("Type"))
+                {
+                    if (headerDict.TryGetValue("Type", out url))
+                    {
+                        try
+                        {
+                            if (url == "") continueFlag = false;
+                            else requestMessage.Method = new HttpMethod(url);
+                            headerDict.Remove("Type");
+                        }
+                        catch (Exception typeException)
+                        {
+                            WriteLogItem("Invalid HTTP Type: " + typeException.Message, TraceEventType.Information);
+                            continueFlag = false;
+                        }
+                    }
+                }
+
+                if (headerDict.ContainsKey("Accept"))
+                {
+                    url = "";
+                    if (headerDict.TryGetValue("Accept", out url))
+                    {
+                        if (url != "")
+                        {
+                            try
+                            {
+                                requestMessage.Headers.Add("Accept", url);
+                                headerDict.Remove("Accept");
+                            }
+                            catch (Exception acceptException)
+                            {
+                                WriteLogItem("Invalid HTTP Accept: " + acceptException.Message, TraceEventType.Information);
+                                continueFlag = false;
+                            }
+                        }
+                    }
+                }
+                if (continueFlag)
+                {
+                    foreach (string key in headerDict.Keys)
+                    {
+                        try
+                        {
+                            if (key != "")
+                                requestMessage.Headers.Add(key, headerDict[key]);
+                        }
+                        catch (Exception fr)
+                        {
+                            WriteLogItem("Unable to read Header:" + fr.ToString(), TraceEventType.Error);
+                        }
+                    }
+
+                    try
+                    {
+                        if (System.Environment.GetEnvironmentVariable("fileType", EnvironmentVariableTarget.User) == "json")
+                        {
+                            var content = new StringContent(detailText, Encoding.UTF8, "application/json");
+                            requestMessage.Content = content;
+                            httpResponseClient = client.Send(requestMessage);
+                        }
+                        else
+                        {
+                            var xmlContent = new StringContent(detailText, Encoding.UTF8, "text/xml");
+                            requestMessage.Content = xmlContent;
+
+                            httpResponseClient = client.Send(requestMessage);
+                        }
+
+                        if (httpResponseClient.IsSuccessStatusCode)
+                        {
+                            // returnDict.Add("HttpResponse", httpResponseClient.StatusCode.ToString() + "-" + httpResponseClient.ReasonPhrase.ToString());
+                            try
+                            {
+                                streamResponse = httpResponseClient.Content.ReadAsStream();
+                                streamReader = new StreamReader(streamResponse);
+                                //returnDict.Add("Body", streamReader.ReadToEnd());
+                                continueFlag = true;
+                            }
+                            finally
+                            {
+                                streamReader.Close();
+                                streamResponse.Close();
+                            }
+                        }
+                        else
+                        {
+                            //returnDict.Add("HttpResponse", httpResponseClient.StatusCode.ToString());
+                            //returnDict.Add("Body", "No response");
+                            continueFlag = false;
+                            WriteLogItem("Exception with HTTP Response Code:" + httpResponseClient.StatusCode.ToString(), TraceEventType.Error);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        //returnDict.Add("HttpResponse", "Error");
+                        //returnDict.Add("Body", e.ToString());
+                        continueFlag = false;
+                        WriteLogItem("Exception with HTTP Response:" + e.ToString(), TraceEventType.Error);
+                        //MessageBox.Show("Exception on getting HTTP Response:" + e.ToString());
+                    }
+                }
+                if (continueFlag)
+                {
+                    try
+                    {
+                        List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
+                        foreach (var httpResponse in httpResponseClient.Headers)
+                        {
+                            //returnDict.Add("Header_" + httpResponse.Key, httpResponse.Value.ToString());
+                            for (int j = 0; j < savedVariableList.Count; j++)
+                            {
+                                if (savedVariableList[j].SearchForElement.Contains(httpResponse.Key))
+                                {
+                                    if (savedVariableList[j].ReplaceWhere.ToLower() != "static" && savedVariableList[j].ReplaceWhere.ToLower() != "body")
+                                    {
+                                        savedVariableList[j].SavedValue = httpResponse.Value.ToString();
+                                        Variables.UpdateVariableSavedValue(httpResponse.Key, httpResponse.Value.ToString());
+                                    }
+                                }
+                            }
+                            //Read Token from header based on the Token Element Specified in Options screen
+                            if (httpResponse.Key.ToString().ToLower().Contains(System.Environment.GetEnvironmentVariable("tokenElement", EnvironmentVariableTarget.User).ToString().ToLower()))
+                            {
+                                if (System.Environment.GetEnvironmentVariable("useBearerToken", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
+
+                                if (System.Environment.GetEnvironmentVariable("useBasicToken", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
+
+                                if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
+                                if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
+                                {
+                                    System.Environment.SetEnvironmentVariable("customKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                }
+                            }
+                            else
+                            {
+                                if (httpResponse.Key.ToString().ToLower().Contains("authorization"))
+                                {
+                                    switch (httpResponse.Value.ToString().ToLower())
+                                    {
+                                        case "bearer":
+                                            System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        case "api_key":
+                                            System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        case "api-key":
+                                            System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        case "basic":
+                                            System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                        default:
+                                            System.Environment.SetEnvironmentVariable("customKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        /*if (System.Environment.GetEnvironmentVariable("fileType", EnvironmentVariableTarget.User) == "json")
+                        {
+                            buildJsonHttpResponseDict(returnDict);
+                            System.Environment.GetEnvironmentVariable("testRunName", EnvironmentVariableTarget.User);
+                            SaveExecutionResult(returnDict, System.Environment.GetEnvironmentVariable("testRunName", EnvironmentVariableTarget.User), System.Environment.GetEnvironmentVariable("testSuiteName", EnvironmentVariableTarget.User), System.Environment.GetEnvironmentVariable("testName", EnvironmentVariableTarget.User), incrementCounter);
+                        }
+                        else
+                        {
+                            buildXMLHttpResponseDict(returnDict);
+                            SaveExecutionResultXML(returnDict, System.Environment.GetEnvironmentVariable("testRunName", EnvironmentVariableTarget.User), System.Environment.GetEnvironmentVariable("testSuiteName", EnvironmentVariableTarget.User), System.Environment.GetEnvironmentVariable("testName", EnvironmentVariableTarget.User), incrementCounter);
+                        }*/
+                    }
+                    finally
+                    {
+                        client.Dispose();
+                        if (streamReader != null)
+                            streamReader.Dispose();
+                        if (httpResponseClient != null)
+                            httpResponseClient.Dispose();
+                    }
+                }
+                /*else
+                {
+                    try
+                    {
+                        returnDict.Add("HttpResponse", "Error");
+                        returnDict.Add("Body", "No HTTP Method specified");
+                    }
+                    catch (Exception e)
+                    {
+                        Logs.NewLogItem("Error adding error response: " + e.Message, TraceEventType.Information);
+                    }
+                }*/
+            }
+            /*else
+            {
+                try
+                {
+                    returnDict.Add("HttpResponse", "Error");
+                    returnDict.Add("Body", "No URL specified");
+                }
+                catch (Exception e)
+                {
+                    Logs.NewLogItem("Error adding error response: " + e.Message, TraceEventType.Information);
+                }
+            }
+            return returnDict;*/
         }
 
         static void buildXMLHttpResponseDict(Dictionary<string, string> returnDict)
@@ -1589,7 +1983,7 @@
 
         public static string ToAlphaNumericOnly(this string input)
         {
-            Regex rgx = new Regex("[^a-zA-Z0-9]");
+            Regex rgx = new Regex("[^a-zA-Z0-9]\\.");
             return rgx.Replace(input, "");
         }
 
@@ -1753,9 +2147,9 @@
                 for (int i = 0; i < GridView1.Rows.Count; i++)
                 {
                     for (int k = 0; k < GridView1.Columns.Count; k++)
-                    {
-                        tempValue = GridView1.Rows[i].Cells[k].Value.ToString();
-                        if (tempValue == null) tempValue = "";
+                    {                     
+                        var tempValue2 = GridView1.Rows[i].Cells[k].Value;
+                        if (tempValue2 != null) tempValue = tempValue2.ToString();
                         if (returnValue[counter] == null) returnValue[counter] = "";
                         if (returnValue[counter].Length > 0)
                             returnValue[counter] += "," + tempValue.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace(",", "").Replace(":", "-");

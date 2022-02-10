@@ -24,6 +24,7 @@
           "Microsoft.Office.Interop.Excel": "15.0.4795.1000",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.14.0",
           "MongoDB.Driver": "2.13.2",
+          "MySqlConnector": "2.1.5",
           "NPOI": "2.5.5",
           "NUnit": "3.13.2",
           "Octokit": "0.50.0",
@@ -549,6 +550,14 @@
           "lib/netstandard2.0/MoreLinq.dll": {
             "assemblyVersion": "3.3.2.0",
             "fileVersion": "3.3.2.0"
+          }
+        }
+      },
+      "MySqlConnector/2.1.5": {
+        "runtime": {
+          "lib/net5.0/MySqlConnector.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.1.5.0"
           }
         }
       },
@@ -1561,6 +1570,13 @@
       "sha512": "sha512-MQc8GppZJLmjvcpEdf3EkC6ovsp7gRWt2e5mC7dcIOrgwSc+yjFd3JQ0iRqr3XrUT6rb/phv0IkEmBtbfVA7AQ==",
       "path": "morelinq/3.3.2",
       "hashPath": "morelinq.3.3.2.nupkg.sha512"
+    },
+    "MySqlConnector/2.1.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7mRUqgHLxp0KsG30L4jGOShZVWQKCNuNm083hjk+2v0dLGmZKa3RSg6TWXUgtoDfUUNlQNTocfzlbM1srq0HLQ==",
+      "path": "mysqlconnector/2.1.5",
+      "hashPath": "mysqlconnector.2.1.5.nupkg.sha512"
     },
     "NETStandard.Library/2.0.0": {
       "type": "package",

@@ -52,6 +52,30 @@
             }
         }
 
+        public class PerformanceTestDetail
+        {
+            public int UserNumber { get; set; }
+            public List<PerformanceTestMessageDetail> PerformanceTestMessageDetailList { get; set; }
+            public PerformanceTestDetail(int userNumber, List<PerformanceTestMessageDetail> performanceTestMessageDetailList)
+            {
+                UserNumber = userNumber;
+                PerformanceTestMessageDetailList = performanceTestMessageDetailList;
+            }
+
+        }
+
+        public class PerformanceTestMessageDetail
+        {
+            public string HeaderRequest { get; set; }
+            public string DetailRequest { get; set; }
+            public string[] ExecutionStatus { get; set; }
+            public PerformanceTestMessageDetail(string headerRequest, string detailRequest)
+            {
+                HeaderRequest = headerRequest;
+                DetailRequest = detailRequest;
+            }
+        }
+
         public class TestList
         {
             public string TestName { get; set; }
@@ -465,6 +489,36 @@
             catch (Exception e)
             {
                 Utilities.WriteLogItem("GetTests failed; " + e.ToString(), TraceEventType.Error);
+            }
+            return returnList;
+        }
+
+        public static Test GetTestDetails(string testName)
+        {
+            Test returnList = new Test();
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testListCollection = database.GetCollection<Test>("colTests");
+            var testFilter = Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser) & Builders<Test>.Filter.Eq(u => u.TestName, testName);
+
+            // projection stage
+            var simpleProjection = Builders<Test>.Projection
+                //.Include(t => t.TestSuiteList)
+                .Exclude("_id");
+            try
+            {
+                var docs = testListCollection.Find(testFilter).Project(simpleProjection).ToList();
+                //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
+                docs.ForEach(doc =>
+                {
+                    string tempString = doc.AsBsonValue.ToJson();
+                    returnList = JsonConvert.DeserializeObject<Test>(tempString);
+                });
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("GetTestDetails failed; " + e.ToString(), TraceEventType.Error);
             }
             return returnList;
         }

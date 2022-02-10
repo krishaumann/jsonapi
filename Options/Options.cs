@@ -34,8 +34,8 @@ namespace JSONAPI.Options
         public CheckBox checkboxHeader = null;
         bool isHeaderCheckBoxClicked = false;
         public OdbcConnection odbcConn = null;
-        DataGridViewColumn DataGridViewColumnSelected;
-        DataGridViewRow DataGridViewRowSelected;
+        int DataGridViewColumnSelected;
+        int DataGridViewRowSelected;
         //public SqlConnection sqlConn = null;
         public OptionForm()
         {
@@ -60,7 +60,6 @@ namespace JSONAPI.Options
             this.btnRunTests.Click += new EventHandler(this.RunSelectedTests);
             this.btnDeleteTestSuite.Click += new EventHandler(this.DeleteSelectedTests);
             this.dgTestSuiteList.CellContentClick += new DataGridViewCellEventHandler(this.dgTestSuiteList_CellContentClick);
-            this.dgRangeMultiple.CellContentClick += new DataGridViewCellEventHandler(this.dgRangeMultiple_CellContentClick);
             this.dgVariables.CellDoubleClick += new DataGridViewCellEventHandler(this.dgVariables_CellContentDoubleClick);
             this.dgTestSuiteList.CellDoubleClick += new DataGridViewCellEventHandler(this.dgTestSuiteList_CellContentDoubleClick);
             this.dgTestSuiteList.CellValueChanged += new DataGridViewCellEventHandler(this.dgTestSuiteList_OnCellValueChanged);
@@ -188,18 +187,6 @@ namespace JSONAPI.Options
                 tbRange.TabPages.Remove(tbRangeMultiple);
             }
 
-            if (tbOptions.SelectedTab == tbDatabase)
-            {
-                lstRanges.Items.Clear();
-                List<Utilities.Databases.DatabaseList> existingDatabases = Utilities.Databases.GetDBLists();
-                foreach (Utilities.Databases.DatabaseList dbItem in existingDatabases)
-                {
-                    lstDBNames.Items.Add(dbItem.DatabaseName);
-                }
-                btnSaveDB.Text = "Add";
-                btnDeleteDB.Enabled = false;
-                
-            }
             Cursor.Current = Cursors.Default;
         }
 
@@ -1236,10 +1223,13 @@ namespace JSONAPI.Options
                         {
                             try
                             {
-                                DataColumn col = new DataColumn();
-                                col.ColumnName = headingArray[c];
-                                col.ReadOnly = true;
-                                dt.Columns.Add(col);
+                                if (headingArray[c].Length > 0)
+                                {
+                                    DataColumn col = new DataColumn();
+                                    col.ColumnName = headingArray[c];
+                                    col.ReadOnly = true;
+                                    dt.Columns.Add(col);
+                                }
                             }
                             catch (Exception t)
                             {
@@ -1250,19 +1240,22 @@ namespace JSONAPI.Options
                         {
                             DataRow row = null;
                             var valueArray = rangeDetails.RangeValues[f].Split(",");
-                            row = dt.NewRow();
-                            try
+                            if (valueArray[0].Length > 0)
                             {
-                                for (int j = 0; j < valueArray.Length; j++)
+                                row = dt.NewRow();
+                                try
                                 {
-                                    row[j] = valueArray[j];
+                                    for (int j = 0; j < valueArray.Length; j++)
+                                    {
+                                        row[j] = valueArray[j];
+                                    }
                                 }
+                                catch (Exception zz)
+                                {
+                                    Utilities.Logs.NewLogItem(zz.Message, TraceEventType.Information);
+                                }
+                                dt.Rows.Add(row);
                             }
-                            catch (Exception zz)
-                            {
-                                Utilities.Logs.NewLogItem(zz.Message, TraceEventType.Information);
-                            }
-                            dt.Rows.Add(row);
                         }
                     }
                     else
@@ -1399,7 +1392,7 @@ namespace JSONAPI.Options
         {
             try
             {
-                dgRangeMultiple.Columns.RemoveAt(DataGridViewColumnSelected.Index);
+                dgRangeMultiple.Columns.RemoveAt(DataGridViewColumnSelected);
                 dgRangeMultiple.Refresh();
             }
             catch (Exception z)
@@ -1407,17 +1400,11 @@ namespace JSONAPI.Options
                 Utilities.Logs.NewLogItem(z.Message, TraceEventType.Information);
             }
         }
-
-        private void dgRangeMultiple_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridViewColumnSelected = dgRangeMultiple.Columns[e.ColumnIndex] as DataGridViewColumn;
-            DataGridViewRowSelected = dgRangeMultiple.Rows[e.RowIndex] as DataGridViewRow;
-        }
         private void tsDeletegeRow_Click(object sender, EventArgs e)
         {
             try
             {
-                dgRangeMultiple.Rows.RemoveAt(DataGridViewRowSelected.Index);
+                dgRangeMultiple.Rows.RemoveAt(DataGridViewRowSelected);
                 dgRangeMultiple.Refresh();
             }
             catch (Exception z)
@@ -1482,27 +1469,33 @@ namespace JSONAPI.Options
                         var headingArray = returnArray[0].Split(",");
                         for (int c = 0; c < headingArray.Length; c++)
                         {
-                            DataColumn col = new DataColumn();
-                            col.ColumnName = headingArray[c];
-                            col.ReadOnly = true;
-                            dt.Columns.Add(col);
+                            if (headingArray[c].Length > 0)
+                            {
+                                DataColumn col = new DataColumn();
+                                col.ColumnName = headingArray[c];
+                                col.ReadOnly = true;
+                                dt.Columns.Add(col);
+                            }
                         }
                         for (int f = 1; f < returnArray.Length; f++)
                         {
                             var valueArray = returnArray[f].Split(",");
-                            row = dt.NewRow();
-                            try
+                            if (valueArray[0].Length > 0)
                             {
-                                for (int j = 0; j < valueArray.Length; j++)
+                                row = dt.NewRow();
+                                try
                                 {
-                                    row[j] = valueArray[j];
+                                    for (int j = 0; j < valueArray.Length; j++)
+                                    {
+                                        row[j] = valueArray[j];
+                                    }
                                 }
+                                catch (Exception zz)
+                                {
+                                    Utilities.Logs.NewLogItem(zz.Message, TraceEventType.Information);
+                                }
+                                dt.Rows.Add(row);
                             }
-                            catch (Exception zz)
-                            {
-                                Utilities.Logs.NewLogItem(zz.Message, TraceEventType.Information);
-                            }
-                            dt.Rows.Add(row);
                         }
                         dgRangeMultiple.DataSource = dt;
                         dgRangeMultiple.Refresh();
@@ -1531,27 +1524,33 @@ namespace JSONAPI.Options
                                 {
                                     for (int c = 0; c < tempArray.Length; c++)
                                     {
-                                        DataColumn col = new DataColumn();
-                                        col.ColumnName = tempArray[c];
-                                        col.ReadOnly = true;
-                                        dt.Columns.Add(col);
+                                        if (tempArray[c].Length > 0)
+                                        {
+                                            DataColumn col = new DataColumn();
+                                            col.ColumnName = tempArray[c];
+                                            col.ReadOnly = true;
+                                            dt.Columns.Add(col);
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    row = dt.NewRow();
-                                    try
+                                    if (tempArray[0].Length > 0)
                                     {
-                                        for (int j = 0; j < tempArray.Length; j++)
+                                        row = dt.NewRow();
+                                        try
                                         {
-                                            row[j] = tempArray[j];
+                                            for (int j = 0; j < tempArray.Length; j++)
+                                            {
+                                                row[j] = tempArray[j];
+                                            }
                                         }
+                                        catch (Exception z)
+                                        {
+                                            Utilities.Logs.NewLogItem(z.Message, TraceEventType.Information);
+                                        }
+                                        dt.Rows.Add(row);
                                     }
-                                    catch (Exception z)
-                                    {
-                                        Utilities.Logs.NewLogItem(z.Message, TraceEventType.Information);
-                                    }
-                                    dt.Rows.Add(row);
                                 }
                                 dgRangeMultiple.DataSource = dt;
                                 dgRangeMultiple.Refresh();
@@ -1689,117 +1688,11 @@ namespace JSONAPI.Options
             }
         }
 
-
-
-
-
-
-
-
-        /* ===============================================
-         * Databases
-         * ===============================================*/
-
-        private void btnValidateDB_Click(object sender, EventArgs e)
+        private void txtRange_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            
-            switch (cmbDBType.Text)
-            {
-                case "Microsoft SQL Server":
-                    txtConnectionString.Text = "Driver={SQL Server};" + "Server=DataBaseNamex;" + "DataBase=DataBaseName;" + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Microsoft Sql Express":
-                    txtConnectionString.Text = "Data Source =.\\SQLExpress; " + "User Instance=true;" + "User Id=UserName;" + "Password=Secret;" + "AttachDbFilename=|DataDirectory|DataBaseName.mdf;";
-                    break;
-                case "Microsoft Access":
-                    txtConnectionString.Text = "Driver ={ Microsoft Access Driver(*.mdb)}; " + "Dbq=c:\\myPath\\myDb.mdb;" + "Uid=Admin;Pwd=;";
-                    break;
-                case "ORACLE":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "IBM DB2":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "MySql":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Sybase":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Interbase":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Informix":
-                    txtConnectionString.Text = "Dsn=DsnName;" + "Host=HostName;" + "Server=ServerName;" + "Service=ServerName;" + "Protocol=olsoctcp;" + "Database=DataBaseName;" + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Excel":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Text":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "dBase Dbf":
-                    txtConnectionString.Text = "Dsn=DsnName";
-                    break;
-                case "Visual FoxPro":
-                    txtConnectionString.Text = "Dsn=DsnName";
-                    break;
-                case "Other":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName; " + "Pwd=Secret;";
-                    break;
-            }
-
+            this.oldRangeName = (string)dgRangeMultiple[0, e.RowIndex].Value;
+            DataGridViewRowSelected = e.RowIndex;
+            DataGridViewColumnSelected = e.ColumnIndex;
         }
-
-        private void cmbDBType_TextChanged()
-        {
-            switch (cmbDBType.Text)
-            {
-                case "Microsoft SQL Server":
-                    txtConnectionString.Text = "Driver={SQL Server};" + "Server=DataBaseNamex;" + "DataBase=DataBaseName;" + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Microsoft Sql Express":
-                    txtConnectionString.Text = "Data Source =.\\SQLExpress; " + "User Instance=true;" + "User Id=UserName;" + "Password=Secret;" + "AttachDbFilename=|DataDirectory|DataBaseName.mdf;";
-                    break;
-                case "Microsoft Access":
-                    txtConnectionString.Text = "Driver ={ Microsoft Access Driver(*.mdb)}; " + "Dbq=c:\\myPath\\myDb.mdb;" + "Uid=Admin;Pwd=;";
-                    break;
-                case "ORACLE":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" +  "Pwd=Secret;";
-                    break;
-                case "IBM DB2":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "MySql":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Sybase":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Interbase":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Informix":
-                    txtConnectionString.Text = "Dsn=DsnName;" + "Host=HostName;" +"Server=ServerName;" +"Service=ServerName;" +"Protocol=olsoctcp;" +"Database=DataBaseName;" +"Uid=UserName;" +"Pwd=Secret;";
-                    break;
-                case "Excel":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "Text":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName;" + "Pwd=Secret;";
-                    break;
-                case "dBase Dbf":
-                    txtConnectionString.Text = "Dsn=DsnName";
-                    break;
-                case "Visual FoxPro":
-                    txtConnectionString.Text = "Dsn=DsnName";
-                    break;
-                case "Other":
-                    txtConnectionString.Text = "Dsn=DsnName; " + "Uid=UserName; " + "Pwd=Secret;";
-                    break;
-            }
-        }
-
-
     }
 }        

@@ -23,6 +23,7 @@
         <dependency id="Microsoft.Office.Interop.Excel" version="15.0.4795.1000" exclude="Build,Analyzers" />
         <dependency id="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" version="1.14.0" exclude="Build,Analyzers" />
         <dependency id="MongoDB.Driver" version="2.13.2" exclude="Build,Analyzers" />
+        <dependency id="MySqlConnector" version="2.1.5" exclude="Build,Analyzers" />
         <dependency id="NPOI" version="2.5.5" exclude="Build,Analyzers" />
         <dependency id="NUnit" version="3.13.2" exclude="Build,Analyzers" />
         <dependency id="Octokit" version="0.50.0" exclude="Build,Analyzers" />

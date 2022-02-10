@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "goBc82F0tW15YgtKJ4pAHu5+ggvN+j5zmUNNaZPKdu39XgMX8gplgiayFy5GJs3YZO232mBI5NhEGI0kFJtiig==",
+  "dgSpecHash": "t1udSy0F/pwnl6wVhUcAyeccseWp6cPuXzpx3/+hGoq0eo1KV94ziEjWp/ryDOf7AOQbC673IWh2ko1KwmB3Og==",
   "success": true,
   "projectFilePath": "C:\\Users\\jkhau\\source\\repos\\jsonapi\\JSONAPI.csproj",
   "expectedPackageFiles": [
@@ -48,6 +48,7 @@
     "C:\\Users\\jkhau\\.nuget\\packages\\mongodb.driver.core\\2.13.2\\mongodb.driver.core.2.13.2.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\mongodb.libmongocrypt\\1.2.2\\mongodb.libmongocrypt.1.2.2.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\morelinq\\3.3.2\\morelinq.3.3.2.nupkg.sha512",
+    "C:\\Users\\jkhau\\.nuget\\packages\\mysqlconnector\\2.1.5\\mysqlconnector.2.1.5.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\netstandard.library\\2.0.0\\netstandard.library.2.0.0.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\jkhau\\.nuget\\packages\\npoi\\2.5.5\\npoi.2.5.5.nupkg.sha512",

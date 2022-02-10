@@ -104,6 +104,10 @@
               "target": "Package",
               "version": "[2.13.2, )"
             },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.1.5, )"
+            },
             "NPOI": {
               "target": "Package",
               "version": "[2.5.5, )"
