@@ -129,50 +129,40 @@ namespace JSONAPI.Configure
 
         void readHttpHeaderFile()
         {
+            string testName = "";
             string path = "";
             try
             {
                 path = System.Environment.GetEnvironmentVariable("editFile", EnvironmentVariableTarget.User).ToString();
-
             }
             catch (Exception e)
             {
                 Utilities.Utilities.WriteLogItem("Issue with file. Nothing will be displayed:" + e.Message, System.Diagnostics.TraceEventType.Error);
             }
-            if (path.Length == 0)
+            if (path.Length > 0)
             {
                 path = System.Environment.GetEnvironmentVariable("editFile", EnvironmentVariableTarget.User).ToString();
             }
-            string[] tempPath = path.Split(".".ToCharArray());
-            path = tempPath[0] + ".h";
-            int counter = 1;
+            var testNameArray = path.Split("\\".ToCharArray());
+            testName = testNameArray[testNameArray.Length - 1].Split(".".ToCharArray())[0];
+            Dictionary<string, string> headerAttributes = Utilities.TestSuite.GetTestHeaderAttributes(testName);
             //MessageBox.Show("Header file; " + path);
-            if (File.Exists(path))
+            if (headerAttributes.Count > 0)
             {
-                string[] httpAttrs = new string[2];
-                foreach (string line in System.IO.File.ReadLines(path))
+                txtURL.Text = headerAttributes["Url"];
+                cmbHttpType.Text = headerAttributes["Type"];
+                cmbHttpType.SelectedItem = headerAttributes["Type"];
+                cmbAuthorization.Text = headerAttributes["Authorization"];
+                cmbAuthorization.SelectedItem = headerAttributes["Authorization"];
+
+                foreach (KeyValuePair<string, string> item in headerAttributes)
                 {
-                    if (counter == 1)
+                    if (item.Key != "Url" & item.Key != "Type" & item.Key != "Authorization")
                     {
-                        txtURL.Text = line;
+                        dgHeaderElements.Rows.Add(item.Key, item.Value);
                     }
-                    if (counter == 2)
-                    {
-                        cmbHttpType.Text = line;
-                        cmbHttpType.SelectedItem = line;
-                    }
-                    if (counter == 3)
-                    {
-                        cmbAuthorization.Text = line;
-                        cmbAuthorization.SelectedItem = line;
-                    }
-                    if (counter > 3)
-                    {
-                        httpAttrs = line.Split(',');
-                        dgHeaderElements.Rows.Add(httpAttrs);
-                    }
-                    counter++;
                 }
+                dgHeaderElements.Refresh();
             }
         }
 
@@ -180,6 +170,7 @@ namespace JSONAPI.Configure
         {
             string path = "";
             string testName = "";
+            Dictionary<string, string> headerAttrs = new Dictionary<string, string>();
             try
             {
                 path = System.Environment.GetEnvironmentVariable("editFile", EnvironmentVariableTarget.User).ToString();
@@ -191,10 +182,6 @@ namespace JSONAPI.Configure
                 Utilities.Utilities.WriteLogItem("Header file will be created:" + e.Message, System.Diagnostics.TraceEventType.Error);
             }
 
-            if (path.Length == 0)
-            {
-                path = System.Environment.GetEnvironmentVariable("workfolder", EnvironmentVariableTarget.User) + "new_json.json";
-            }
             string[] tempPath = path.Split(".".ToCharArray());
             StringBuilder sb = new StringBuilder();
             path = tempPath[0] + ".h";
@@ -206,54 +193,34 @@ namespace JSONAPI.Configure
 
             if (txtURL.Text.Length > 0)
             {
-                File.WriteAllText(path, txtURL.Text + Environment.NewLine, Encoding.UTF8);
-                sb.Append(txtURL.Text + Environment.NewLine);
+                headerAttrs.Add("Url", txtURL.Text);
             }
             else
             {
-                File.WriteAllText(path, "http://localhost" + Environment.NewLine, Encoding.UTF8);
-                sb.Append("http://localhost" + Environment.NewLine);
+                headerAttrs.Add("Url", "http://localhost");
             }
             if (cmbHttpType.Text.Length > 0)
             {
-                File.AppendAllText(path, cmbHttpType.Text + Environment.NewLine, Encoding.UTF8);
-                sb.Append(cmbHttpType.Text + Environment.NewLine);
+                headerAttrs.Add("Type", cmbHttpType.Text);
             }
             else
             {
-                File.AppendAllText(path, "GET" + Environment.NewLine, Encoding.UTF8);
-                sb.Append("GET" + Environment.NewLine);
+                headerAttrs.Add("Type", "GET");
             }
             try
             {
                 if (cmbAuthorization.Text.Length > 0)
                 {
-                    File.AppendAllText(path, cmbAuthorization.SelectedItem.ToString() + Environment.NewLine, Encoding.UTF8);
-                    sb.Append(cmbAuthorization.SelectedItem.ToString() + Environment.NewLine);
+                    headerAttrs.Add("Authorization", cmbAuthorization.SelectedItem.ToString());
                 }
                 else
                 {
-                    File.AppendAllText(path, "None" + Environment.NewLine, Encoding.UTF8);
-                    sb.Append("None" + Environment.NewLine);
+                    headerAttrs.Add("Authorization", "None");
                 }
             }
             catch (Exception ca)
             {
                 Utilities.Utilities.WriteLogItem("No selected authorization to update:" + ca.ToString(), System.Diagnostics.TraceEventType.Error);
-            }
-            int lineCount = 0;
-            //Only add these attributes from Line 4
-            using (var reader = File.OpenText(path))
-            {
-                while (reader.ReadLine() != null)
-                {
-                    lineCount++;
-                }
-            }
-            for (int i = lineCount; i < 3; i++)
-            {
-                File.AppendAllText(path, Environment.NewLine, Encoding.UTF8);
-                sb.Append(Environment.NewLine);
             }
 
             foreach (DataGridViewRow row in dgHeaderElements.Rows)
@@ -262,13 +229,12 @@ namespace JSONAPI.Configure
                 {
                     if (row.Cells[0].Value.ToString().Length > 0)
                     {
-                        File.AppendAllText(path, row.Cells[0].Value + "," + row.Cells[1].Value + Environment.NewLine, Encoding.UTF8);
-                        sb.Append(row.Cells[0].Value + "," + row.Cells[1].Value + Environment.NewLine);
+                        headerAttrs.Add(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString());
                     }
                 }
             }
 
-            Utilities.TestSuite.NewTestWithDetail(testName, sb.ToString(), "");
+            Utilities.TestSuite.NewTestWithDetail(testName, sb.ToString(), headerAttrs,"");
             MessageBox.Show("Header File Updated successfully");
         }
 

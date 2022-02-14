@@ -205,7 +205,7 @@ namespace JSONAPI.Configure
                     string inputString = "";
                     if (txtInputValue.Enabled) inputString = txtInputValue.Text;
                     else inputString = cmbInputData.Text;
-                    Utilities.TestSuite.NewTestWithDetail(txtStepName.Text, "", inputString, (int)numSequence.Value, cmbObjectMapItem.Text);
+                    Utilities.TestSuite.NewTestWithDetail(txtStepName.Text, "", null, inputString, (int)numSequence.Value, cmbObjectMapItem.Text);
                     string expectedResult = cmbAttribute.Text + "," + cmbVerificationType.Text + "," + txtExpectedValue.Text;
                     List<Utilities.TestSuite.FieldExpectedResult> expectedResultList = new List<Utilities.TestSuite.FieldExpectedResult>();
                     Utilities.TestSuite.FieldExpectedResult expectedField = new Utilities.TestSuite.FieldExpectedResult(txtElementName.Text, expectedResult);

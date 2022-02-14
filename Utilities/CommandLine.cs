@@ -11,14 +11,16 @@ namespace JSONAPI.Utilities
     public static class CommandLine
     {
         //JSONAPI runTestSuite <testSuiteName> <userName>:<password>
-        //E.g. JSONAPI.exe runTestSuite Demo new_user:new_user
+        //E.g. JSONAPI.exe runTestSuite PerfTest test:test 5 5
         // args[1] runTestSuite - Mandatory
         // args[2] TestSuiteName - Mandatory
         // args[3] username:password - Mandatory
         // args[4] parallel users - Optional, Default = 1
         // args[5] duration of run - Optional, if not specified, tests will only be executed once
+        // args[6] delay between each message - Optional, if not specified, value is 1000ms
         public static string[] commandLineArray = new string[] { "runTestSuite" };
-        private static List<TestSuite.PerformanceTestDetail> perfTests = null;
+        private static List<TestSuite.PerformanceTestDetail> perfTests = new List<TestSuite.PerformanceTestDetail>();
+        public static bool timerRunning = false;
 
         public static void StartTasks(string userName, string testSuiteName)
         {
@@ -43,8 +45,8 @@ namespace JSONAPI.Utilities
 
         public static string HandleCommandLine(string[] args)
         {
-            Random rnd = new Random();
             int count = 0;
+
             string returnValue = "";
             bool validCommandLineFlag = false;
             bool validTestSuite = false;
@@ -63,6 +65,10 @@ namespace JSONAPI.Utilities
                     args[4] = "1";
                     if (!int.TryParse(args[5], out tempNr)) args[5] = "1";
                 }
+                if (args[6] == null)
+                {
+                    args[6] = "1000";
+                }
                 for (int c = 0; c < commandLineArray.Length; c++)
                 {
                     commandLineStr += commandLineArray[c];
@@ -80,12 +86,12 @@ namespace JSONAPI.Utilities
                                 if (args[3] != null)
                                 {
                                     string[] userArray = args[3].Split(":".ToCharArray());
-                                    userExist = Users.ValidateUser(userArray[0], userArray[1]);
+                                    userExist = true; //Users.ValidateUser(userArray[0], userArray[1]);
                                     if (userExist)
                                     {
                                         if (args[4] == "1" & args[5] == "1")
                                         {
-                                            ThreadPool.QueueUserWorkItem(_ => StartTasks(args[3], args[2]));
+                                            ThreadPool.QueueUserWorkItem(_ => StartTasks(userArray[0], args[2]));
                                             Thread.Sleep(1000);
                                             returnValue = "Executed Successfully.  See Output for more details.";
                                         }
@@ -93,10 +99,13 @@ namespace JSONAPI.Utilities
                                         {
                                             if (int.TryParse(args[5], out tempNr) & int.TryParse(args[4], out tempNr))
                                             {
-                                                Dictionary<string, int> threadList = TestSuite.GetConcurrentUsers(args[2]);
-                                                foreach (KeyValuePair<string, int> entry in threadList)
+                                                BuildPerformanceTestMessages(args[2], int.Parse(args[4]));
+                                                string testRunName = "PerformanceTest" + DateTime.Now.ToString("yyyyMMddhh24mmss");
+                                                //ExecutionResult.NewTestRun(testRunName, args[2], "");
+                                                StoredProcedureTimer.Start(int.Parse(args[5]));
+                                                for (int user = 0; user < perfTests.Count; user++)
                                                 {
-                                                    ThreadStart testThread = delegate { RunUser(entry.Value,int.Parse(args[5])); };
+                                                    ThreadStart testThread = delegate { RunUser(user, args[2], int.Parse(args[6]), testRunName); };
                                                     new Thread(testThread).Start();
                                                 }
 
@@ -136,18 +145,22 @@ namespace JSONAPI.Utilities
             return returnValue;
         }
 
-        static void RunUser(int n, int timerInterval)
+        static void RunUser(int n, string testSuiteName, int delay, string testRunName)
         {
-            StoredProcedureTimer.Start(timerInterval);
+  
             ParallelLoopResult parallelLoopResult = Parallel.For(0, n,
                 (int i, ParallelLoopState loopControl) =>
                 {
-                    if (i > n - 2)
+                    Thread.Sleep(delay);
+
+                    if (!timerRunning)
                     {
                         loopControl.Stop();
+                        StoredProcedureTimer.Stop();
                     }
                     else
                     {
+                        string prevTestName = "";
                         Logs.NewLogItem("Working on " + i, TraceEventType.Information);
                         while (StoredProcedureTimer.status)
                         {
@@ -158,11 +171,26 @@ namespace JSONAPI.Utilities
                                 {
                                     for (int c = 0; c < perfTest.PerformanceTestMessageDetailList.Count; c++)
                                     {
-                                        Utilities.SendPerformanceTestMessage(perfTest.PerformanceTestMessageDetailList[c].HeaderRequest, perfTest.PerformanceTestMessageDetailList[c].DetailRequest);
+                                        string execStatus = "Pass";
+                 
+                                        var watch = System.Diagnostics.Stopwatch.StartNew();
+                                        bool messageStatus = Utilities.SendPerformanceTestMessage(perfTest.PerformanceTestMessageDetailList[c].TestName, perfTest.PerformanceTestMessageDetailList[c].DetailRequest);
+                                        watch.Stop();
+                                        var elapsedMs = watch.ElapsedMilliseconds;
+                                        if (messageStatus) execStatus = "Pass";
+                                        else execStatus = "Fail";
+                                        ExecutionResult.AddPerformanceTestResult(testRunName, testSuiteName, perfTest.PerformanceTestMessageDetailList[c].TestName, c, "Response", "Success", elapsedMs.ToString(), execStatus);
+                                        //TestSuite.UpdateTestStatus_NewInstance(testSuiteName, perfTest.PerformanceTestMessageDetailList[c].TestName, execStatus, "", "", "", "", c, 100, false);
+                                        Logs.NewLogItem("Sending message " + c.ToString() + " as user " + i.ToString(), TraceEventType.Information);
+                                        prevTestName = perfTest.PerformanceTestMessageDetailList[c].TestName;
                                     }
                                 }
                             }
                         }
+                    }
+                    if (loopControl.IsStopped)
+                    {
+                        return;
                     }
                 });
 
@@ -174,29 +202,36 @@ namespace JSONAPI.Utilities
 
         public static void BuildPerformanceTestMessages(string testSuiteName, int totalUsers)
         {
-            Dictionary<string, int> concurrentUserDetails = TestSuite.GetConcurrentUsers(testSuiteName);
-            int allocatedUsers = 0;
-            string testName = "";
-            TestSuite.Test testDetails;
-            List<TestSuite.PerformanceTestMessageDetail> performanceTestMessageList = null;
+            Dictionary<string, int> concurrentUserDetails = TestSuite.GetTestScenarioWeigthing(testSuiteName);
+            Dictionary<string, int[]> availableUserDetails = new Dictionary<string, int[]>();
             foreach (var item in concurrentUserDetails)
             {
-                allocatedUsers = item.Value;
-                testName = item.Key;
-                testDetails = TestSuite.GetTestDetails(testName);
-                List<string> detailMessages = Utilities.GenerateBatchDetail(testDetails.Input);
-                
-                for (int c = 1; c <= totalUsers*allocatedUsers/100; c++)
+                int[] numArray = new int[] { (int)Math.Ceiling((float)item.Value / 100 * totalUsers), (int)Math.Ceiling((float)item.Value / 100 * totalUsers) };
+                availableUserDetails.Add(item.Key, numArray);
+            }
+            string testName = "";
+            TestSuite.Test testDetails;
+            List<TestSuite.PerformanceTestMessageDetail> performanceTestMessageList = new List<TestSuite.PerformanceTestMessageDetail>();
+            for (int c = 1; c <= totalUsers; c++)
+            {
+                foreach (var item in availableUserDetails)
                 {
-                   
-                    foreach(string detailMessage in detailMessages)
+                    testName = item.Key;
+                    availableUserDetails[testName][1]--;
+                    if (availableUserDetails[testName][1] >= 0)
                     {
-                        TestSuite.PerformanceTestMessageDetail perfMessage = new TestSuite.PerformanceTestMessageDetail(testDetails.HeaderInput, detailMessage);
-                        performanceTestMessageList.Add(perfMessage);
+                        testDetails = TestSuite.GetTestDetails(testName);
+                        List<string> detailMessages = Utilities.GenerateBatchDetail(testDetails.Input);
+
+                        foreach (string detailMessage in detailMessages)
+                        {
+                            TestSuite.PerformanceTestMessageDetail perfMessage = new TestSuite.PerformanceTestMessageDetail(testName, detailMessage);
+                            performanceTestMessageList.Add(perfMessage);
+                        }
                     }
-                    TestSuite.PerformanceTestDetail perfTest = new TestSuite.PerformanceTestDetail(c, performanceTestMessageList);
-                    perfTests.Add(perfTest);
                 }
+                TestSuite.PerformanceTestDetail perfTest = new TestSuite.PerformanceTestDetail(c, performanceTestMessageList);
+                perfTests.Add(perfTest);
             }
         }
 
@@ -204,16 +239,13 @@ namespace JSONAPI.Utilities
         {
             static System.Timers.Timer SPTimer;
             static bool iscreated = false;
-            static bool isrunning = false;
-            static int interval = 3600;
-            static int APincriment = 10;
-            static int HPincriment = 1;
+
 
             // Create the timer
             static void CreateTimer(int interval)
             {
                 // Set multiple in seconds
-                SPTimer = new System.Timers.Timer(1000 * interval);
+                SPTimer = new System.Timers.Timer(1000 * 60 * interval);
                 SPTimer.Elapsed += new ElapsedEventHandler(SPTimer_Elapsed);
 
                 //enable
@@ -228,6 +260,7 @@ namespace JSONAPI.Utilities
             static void SPTimer_Elapsed(object sender, ElapsedEventArgs e)
             {
                 // do stuff
+                timerRunning = false;
                 Console.WriteLine("Timer completed.");
             }
 
@@ -242,13 +275,13 @@ namespace JSONAPI.Utilities
                 else
                 {
                     // set timer
-                    SPTimer.Interval = (1000 * interval);
+                    SPTimer.Interval = (1000 * 60 * interval);
                     // re-enable timer
                     SPTimer.Enabled = true;
                 }
 
                 // Update isrunning
-                isrunning = true;
+                timerRunning = true;
             }
 
             // Stop the timer
@@ -261,7 +294,7 @@ namespace JSONAPI.Utilities
                 }
 
                 // Update isrunning
-                isrunning = false;
+                timerRunning = false;
             }
 
             // Check the timer is running
@@ -269,14 +302,7 @@ namespace JSONAPI.Utilities
             {
                 get
                 {
-                    if (iscreated == true && isrunning == true)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return timerRunning;
                 }
             }
         }

@@ -894,9 +894,15 @@ namespace JSONAPI
             System.IO.File.WriteAllText(fileName, txtHttpInput.Text);
             var fileArray = fileName.Split("\\".ToCharArray());
             string testName = fileArray[fileArray.Length - 1].Split(".".ToCharArray())[0];
-            Utilities.TestSuite.NewTestWithDetail(testName, "", txtHttpInput.Text);
+            Dictionary<string, string> testAttrs = Utilities.TestSuite.GetTestHeaderAttributes(testName);
+            if (testAttrs.Count > 0)
+            {
+                Utilities.TestSuite.NewTestWithDetail(testName, Utilities.TestSuite.GetTestHeaderInput(testName), testAttrs, txtHttpInput.Text);
+                MessageBox.Show("Save completed successfully.");
+            }
+            else MessageBox.Show("Please add header attrbutes before saving.");
             Cursor.Current = Cursors.Default;
-            MessageBox.Show("Save completed successfully.");
+            
         }
 
         private void btnInputDetails_Click(object sender, EventArgs e)

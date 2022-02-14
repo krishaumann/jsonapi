@@ -66,12 +66,12 @@
 
         public class PerformanceTestMessageDetail
         {
-            public string HeaderRequest { get; set; }
+            public string TestName { get; set; }
             public string DetailRequest { get; set; }
             public string[] ExecutionStatus { get; set; }
-            public PerformanceTestMessageDetail(string headerRequest, string detailRequest)
+            public PerformanceTestMessageDetail(string testName, string detailRequest)
             {
-                HeaderRequest = headerRequest;
+                TestName = testName;
                 DetailRequest = detailRequest;
             }
         }
@@ -111,7 +111,7 @@
             public string UserName { get; set; }
             public string Input { get; set; }
             public string HeaderInput { get; set; }
-
+            public Dictionary<string, string> HeaderAttrbutes { get; set; }
             public string URL { get; set; }
             public string XPath { get; set; }
             public string Operation { get; set; }
@@ -145,24 +145,26 @@
                 Sequence = 0;
             }
 
-            public Test(string testName, string headerInput, string input)
+            public Test(string testName, string headerInput, Dictionary<string, string> headerAttrs, string input)
             {
                 TestName = testName;
                 Input = input;
                 HeaderInput = headerInput;
                 UserName = Users.currentUser;
                 FieldExpectedResultList = new List<FieldExpectedResult>();
+                HeaderAttrbutes = headerAttrs;
                 URL = "";
                 XPath = "";
                 Operation = "";
                 Sequence = 0;
             }
 
-            public Test(string testName, string headerInput, string input, int sequence, string xpath)
+            public Test(string testName, string headerInput, Dictionary<string, string> headerAttrs, string input, int sequence, string xpath)
             {
                 TestName = testName;
                 Input = input;
                 HeaderInput = headerInput;
+                HeaderAttrbutes = headerAttrs;
                 UserName = Users.currentUser;
                 FieldExpectedResultList = new List<FieldExpectedResult>();
                 URL = "";
@@ -242,7 +244,7 @@
             }
         }
 
-        public static bool NewTestWithDetail(string testName, string headerInput, string input)
+        public static bool NewTestWithDetail(string testName, string headerInput, Dictionary<string, string> headerAttrs, string input)
         {
             bool returnValue = true;
             try
@@ -254,12 +256,12 @@
 
                 if (!IsValidTestName(testName))
                 {
-                    Test test = new Test(testName, headerInput, input);
+                    Test test = new Test(testName, headerInput, headerAttrs, input);
                     docNewTest.InsertOne(test);
                 }
                 else
                 {
-                    if (headerInput.Length > 0) AddHeaderInput(testName, headerInput);
+                    if (headerInput.Length > 0) AddHeaderInput(testName, headerInput, headerAttrs);
                     if (input.Length > 0) AddInput(testName, input);
                 }
             }
@@ -271,7 +273,7 @@
             return returnValue;
         }
 
-        public static bool NewTestWithDetail(string testName, string headerInput, string input, int sequence, string xpath)
+        public static bool NewTestWithDetail(string testName, string headerInput, Dictionary<string, string> headerAttrs, string input, int sequence, string xpath)
         {
             bool returnValue = true;
             try
@@ -283,12 +285,12 @@
 
                 if (!IsValidTestName(testName, sequence))
                 {
-                    Test test = new Test(testName, headerInput, input, sequence, xpath);
+                    Test test = new Test(testName, headerInput, headerAttrs, input, sequence, xpath);
                     docNewTest.InsertOne(test);
                 }
                 else
                 {
-                    if (headerInput.Length > 0) AddHeaderInput(testName, headerInput);
+                    if (headerInput.Length > 0) AddHeaderInput(testName, headerInput, headerAttrs);
                     if (input.Length > 0) AddInput(testName, input);
                 }
             }
@@ -354,7 +356,7 @@
             }
         }
 
-        public static void AddHeaderInput(string testName, string headerInput)
+        public static void AddHeaderInput(string testName, string headerInput, Dictionary<string, string> headerAttrs)
         {
             var settings = MongoClientSettings.FromConnectionString(connectionString);
             var client = new MongoClient(settings);
@@ -366,12 +368,12 @@
 
             try
             {
-                var arrayUpdate = Builders<Test>.Update.Set("HeaderInput", headerInput);
+                var arrayUpdate = Builders<Test>.Update.Set("HeaderInput", headerInput).Set("HeaderAttributes", headerAttrs);
                 testCollection.UpdateOne(testNameFilter, arrayUpdate);
             }
             catch (Exception e)
             {
-                Utilities.WriteLogItem("AddHeaderInput(string testName, string headerInput) failed; " + e.ToString(), TraceEventType.Error);
+                Utilities.WriteLogItem("AddHeaderInput(string testName, string headerInput, headerAttrs) failed; " + e.ToString(), TraceEventType.Error);
             }
         }
 
@@ -456,6 +458,36 @@
             catch (Exception e)
             {
                 Utilities.WriteLogItem("GetTestHeaderInput failed; " + e.ToString(), TraceEventType.Error);
+            }
+            return returnValue;
+        }
+
+        public static Dictionary<string, string> GetTestHeaderAttributes(string testName)
+        {
+            Dictionary<string, string> returnValue = new Dictionary<string, string>();
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var testListCollection = database.GetCollection<Test>("colTests");
+            var inputFilter = Builders<Test>.Filter.Eq(u => u.TestName, testName) & Builders<Test>.Filter.Eq(u => u.UserName, Users.currentUser);
+
+            // projection stage
+            var simpleProjection = Builders<Test>.Projection
+                //.Include(t => t.TestSuiteList)
+                .Exclude("_id");
+            try
+            {
+                var docs = testListCollection.Find(inputFilter).Project(simpleProjection).ToList();
+                //var docs = testListCollection.Find<BsonDocument>(tcFilter).Project<TestRunList>(simpleProjection).ToList();
+                docs.ForEach(doc =>
+                {
+                    string tempString = doc.AsBsonValue.ToJson();
+                    returnValue = JsonConvert.DeserializeObject<Test>(tempString).HeaderAttrbutes;
+                });
+            }
+            catch (Exception e)
+            {
+                Utilities.WriteLogItem("GetTestHeaderAttributes failed; " + e.ToString(), TraceEventType.Error);
             }
             return returnValue;
         }
@@ -1244,7 +1276,7 @@
             return returnList;
         }
 
-        public static Dictionary<string, int> GetConcurrentUsers(string testSuiteName)
+        public static Dictionary<string, int> GetTestScenarioWeigthing(string testSuiteName)
         {
             Dictionary<string, int> returnList = new Dictionary<string, int>();
             TestRunList arrayOfStrings;
@@ -1275,7 +1307,7 @@
             }
             catch (Exception e)
             {
-                Utilities.WriteLogItem("GetConcurrentUsers(testSuiteName) failed; " + e.ToString(), TraceEventType.Error);
+                Utilities.WriteLogItem("GetTestScenarioWeigthing(testSuiteName) failed; " + e.ToString(), TraceEventType.Error);
 
             }
             return returnList;
@@ -1713,48 +1745,51 @@
             {
                 ExportTestResultsToCsv(testSuiteName, fileName);
             }
-            if (testSuite.RunOutput.Length > 0)
+            if (testSuite.RunOutput != null)
             {
-                tempReplacestr = testSuite.RunOutput;
-                List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
-                while (tempReplacestr.Contains("REPLACE("))
+                if (testSuite.RunOutput.Length > 0)
                 {
-                    var tempArray = tempReplacestr.Split(Environment.NewLine.ToCharArray());
-                    for (int c = 0; c < tempArray.Length; c++)
+                    tempReplacestr = testSuite.RunOutput;
+                    List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
+                    while (tempReplacestr.Contains("REPLACE("))
                     {
-                        if (tempArray[c].Length > 2)
+                        var tempArray = tempReplacestr.Split(Environment.NewLine.ToCharArray());
+                        for (int c = 0; c < tempArray.Length; c++)
                         {
-                            string variableName = tempArray[c].Split(":".ToCharArray())[0].Trim().Replace("}","").Replace("{", "").Replace("\n", "").Replace("\"","");
-                            replaceFlag = false;
-                            for (int j = 0; j < savedVariableList.Count; j++)
+                            if (tempArray[c].Length > 2)
                             {
-                                int intValue = 0;
-                                bool boolValue = true;
-                                if (!replaceFlag)
+                                string variableName = tempArray[c].Split(":".ToCharArray())[0].Trim().Replace("}", "").Replace("{", "").Replace("\n", "").Replace("\"", "");
+                                replaceFlag = false;
+                                for (int j = 0; j < savedVariableList.Count; j++)
                                 {
-                                    if (savedVariableList[j].SearchForElement.Contains(variableName))
+                                    int intValue = 0;
+                                    bool boolValue = true;
+                                    if (!replaceFlag)
                                     {
-                                        string variableValue = savedVariableList[j].SavedValue;
-                                        if (int.TryParse(variableValue, out intValue) | bool.TryParse(variableValue, out boolValue))
+                                        if (savedVariableList[j].SearchForElement.Contains(variableName))
                                         {
-                                            tempReplacestr = tempReplacestr.Replace("REPLACE(" + replaceCounter.ToString() + ")", variableValue);
-                                            replaceFlag = true;
+                                            string variableValue = savedVariableList[j].SavedValue;
+                                            if (int.TryParse(variableValue, out intValue) | bool.TryParse(variableValue, out boolValue))
+                                            {
+                                                tempReplacestr = tempReplacestr.Replace("REPLACE(" + replaceCounter.ToString() + ")", variableValue);
+                                                replaceFlag = true;
+                                            }
+                                            else
+                                            {
+                                                variableValue = "\"" + variableValue + "\"";
+                                                tempReplacestr = tempReplacestr.Replace("REPLACE(" + replaceCounter.ToString() + ")", variableValue);
+                                                replaceFlag = true;
+                                            }
+                                            replaceCounter++;
                                         }
-                                        else
-                                        {
-                                            variableValue = "\"" + variableValue + "\"";
-                                            tempReplacestr = tempReplacestr.Replace("REPLACE(" + replaceCounter.ToString() + ")", variableValue);
-                                            replaceFlag = true;
-                                        }
-                                        replaceCounter++;
                                     }
                                 }
                             }
                         }
                     }
+                    File.WriteAllText(Directory.GetCurrentDirectory() + "\\output.csv", tempReplacestr);
+                    //UpdateRunOutput(testSuiteName, tempReplacestr);
                 }
-                File.WriteAllText(Directory.GetCurrentDirectory() + "\\output.csv", tempReplacestr);
-                //UpdateRunOutput(testSuiteName, tempReplacestr);
             }
         }
 

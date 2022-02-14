@@ -524,6 +524,47 @@
             }
         }
 
+        public static void AddPerformanceTestResult(string testRunName, string testSuiteName, string testName, int incrementNr, string fieldName, string expectedValue, string actualValue, string result)
+        {
+            var settings = MongoClientSettings.FromConnectionString(connectionString);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase("JSONAPI");
+            var docTestStatus = database.GetCollection<TestRun>("colTestRuns");
+            try
+            {
+                TestResult newTestList = new TestResult(fieldName, testRunName, incrementNr, expectedValue, actualValue, result);
+                TestRun testRun = GetExecutedRunList(testRunName, testSuiteName, testName);
+                if (testRun.TestSuiteName == null)
+                {
+                    List<TestResult> testResultList = new List<TestResult>();
+                    testRun = new TestRun(testRunName, testSuiteName, testName, testResultList);
+                    docTestStatus.InsertOne(testRun);
+                }
+                testRun.TestResultList.Add(newTestList);
+                //DeleteTestSuite(testSuiteName);
+                //docTestStatus.InsertOne(testRunList);
+                var testRunNameFilter = Builders<TestRun>.Filter
+                    .Eq(u => u.TestRunName, testRunName);
+                var testSuiteNameFilter = Builders<TestRun>.Filter
+                    .Eq(u => u.TestSuiteName, testSuiteName);
+                var testNameFilter = Builders<TestRun>.Filter
+                    .Eq(u => u.TestName, testName);
+                var filter = testRunNameFilter & testSuiteNameFilter & testNameFilter & Builders<TestRun>.Filter.Eq(u => u.UserName, Users.currentUser);
+                ProjectionDefinition<TestRun, TestRun> projection = Builders<TestRun>.Projection.Exclude("_id");
+                var options = new FindOneAndReplaceOptions<TestRun>()
+                {
+                    Projection = projection,
+                    ReturnDocument = ReturnDocument.After
+                };
+                docTestStatus.FindOneAndReplace(filter, testRun, options);
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.ToString());
+                Utilities.WriteLogItem("AddTestResult failed; " + e.ToString(), TraceEventType.Error);
+            }
+        }
+
         public static void DeleteTestRun(string testRunName)
         {
             var settings = MongoClientSettings.FromConnectionString(connectionString);

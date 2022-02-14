@@ -352,7 +352,7 @@ namespace JSONAPI.Controls
 		{
 			var tempArray = this.fileName.Split("\\");
 			string testName = tempArray[tempArray.Length - 1].ToString();
-			bool saveValue = Utilities.TestSuite.NewTestWithDetail(testName, "", TextArea.Text);
+			bool saveValue = Utilities.TestSuite.NewTestWithDetail(testName, "", null, TextArea.Text);
 			if (saveValue)
 			{
 				MessageBox.Show("Script saved successfully and can be executed.");

@@ -598,163 +598,12 @@
             return returnValue;
         }
 
-        public static Dictionary<string, string> BuildHttpHeaderInformation(string message)
-        {
-            Dictionary<string, string> returnDictionary = new Dictionary<string, string>();
-            string tempValue = "";
-            // Get Token if applicable
-            string token = Variables.GetSavedValue("token");
-            if (token == null) token = "";
-            //First get authentication
-            if (System.Environment.GetEnvironmentVariable("useBearerToken", EnvironmentVariableTarget.User) == "yes")
-            {
-                if (System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User) != "none" & token == "")
-                {
-                    returnDictionary.Add("Authorization", "Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
-                    //MessageBox.Show("Setting Bearer token:  Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
-                }
-                else
-                {
-                    if (token != "") returnDictionary.Add("Authorization", "Bearer " + token);
-                }
-            }
-
-            if (System.Environment.GetEnvironmentVariable("useBasicToken", EnvironmentVariableTarget.User) == "yes")
-            {
-                if (System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User) != "none" & token == "")
-                {
-                    returnDictionary.Add("Authorization", "basic " + System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User));
-                }
-                else
-                {
-                    if (token != "") returnDictionary.Add("Authorization", "basic " + token);
-                }
-            }
-
-            if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
-            {
-                if (System.Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.User) != "none")
-                    returnDictionary.Add("Authorization", "apikey " + System.Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.User));
-            }
-            if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
-            {
-                if (System.Environment.GetEnvironmentVariable("customKey", EnvironmentVariableTarget.User) != "none")
-                    returnDictionary.Add("Authorization", System.Environment.GetEnvironmentVariable("customKey", EnvironmentVariableTarget.User));
-            }
-
-            int counter = 1;
-            //MessageBox.Show("Header file; " + path);
-            if (message.Length > 0)
-            {
-                string[] httpAttrs = new string[2];
-                string[] headerArray = message.Split(Environment.NewLine.ToCharArray());
-                string[] headerArray2 = message.Split("\n".ToCharArray());
-                if (headerArray2.Length < headerArray.Length) headerArray = headerArray2;
-                for (int i = 0; i < headerArray.Length; i++)
-                {
-                    headerArray[i] = headerArray[i].Replace("\r", "");
-                    if (counter == 1)
-                    {
-                        returnDictionary.Add("Url", headerArray[i]);
-                    }
-                    if (counter == 2)
-                    {
-                        returnDictionary.Add("Type", headerArray[i]);
-                    }
-                    if (counter == 3)
-                    {
-                        if (!returnDictionary.ContainsKey("Authorization"))
-                            returnDictionary.Add("Authorization", headerArray[i]);
-                    }
-                    if (counter > 3)
-                    {
-                        httpAttrs = headerArray[i].Split(',');
-                        try
-                        {
-                            if (!returnDictionary.ContainsKey(httpAttrs[0]))
-                                returnDictionary.Add(httpAttrs[0], httpAttrs[1]);
-                        }
-                        catch (Exception ae)
-                        {
-                            WriteLogItem("Header file not correct:" + ae.ToString(), TraceEventType.Error);
-                        }
-                    }
-                    counter++;
-                }
-            }
-            //Auto-Add
-            List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
-            for (int j = 0; j < savedVariableList.Count; j++)
-            {
-                if (savedVariableList[j].SavedValue.Length > 0 && savedVariableList[j].VariableName.ToLower() != "token")
-                {
-                    if (returnDictionary.TryGetValue(savedVariableList[j].SearchForElement, out tempValue))
-                    {
-                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "first")
-                        {
-                            int numChars = savedVariableList[j].NumChars;
-                            if (numChars > 0 & numChars <= savedVariableList[j].SavedValue.Length)
-                            {
-                                string tempString = savedVariableList[j].SavedValue;
-                                tempString = tempString.Substring(0, numChars);
-                                returnDictionary[savedVariableList[j].SearchForElement] = tempString;
-                            }
-                        }
-                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "last")
-                        {
-                            int numChars = savedVariableList[j].NumChars;
-                            if (numChars > 0 & numChars <= savedVariableList[j].SavedValue.Length)
-                            {
-                                string tempString = savedVariableList[j].SavedValue;
-                                tempString = tempString.Substring(tempString.Length - numChars);
-                                returnDictionary[savedVariableList[j].SearchForElement] = tempString;
-                            }
-                        }
-                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "all")
-                        {
-                            returnDictionary[savedVariableList[j].SearchForElement] = savedVariableList[j].SavedValue;
-                        }
-                    }
-                    else
-                    {
-                        returnDictionary.Add(savedVariableList[j].SearchForElement, savedVariableList[j].SavedValue);
-                    }
-                }
-            }
-            return returnDictionary;
-
-        }
-
         public static Dictionary<string, string> GetHttpHeaderInformation(string testName)
         {
             Dictionary<string, string> returnDictionary = new Dictionary<string, string>();
-            string path = "";
-            string headerContents = "";
-            if (testName.Length == 0)
+            if (testName.Length > 0)
             {
-                try
-                {
-                    path = System.Environment.GetEnvironmentVariable("editFile", EnvironmentVariableTarget.User).ToString();
-                }
-                catch (Exception e)
-                {
-                    WriteLogItem("Issue with file. Nothing will be displayed:" + e.ToString(), TraceEventType.Error);
-                }
-                string[] tempPath = path.Split(".".ToCharArray());
-                path = tempPath[0] + ".h";
-                if (File.Exists(path))
-                {
-                    headerContents = System.IO.File.ReadAllText(path);
-                }
-                else
-                {
-                    headerContents = "";
-                }
-                
-            }
-            else
-            {
-                headerContents = TestSuite.GetTestHeaderInput(testName);
+                returnDictionary = TestSuite.GetTestHeaderAttributes(testName);
             }
             string tempValue = "";
             // Get Token if applicable
@@ -765,12 +614,17 @@
             {
                 if (System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User) != "none" & token == "")
                 {
-                    returnDictionary.Add("Authorization", "Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User);
+                    else returnDictionary.Add("Authorization", "Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
                     //MessageBox.Show("Setting Bearer token:  Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
                 }
                 else
                 {
-                    if (token != "") returnDictionary.Add("Authorization", "Bearer " + token);
+                    if (token != "")
+                    {
+                        if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "Bearer " + token;
+                        else returnDictionary.Add("Authorization", "Bearer " + token);
+                    }
                 }
             }
 
@@ -778,65 +632,36 @@
             {
                 if (System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User) != "none" & token == "")
                 {
-                    returnDictionary.Add("Authorization", "basic " + System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User));
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "basic " + System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User);
+                    else returnDictionary.Add("Authorization", "basic " + System.Environment.GetEnvironmentVariable("basicToken", EnvironmentVariableTarget.User));
                 }
                 else
                 {
-                    if (token != "") returnDictionary.Add("Authorization", "basic " + token);
+                    if (token != "")
+                    {
+                        if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "basic " + token;
+                        else returnDictionary.Add("Authorization", "basic " + token);
+                    }
                 }
             }
 
             if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
             {
                 if (System.Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.User) != "none")
-                    returnDictionary.Add("Authorization", "apikey " + System.Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.User));
+                {
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "apikey " + System.Environment.GetEnvironmentVariable("apikey", EnvironmentVariableTarget.User);
+                    else returnDictionary.Add("Authorization", "apikey " + System.Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.User));
+                }
             }
             if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
             {
                 if (System.Environment.GetEnvironmentVariable("customKey", EnvironmentVariableTarget.User) != "none")
-                    returnDictionary.Add("Authorization", System.Environment.GetEnvironmentVariable("customKey", EnvironmentVariableTarget.User));
-            }
-
-            int counter = 1;
-            //MessageBox.Show("Header file; " + path);
-            if (headerContents.Length > 0)
-            {
-                string[] httpAttrs = new string[2];
-                string[] headerArray = headerContents.Split(Environment.NewLine.ToCharArray());
-                string[] headerArray2 = headerContents.Split("\n".ToCharArray());
-                if (headerArray2.Length < headerArray.Length) headerArray = headerArray2;
-                for (int i = 0; i < headerArray.Length; i++)
                 {
-                    headerArray[i] = headerArray[i].Replace("\r", "");
-                    if (counter == 1)
-                    {
-                        returnDictionary.Add("Url", headerArray[i]);
-                    }
-                    if (counter == 2)
-                    {
-                        returnDictionary.Add("Type", headerArray[i]);
-                    }
-                    if (counter == 3)
-                    {
-                        if (!returnDictionary.ContainsKey("Authorization"))
-                            returnDictionary.Add("Authorization", headerArray[i]);
-                    }
-                    if (counter > 3)
-                    {
-                        httpAttrs = headerArray[i].Split(',');
-                        try
-                        {
-                            if (!returnDictionary.ContainsKey(httpAttrs[0]))
-                                returnDictionary.Add(httpAttrs[0], httpAttrs[1]);
-                        }
-                        catch (Exception ae)
-                        {
-                            WriteLogItem("Header file not correct:" + ae.ToString(), TraceEventType.Error);
-                        }
-                    }
-                    counter++;
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "customkey " + System.Environment.GetEnvironmentVariable("customkey", EnvironmentVariableTarget.User);
+                    else returnDictionary.Add("Authorization", System.Environment.GetEnvironmentVariable("customKey", EnvironmentVariableTarget.User));
                 }
             }
+            //MessageBox.Show("Header file; " + path);
             //Auto-Add
             List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
             for (int j = 0; j < savedVariableList.Count; j++)
@@ -1135,8 +960,9 @@
             return returnDict;
         }
 
-        public static void SendPerformanceTestMessage(string headerText, string detailText)
+        public static bool SendPerformanceTestMessage(string testName, string detailText)
         {
+            bool returnValue = true;
             HttpClient client = new HttpClient();
             HttpRequestMessage requestMessage = new HttpRequestMessage();
             StringContent httpContent = new StringContent(detailText);
@@ -1146,10 +972,8 @@
             bool continueFlag = true;
             if (IsValidJson(detailText)) System.Environment.SetEnvironmentVariable("fileType", "json", EnvironmentVariableTarget.User);
             else System.Environment.SetEnvironmentVariable("fileType", "xml", EnvironmentVariableTarget.User);
-            Dictionary<string, string> headerDict = BuildHttpHeaderInformation(headerText);
-            string dictionaryString = "{";
-            //returnDict.Add("HeaderRequest", dictionaryString + "}");
-            Dictionary<string, string> responseDict = new Dictionary<string, string>();
+            Dictionary<string, string> headerDict = GetHttpHeaderInformation(testName);
+            
             string url = "";
             string url2 = url;
             if (headerDict.TryGetValue("Url", out url))
@@ -1247,12 +1071,14 @@
                                 streamReader.Close();
                                 streamResponse.Close();
                             }
+                            returnValue = true;
                         }
                         else
                         {
                             //returnDict.Add("HttpResponse", httpResponseClient.StatusCode.ToString());
                             //returnDict.Add("Body", "No response");
                             continueFlag = false;
+                            returnValue = false;
                             WriteLogItem("Exception with HTTP Response Code:" + httpResponseClient.StatusCode.ToString(), TraceEventType.Error);
                         }
                     }
@@ -1376,8 +1202,8 @@
                 {
                     Logs.NewLogItem("Error adding error response: " + e.Message, TraceEventType.Information);
                 }
-            }
-            return returnDict;*/
+            }*/
+            return returnValue;
         }
 
         static void buildXMLHttpResponseDict(Dictionary<string, string> returnDict)
