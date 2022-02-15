@@ -63,6 +63,7 @@ namespace JSONAPI.Options
             this.dgVariables.CellDoubleClick += new DataGridViewCellEventHandler(this.dgVariables_CellContentDoubleClick);
             this.dgTestSuiteList.CellDoubleClick += new DataGridViewCellEventHandler(this.dgTestSuiteList_CellContentDoubleClick);
             this.dgTestSuiteList.CellValueChanged += new DataGridViewCellEventHandler(this.dgTestSuiteList_OnCellValueChanged);
+            this.dgConcurrentUsers.CellValueChanged += new DataGridViewCellEventHandler(this.dgConcurrentUsers_OnCellValueChanged);
             this.dgTestSuiteList.CellPainting += new DataGridViewCellPaintingEventHandler(this.dgTestSuiteList_CellPainting);
             this.btnExportResults.Click += new EventHandler(this.ExportResults_Click);
             this.lstRangeItems.DoubleClick += new EventHandler(this.ListRangeItems_DoubleClick);
@@ -746,12 +747,21 @@ namespace JSONAPI.Options
                 chkExportResults.Checked = (bool) dgTestSuiteList.CurrentRow.Cells["colExportTestResults"].Value;
                 List<Utilities.TestSuite.TestList> testList = Utilities.TestSuite.GetTestList(txtTestName.Text);
                 lstTestNames.Items.Clear();
+            
+                dgConcurrentUsers.Rows.Clear();
+                tbConcurrentUsers.Select();
+                foreach (Utilities.TestSuite.TestList test in testList)
+                {
+                    dgConcurrentUsers.Rows.Add(test.TestName, test.IsLogin, test.ConcurrentUserPercentage);
+                }
+                dgConcurrentUsers.Refresh();
+                tbTestSuiteDetails.Select();
                 foreach (Utilities.TestSuite.TestList test in testList)
                 {
                     lstTestNames.Items.Add(test.TestName);
-                    dgConcurrentUsers.Rows.Add(test.TestName, test.ConcurrentUserPercentage);
                     lstTestList.Items.Remove(test.TestName);
                 }
+                //dgConcurrentUsers.Refresh();
                 lstVariables.Items.Clear();
                 btnAddTest.Text = "Update Item";
             }
@@ -988,6 +998,19 @@ namespace JSONAPI.Options
             }
         }
 
+        private void dgConcurrentUsers_OnCellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 2)
+            {
+                
+                if (!int.TryParse((string)dgConcurrentUsers.CurrentCell.Value, out int temp))
+                {
+                    MessageBox.Show("Value should be of type integer.", "Incorrect Value");
+                    dgConcurrentUsers.BeginEdit(true);
+                }
+            }
+        }
+
         private void dgTestSuiteList_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             try
@@ -1017,6 +1040,19 @@ namespace JSONAPI.Options
             {
                 Utilities.Utilities.WriteLogItem("Error defining Button for dgTestSuiteList" + fe.ToString(), TraceEventType.Error);
             }
+        }
+        private void btnTestSuiteCancel_Click(object sender, EventArgs e)
+        {
+            lstTestList.Items.Clear();
+            lstTestNames.Items.Clear();
+            txtTestName.Text = "";
+            txtTestName.Enabled = true;
+            dgConcurrentUsers.Rows.Clear();
+            lstVariableList.Items.Clear();
+            lstVariables.Items.Clear();
+            txtSampleOutput.Text = "";
+            chkExportResults.Checked = false;
+            btnAddTest.Text = "Add Item";
         }
 
 
@@ -1694,5 +1730,7 @@ namespace JSONAPI.Options
             DataGridViewRowSelected = e.RowIndex;
             DataGridViewColumnSelected = e.ColumnIndex;
         }
+
+
     }
 }        

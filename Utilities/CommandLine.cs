@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace JSONAPI.Utilities
         public static string[] commandLineArray = new string[] { "runTestSuite" };
         private static List<TestSuite.PerformanceTestDetail> perfTests = new List<TestSuite.PerformanceTestDetail>();
         public static bool timerRunning = false;
+        private static List<Variables.SessionVariable> sessionVariables = new List<Variables.SessionVariable>();
 
         public static void StartTasks(string userName, string testSuiteName)
         {
@@ -174,7 +176,7 @@ namespace JSONAPI.Utilities
                                         string execStatus = "Pass";
                  
                                         var watch = System.Diagnostics.Stopwatch.StartNew();
-                                        bool messageStatus = Utilities.SendPerformanceTestMessage(perfTest.PerformanceTestMessageDetailList[c].TestName, perfTest.PerformanceTestMessageDetailList[c].DetailRequest);
+                                        bool messageStatus = Utilities.SendPerformanceTestMessage(perfTest.PerformanceTestMessageDetailList[c].TestName, perfTest.PerformanceTestMessageDetailList[c].DetailRequest, perfTest.UserNumber);
                                         watch.Stop();
                                         var elapsedMs = watch.ElapsedMilliseconds;
                                         if (messageStatus) execStatus = "Pass";
@@ -200,11 +202,61 @@ namespace JSONAPI.Utilities
             }
         }
 
+        public static void UpdateSessionVariableValue(int userName, string variableName, string updateValue)
+        {
+            foreach (var item in sessionVariables.ToList())
+            {
+                if (item.UserNr == userName & item.VariableName == variableName)
+                    item.SavedValue = updateValue;
+            }
+        }
+        public static List<Variables.SessionVariable> GetSessionVariables(int userName)
+        {
+            List<Variables.SessionVariable> returnList = new List<Variables.SessionVariable>();
+            foreach (var item in sessionVariables.ToList())
+            {
+                if (item.UserNr == userName) returnList.Add(item);
+            }
+            return returnList;
+        }
+
+
+        public static void NewSessionVariableValue(int userName, string variableName, string updateValue, string replaceWhere, string searchForElement)
+        {
+            Variables.SessionVariable itemVariable = new Variables.SessionVariable(userName, variableName, updateValue, replaceWhere, searchForElement, "", 0);
+            sessionVariables.Add(itemVariable);
+        }
+
+        public static string GetSessionVariableValue(int userName, string variableName)
+        {
+            string returnValue = "";
+            foreach (var item in sessionVariables.ToList())
+            {
+                if (item.UserNr == userName & item.VariableName == variableName)
+                    returnValue = item.SavedValue.ToString();
+
+            }
+            return returnValue;
+        }
+        public static string GetSessionVariableReplaceWhere(int userName, string variableName)
+        {
+            string returnValue = "";
+            foreach (var item in sessionVariables.ToList())
+            {
+                if (item.UserNr == userName & item.VariableName == variableName)
+                    returnValue = item.ReplaceWhere.ToString();
+
+            }
+            return returnValue;
+        }
+
+
         public static void BuildPerformanceTestMessages(string testSuiteName, int totalUsers)
         {
             Dictionary<string, int> concurrentUserDetails = TestSuite.GetTestScenarioWeigthing(testSuiteName);
+            List<Variables.VariableList> variableList = Variables.GetVariableDocuments();
             Dictionary<string, int[]> availableUserDetails = new Dictionary<string, int[]>();
-            foreach (var item in concurrentUserDetails)
+            foreach (var item in concurrentUserDetails.ToList())
             {
                 int[] numArray = new int[] { (int)Math.Ceiling((float)item.Value / 100 * totalUsers), (int)Math.Ceiling((float)item.Value / 100 * totalUsers) };
                 availableUserDetails.Add(item.Key, numArray);
@@ -212,9 +264,15 @@ namespace JSONAPI.Utilities
             string testName = "";
             TestSuite.Test testDetails;
             List<TestSuite.PerformanceTestMessageDetail> performanceTestMessageList = new List<TestSuite.PerformanceTestMessageDetail>();
+            sessionVariables.Clear();
             for (int c = 1; c <= totalUsers; c++)
             {
-                foreach (var item in availableUserDetails)
+                foreach (var variable in variableList.ToList())
+                {
+                    Variables.SessionVariable itemVariable = new Variables.SessionVariable(c, variable.VariableName, variable.SavedValue, variable.ReplaceWhere, variable.SearchForElement, "", 0);
+                    sessionVariables.Add(itemVariable);
+                }
+                foreach (var item in availableUserDetails.ToList())
                 {
                     testName = item.Key;
                     availableUserDetails[testName][1]--;

@@ -704,6 +704,112 @@
             return returnDictionary;
         }
 
+        public static Dictionary<string, string> GetPerfHttpHeaderInformation(string testName, int userNr)
+        {
+            Dictionary<string, string> returnDictionary = new Dictionary<string, string>();
+            if (testName.Length > 0)
+            {
+                returnDictionary = TestSuite.GetTestHeaderAttributes(testName);
+            }
+            string tempValue = "";
+            // Get Token if applicable
+            string token = Variables.GetSavedValue("token");
+            if (token == null) token = "";
+            //First get authentication
+            if (System.Environment.GetEnvironmentVariable("useBearerToken", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (CommandLine.GetSessionVariableValue(userNr, "bearerToken") != "none" & token == "")
+                {
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "Bearer " + CommandLine.GetSessionVariableValue(userNr, "bearerToken");
+                    else returnDictionary.Add("Authorization", "Bearer " + CommandLine.GetSessionVariableValue(userNr, "bearerToken"));
+                    //MessageBox.Show("Setting Bearer token:  Bearer " + System.Environment.GetEnvironmentVariable("bearerToken", EnvironmentVariableTarget.User));
+                }
+                else
+                {
+                    if (token != "")
+                    {
+                        if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "Bearer " + token;
+                        else returnDictionary.Add("Authorization", "Bearer " + token);
+                    }
+                }
+            }
+
+            if (System.Environment.GetEnvironmentVariable("useBasicToken", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (CommandLine.GetSessionVariableValue(userNr, "basicToken") != "none" & token == "")
+                {
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "basic " + CommandLine.GetSessionVariableValue(userNr, "basicToken");
+                    else returnDictionary.Add("Authorization", "basic " + CommandLine.GetSessionVariableValue(userNr, "basicToken"));
+                }
+                else
+                {
+                    if (token != "")
+                    {
+                        if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "basic " + token;
+                        else returnDictionary.Add("Authorization", "basic " + token);
+                    }
+                }
+            }
+
+            if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (CommandLine.GetSessionVariableValue(userNr, "apiKey") != "none")
+                {
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "apikey " + CommandLine.GetSessionVariableValue(userNr, "apikey");
+                    else returnDictionary.Add("Authorization", "apikey " + CommandLine.GetSessionVariableValue(userNr, "apiKey"));
+                }
+            }
+            if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
+            {
+                if (CommandLine.GetSessionVariableValue(userNr, "customKey") != "none")
+                {
+                    if (returnDictionary.ContainsKey("Authorization")) returnDictionary["Authorization"] = "customkey " + CommandLine.GetSessionVariableValue(userNr, "customkey");
+                    else returnDictionary.Add("Authorization", CommandLine.GetSessionVariableValue(userNr, "customKey"));
+                }
+            }
+            //MessageBox.Show("Header file; " + path);
+            //Auto-Add
+            List<Variables.SessionVariable> savedVariableList = CommandLine.GetSessionVariables(userNr);
+            for (int j = 0; j < savedVariableList.Count; j++)
+            {
+                if (savedVariableList[j].SavedValue.Length > 0 && savedVariableList[j].VariableName.ToLower() != "token")
+                {
+                    if (returnDictionary.TryGetValue(savedVariableList[j].SearchForElement, out tempValue))
+                    {
+                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "first")
+                        {
+                            int numChars = savedVariableList[j].NumChars;
+                            if (numChars > 0 & numChars <= savedVariableList[j].SavedValue.Length)
+                            {
+                                string tempString = savedVariableList[j].SavedValue;
+                                tempString = tempString.Substring(0, numChars);
+                                returnDictionary[savedVariableList[j].SearchForElement] = tempString;
+                            }
+                        }
+                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "last")
+                        {
+                            int numChars = savedVariableList[j].NumChars;
+                            if (numChars > 0 & numChars <= savedVariableList[j].SavedValue.Length)
+                            {
+                                string tempString = savedVariableList[j].SavedValue;
+                                tempString = tempString.Substring(tempString.Length - numChars);
+                                returnDictionary[savedVariableList[j].SearchForElement] = tempString;
+                            }
+                        }
+                        if (savedVariableList[j].PartialSave.ToString().ToLower() == "all")
+                        {
+                            returnDictionary[savedVariableList[j].SearchForElement] = savedVariableList[j].SavedValue;
+                        }
+                    }
+                    else
+                    {
+                        returnDictionary.Add(savedVariableList[j].SearchForElement, savedVariableList[j].SavedValue);
+                    }
+                }
+            }
+            return returnDictionary;
+        }
+
         public static Dictionary<string, string> SendHttpRequest(string bodyText, int incrementCounter, string testSuiteName = "", string testName = "", string tempValue = "")
         {
             HttpClient client = new HttpClient();
@@ -960,7 +1066,7 @@
             return returnDict;
         }
 
-        public static bool SendPerformanceTestMessage(string testName, string detailText)
+        public static bool SendPerformanceTestMessage(string testName, string detailText, int userNr)
         {
             bool returnValue = true;
             HttpClient client = new HttpClient();
@@ -970,9 +1076,9 @@
             StreamReader streamReader = null;
             HttpResponseMessage httpResponseClient = null;
             bool continueFlag = true;
-            if (IsValidJson(detailText)) System.Environment.SetEnvironmentVariable("fileType", "json", EnvironmentVariableTarget.User);
-            else System.Environment.SetEnvironmentVariable("fileType", "xml", EnvironmentVariableTarget.User);
-            Dictionary<string, string> headerDict = GetHttpHeaderInformation(testName);
+            if (IsValidJson(detailText)) CommandLine.NewSessionVariableValue(userNr, "fileType", "json", "Both","");
+            else CommandLine.NewSessionVariableValue(userNr, "fileType", "xml", "Both","");
+            Dictionary<string, string> headerDict = GetPerfHttpHeaderInformation(testName, userNr);
             
             string url = "";
             string url2 = url;
@@ -1042,7 +1148,7 @@
 
                     try
                     {
-                        if (System.Environment.GetEnvironmentVariable("fileType", EnvironmentVariableTarget.User) == "json")
+                        if (CommandLine.GetSessionVariableValue(userNr, "fileType") == "json")
                         {
                             var content = new StringContent(detailText, Encoding.UTF8, "application/json");
                             requestMessage.Content = content;
@@ -1095,7 +1201,7 @@
                 {
                     try
                     {
-                        List<Variables.VariableList> savedVariableList = Variables.GetVariableDocuments();
+                        List<Variables.SessionVariable> savedVariableList = CommandLine.GetSessionVariables(userNr);
                         foreach (var httpResponse in httpResponseClient.Headers)
                         {
                             //returnDict.Add("Header_" + httpResponse.Key, httpResponse.Value.ToString());
@@ -1106,7 +1212,7 @@
                                     if (savedVariableList[j].ReplaceWhere.ToLower() != "static" && savedVariableList[j].ReplaceWhere.ToLower() != "body")
                                     {
                                         savedVariableList[j].SavedValue = httpResponse.Value.ToString();
-                                        Variables.UpdateVariableSavedValue(httpResponse.Key, httpResponse.Value.ToString());
+                                        CommandLine.UpdateSessionVariableValue(userNr, httpResponse.Key, httpResponse.Value.ToString());
                                     }
                                 }
                             }
@@ -1115,21 +1221,21 @@
                             {
                                 if (System.Environment.GetEnvironmentVariable("useBearerToken", EnvironmentVariableTarget.User) == "yes")
                                 {
-                                    System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                    CommandLine.UpdateSessionVariableValue(userNr, "bearerToken", httpResponse.Value.ToString());
                                 }
 
                                 if (System.Environment.GetEnvironmentVariable("useBasicToken", EnvironmentVariableTarget.User) == "yes")
                                 {
-                                    System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                    CommandLine.UpdateSessionVariableValue(userNr, "basicToken", httpResponse.Value.ToString());
                                 }
 
                                 if (System.Environment.GetEnvironmentVariable("useAPIKey", EnvironmentVariableTarget.User) == "yes")
                                 {
-                                    System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                    CommandLine.UpdateSessionVariableValue(userNr, "apiKey", httpResponse.Value.ToString());
                                 }
                                 if (System.Environment.GetEnvironmentVariable("useCustomKey", EnvironmentVariableTarget.User) == "yes")
                                 {
-                                    System.Environment.SetEnvironmentVariable("customKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                    CommandLine.UpdateSessionVariableValue(userNr, "customKey", httpResponse.Value.ToString());
                                 }
                             }
                             else
@@ -1139,19 +1245,20 @@
                                     switch (httpResponse.Value.ToString().ToLower())
                                     {
                                         case "bearer":
-                                            System.Environment.SetEnvironmentVariable("bearerToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                           
+                                            CommandLine.UpdateSessionVariableValue(userNr, "bearerToken", httpResponse.Value.ToString());
                                             break;
                                         case "api_key":
-                                            System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            CommandLine.UpdateSessionVariableValue(userNr, "apiKey", httpResponse.Value.ToString());
                                             break;
                                         case "api-key":
-                                            System.Environment.SetEnvironmentVariable("apiKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            CommandLine.UpdateSessionVariableValue(userNr, "apiKey", httpResponse.Value.ToString());
                                             break;
                                         case "basic":
-                                            System.Environment.SetEnvironmentVariable("basicToken", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            CommandLine.UpdateSessionVariableValue(userNr, "basicToken", httpResponse.Value.ToString());
                                             break;
                                         default:
-                                            System.Environment.SetEnvironmentVariable("customKey", httpResponse.Value.ToString(), EnvironmentVariableTarget.User);
+                                            CommandLine.UpdateSessionVariableValue(userNr, "customKey", httpResponse.Value.ToString());
                                             break;
                                     }
                                 }

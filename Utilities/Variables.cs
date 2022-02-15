@@ -47,6 +47,39 @@
             }
         }
 
+        public class SessionVariable
+        {
+            public int UserNr { get; set; }
+            public string VariableName { get; set; }
+            public string SavedValue { get; set; }
+            public string ReplaceWhere { get; set; }
+            public string SearchForElement { get; set; }
+            public string PartialSave { get; set; }
+            public int NumChars { get; set; }
+
+
+            public SessionVariable(int userNr, string variableName, string variableValue, string replaceWhere, string searchForElement, string partialSave, int numChars)
+            {
+                UserNr = userNr;
+                VariableName = variableName;
+                SavedValue = variableValue;
+                ReplaceWhere = replaceWhere;
+                SearchForElement = searchForElement;
+                PartialSave = partialSave;
+                NumChars = numChars;
+            }
+            public SessionVariable()
+            {
+                UserNr = 0;
+                VariableName = "";
+                SavedValue = "";
+                ReplaceWhere = "";
+                SearchForElement = "";
+                PartialSave = "";
+                NumChars = 0;
+            }
+        }
+
         public static void NewVariableDocument(string variableName, string searchForElement, string savedValue, string replaceWhere, string partialSave, int numChars)
         {
             var settings = MongoClientSettings.FromConnectionString(connectionString);
